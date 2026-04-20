@@ -1,9 +1,48 @@
 {% extends "partials/layout.njk" %}
 
+{% set fullScreen = true %}
 {% set fullWidth = true %}
 
 {% block innerContent %}
-  <h1>This site is under construction...</h1>
-  <p>Please check back later when there is content to view.</p>
-  <p data-qa="timestamp">The time is currently {{ currentTime }}</p>
+  <div class="govuk-width-container">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-margin-top-0">Court appearances</h1>
+  </div>
+  <div class="homepage-card-background">
+    <div class="govuk-width-container">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <div class="card-group govuk-grid-row">
+
+            <div class="govuk-grid-column-one-third card-group__item">
+              <div class="card card--clickable">
+                <h2 class="govuk-heading-m card__heading">
+                  <a class="govuk-link govuk-link--no-visited-state card__link" href="/search-prisoner/add-court-appearance">Add a court appearance</a>
+                </h2>
+                <p class="govuk-body card__description">Add a court appearance for a prisoner, including video links and in person appearances.</p>
+              </div>
+            </div>
+
+            <div class="govuk-grid-column-one-third card-group__item">
+              <div class="card card--clickable">
+                <h2 class="govuk-heading-m card__heading">
+                  <a class="govuk-link govuk-link--no-visited-state card__link" href="/court-appearances">View and manage court appearances</a>
+                </h2>
+                <p class="govuk-body card__description">View and manage court appearances across the prison, including editing and cancelling.</p>
+              </div>
+            </div>
+
+            <div class="govuk-grid-column-one-third card-group__item">
+              <div class="card card--clickable">
+                <h2 class="govuk-heading-m card__heading">
+                  <a class="govuk-link govuk-link--no-visited-state card__link" href="/search-prisoner/view-court-appearances">View a prisoner’s court appearance history</a>
+                </h2>
+                <p class="govuk-body card__description">View all scheduled court appearances for a prisoner.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

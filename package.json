@@ -34,9 +34,11 @@
     "@ministryofjustice/frontend": "^9.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^1.0.2",
     "@ministryofjustice/hmpps-connect-dps-components": "5.3.5",
+    "@ministryofjustice/hmpps-connect-dps-shared-items": "3.7.4",
     "@ministryofjustice/hmpps-monitoring": "^1.0.2",
     "@ministryofjustice/hmpps-prison-permissions-lib": "2.5.1",
     "@ministryofjustice/hmpps-rest-client": "1.2.0",
+    "@sentry/node": "10.49.0",
     "applicationinsights": "^2.9.8",
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
@@ -44,6 +46,7 @@
     "connect-flash": "^0.1.1",
     "connect-redis": "^9.0.0",
     "csrf-sync": "^4.2.1",
+    "date-fns": "4.1.0",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "govuk-frontend": "^6.1.0",
@@ -55,7 +58,9 @@
     "passport": "^0.7.0",
     "passport-oauth2": "^1.8.0",
     "redis": "^5.11.0",
-    "superagent": "^10.3.0"
+    "superagent": "^10.3.0",
+    "uuid": "14.0.0",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@jgoz/esbuild-plugin-typecheck": "^4.0.4",
