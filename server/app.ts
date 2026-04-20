@@ -1,7 +1,6 @@
-import express from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 
-import createError from 'http-errors'
-
+import { getFrontendComponents, retrieveCaseLoadData } from '@ministryofjustice/hmpps-connect-dps-components'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import { appInsightsMiddleware } from './utils/azureAppInsights'
@@ -18,6 +17,10 @@ import setUpWebSession from './middleware/setUpWebSession'
 
 import routes from './routes'
 import type { Services } from './services'
+import { auditPageViewMiddleware } from './middleware/audit/auditPageViewMiddleware'
+import { auditApiCallMiddleware } from './middleware/audit/auditApiCallMiddleware'
+import logger from '../logger'
+import config from './config'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -34,14 +37,62 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app)
   app.use(setUpAuthentication())
+  app.get('*any', auditPageViewMiddleware(services.auditService))
+  app.post('*any', auditApiCallMiddleware(services.auditService))
+
+  app.get(
+    '/auth-error',
+    getFrontendComponents({
+      logger,
+      requestOptions: { includeSharedData: true },
+      componentApiConfig: config.apis.componentApi,
+      dpsUrl: config.serviceUrls.digitalPrison,
+    }),
+    (_req, res) => {
+      res.status(401)
+      return res.render('autherror')
+    },
+  )
+
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
 
+  app.get(
+    /(.*)/,
+    getFrontendComponents({
+      logger,
+      requestOptions: { includeSharedData: true },
+      componentApiConfig: config.apis.componentApi,
+      dpsUrl: config.serviceUrls.digitalPrison,
+    }),
+  )
+
+  app.use((_req, res, next) => {
+    res.notFound = () => res.status(404).render('pages/not-found')
+    res.notAuthorised = () => res.status(403).render('pages/not-authorised')
+    next()
+  })
+
+  app.use(
+    retrieveCaseLoadData({
+      logger,
+      prisonApiConfig: config.apis.prisonApi,
+    }),
+  )
+
   app.use(routes(services))
 
-  app.use((req, res, next) => next(createError(404, 'Not found')))
-  app.use(errorHandler(process.env.NODE_ENV === 'production'))
+  app.use((_req, res) => res.notFound())
+  // Error handlers must go after `Sentry.setupExpressErrorHandler(app)` for errors to be captured by Sentry
+  app.use((error: { message?: string }, _req: Request, res: Response, next: NextFunction) => {
+    if (error?.message === 'NOT_AUTHORISED') {
+      res.notAuthorised()
+    } else {
+      next(error)
+    }
+  })
+  app.use(errorHandler(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'e2e-test'))
 
   return app
 }

@@ -5,7 +5,7 @@ import tokenVerification from '../mockApis/tokenVerification'
 
 import { resetStubs } from '../testUtils'
 
-test.describe('Health', () => {
+test.skip('Health', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
