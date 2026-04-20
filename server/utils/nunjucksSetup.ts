@@ -6,6 +6,14 @@ import fs from 'fs'
 import { initialiseName } from './utils'
 import config from '../config'
 import logger from '../../logger'
+import applicationInfo from '../applicationInfo'
+import { historyExtension } from '../middleware/history/historyExtension'
+import {
+  buildErrorSummaryList,
+  customErrorOrderBuilder,
+  findError,
+  findErrorMessage,
+} from '../middleware/validation/validationMiddleware'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
@@ -14,6 +22,10 @@ export default function nunjucksSetup(app: express.Express): void {
   app.locals.applicationName = 'HMPPS Court Appearance Scheduler'
   app.locals.environmentName = config.environmentName
   app.locals.environmentNameColour = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
+  app.locals.appInsightsConnectionString = config.appInsightsConnectionString
+  app.locals.buildNumber = config.buildNumber
+  app.locals.appInsightsApplicationName = applicationInfo().applicationName
+
   let assetManifest: Record<string, string> = {}
 
   try {
@@ -39,6 +51,7 @@ export default function nunjucksSetup(app: express.Express): void {
       'node_modules/govuk-frontend/dist/',
       'node_modules/@ministryofjustice/frontend/',
       'node_modules/@ministryofjustice/hmpps-connect-dps-components/dist/assets/',
+      'node_modules/@ministryofjustice/hmpps-connect-dps-shared-items/dist/assets/',
     ],
     {
       autoescape: true,
@@ -47,6 +60,13 @@ export default function nunjucksSetup(app: express.Express): void {
     },
   )
 
+  njkEnv.addExtension('HistoryExtension', historyExtension)
+
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
+
+  njkEnv.addFilter('findError', findError)
+  njkEnv.addFilter('findErrorMessage', findErrorMessage)
+  njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
+  njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
 }

@@ -2,17 +2,46 @@ import { Router } from 'express'
 
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
-import breadcrumbs from '../middleware/breadcrumbs'
+import breadcrumbs from '../middleware/history/breadcrumbs'
+import { BaseRouter } from './common/routes'
+import { historyMiddleware } from '../middleware/history/historyMiddleware'
+import populateValidationErrors from '../middleware/validation/populateValidationErrors'
+import { FLASH_KEY__SUCCESS_BANNER } from '../utils/constants'
+import insertJourneyIdentifier from '../middleware/journey/insertJourneyIdentifier'
+import { JourneyRoutes } from './journeys/routes'
 
-export default function routes({ auditService }: Services): Router {
-  const router = Router()
+export default function routes(services: Services): Router {
+  const { router, get } = BaseRouter()
 
   router.use(breadcrumbs())
+  router.use(
+    historyMiddleware(() => [
+      {
+        matcher: /^\/$/,
+        text: 'Court appearances',
+        alias: Page.HOMEPAGE,
+      },
+    ]),
+  )
 
-  router.get('/', async (req, res) => {
-    await auditService.logPageView(Page.HOMEPAGE, { who: res.locals.user.username, correlationId: req.id })
-    return res.render('view', { showBreadcrumbs: true, currentTime: new Date() })
+  router.use(populateValidationErrors())
+
+  get('*any', (req, res, next) => {
+    res.locals['originalUrl'] = req.originalUrl // for use by prisoner profile backlink
+    res.locals['query'] = req.query // for use by getQueryEntries nunjucks filter
+    const successBanner = req.flash(FLASH_KEY__SUCCESS_BANNER)
+    res.locals['successBanner'] = successBanner?.[0] ? successBanner[0] : undefined
+    next()
   })
+
+  get('/', Page.HOMEPAGE, async (_req, res) => {
+    res.render('view', {
+      showBreadcrumbs: true,
+    })
+  })
+
+  router.use(insertJourneyIdentifier())
+  router.use('/:journeyId', JourneyRoutes(services))
 
   return router
 }

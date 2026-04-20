@@ -1,5 +1,7 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
-import { Breadcrumbs } from '../../middleware/breadcrumbs'
+import { Breadcrumbs } from '../../middleware/history/breadcrumbs'
+import { PrisonerDetails, JourneyData } from '../journeys'
+import Prisoner from '../../services/apis/model/prisoner'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -20,6 +22,11 @@ export declare global {
       verified?: boolean
       id: string
       logout(done: (err: unknown) => void): void
+      journeyData: JourneyData
+
+      middleware?: {
+        prisonerData?: Prisoner
+      }
     }
 
     interface Response {
@@ -72,10 +79,13 @@ export declare global {
         }
       }
       formResponses?: Record<string, unknown>
+      prisonerDetails?: PrisonerDetails
       appInsightsConnectionString?: string
       appInsightsApplicationName?: string
       buildNumber?: string
       breadcrumbs: Breadcrumbs
+      historyBackUrl?: string
+      history?: string[]
     }
   }
 }

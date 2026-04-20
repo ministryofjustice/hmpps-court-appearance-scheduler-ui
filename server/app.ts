@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express'
 
 import { getFrontendComponents, retrieveCaseLoadData } from '@ministryofjustice/hmpps-connect-dps-components'
+import * as Sentry from '@sentry/node'
+import './sentry'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import { appInsightsMiddleware } from './utils/azureAppInsights'
@@ -21,6 +23,7 @@ import { auditPageViewMiddleware } from './middleware/audit/auditPageViewMiddlew
 import { auditApiCallMiddleware } from './middleware/audit/auditApiCallMiddleware'
 import logger from '../logger'
 import config from './config'
+import sentryMiddleware from './middleware/sentryMiddleware'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -29,6 +32,7 @@ export default function createApp(services: Services): express.Application {
   app.set('trust proxy', true)
   app.set('port', process.env.PORT || 3000)
 
+  app.use(sentryMiddleware())
   app.use(appInsightsMiddleware())
   app.use(setUpHealthChecks(services.applicationInfo))
   app.use(setUpWebSecurity())
@@ -82,6 +86,8 @@ export default function createApp(services: Services): express.Application {
   )
 
   app.use(routes(services))
+
+  if (config.sentry.dsn) Sentry.setupExpressErrorHandler(app)
 
   app.use((_req, res) => res.notFound())
   // Error handlers must go after `Sentry.setupExpressErrorHandler(app)` for errors to be captured by Sentry
