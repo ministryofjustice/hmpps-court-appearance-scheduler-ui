@@ -9,10 +9,15 @@ import populateValidationErrors from '../middleware/validation/populateValidatio
 import { FLASH_KEY__SUCCESS_BANNER } from '../utils/constants'
 import insertJourneyIdentifier from '../middleware/journey/insertJourneyIdentifier'
 import { JourneyRoutes } from './journeys/routes'
+import { populateUserPermissions } from '../middleware/permissions/populateUserPermissions'
+import { UserPermissionLevel } from '../interfaces/hmppsUser'
+import { SearchPrisonerRoutes } from './search-prisoner/routes'
+import { requirePermissions } from '../middleware/permissions/requirePermissions'
 
 export default function routes(services: Services): Router {
   const { router, get } = BaseRouter()
 
+  router.use(populateUserPermissions)
   router.use(breadcrumbs())
   router.use(
     historyMiddleware(() => [
@@ -39,6 +44,8 @@ export default function routes(services: Services): Router {
       showBreadcrumbs: true,
     })
   })
+
+  router.use('/search-prisoner', requirePermissions(UserPermissionLevel.VIEW_ONLY), SearchPrisonerRoutes(services))
 
   router.use(insertJourneyIdentifier())
   router.use('/:journeyId', JourneyRoutes(services))

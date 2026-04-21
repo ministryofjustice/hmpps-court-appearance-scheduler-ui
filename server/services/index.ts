@@ -8,6 +8,7 @@ import CacheInterface from '../data/cache/cacheInterface'
 import RedisCache from '../data/cache/redisCache'
 import InMemoryCache from '../data/cache/inMemoryCache'
 import { createRedisClient } from '../data/redisClient'
+import PrisonApiService from './apis/prisonApiService'
 
 export const services = () => {
   const { applicationInfo, hmppsAuditClient, hmppsAuthClient, telemetryClient } = dataAccess()
@@ -25,6 +26,7 @@ export const services = () => {
     applicationInfo,
     auditService: new AuditService(hmppsAuditClient),
     prisonerSearchService: new PrisonerSearchApiService(hmppsAuthClient, prisonPermissionsService),
+    prisonApiService: new PrisonApiService(hmppsAuthClient),
     cacheStore: <T>(prefix: string): CacheInterface<T> =>
       redisClient ? new RedisCache<T>(redisClient, prefix) : new InMemoryCache<T>(prefix),
   }

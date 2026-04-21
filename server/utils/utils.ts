@@ -1,3 +1,5 @@
+import config from '../config'
+
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0]!.toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -22,6 +24,9 @@ export const initialiseName = (fullName?: string | null): string | null => {
   return `${array[0]?.[0]}. ${array.reverse()[0]}`
 }
 
+export const getQueryEntries = (query: object | undefined | null, keys: string[]) =>
+  query ? Object.entries(query).filter(([key]) => keys.includes(key)) : []
+
 /* eslint-disable no-param-reassign */
 export const mergeObjects = <T extends Record<string, unknown>>(destination: T, source: Partial<T>) => {
   Object.entries(source).forEach(([key, value]) => {
@@ -36,4 +41,13 @@ export const mergeObjects = <T extends Record<string, unknown>>(destination: T, 
       destination[key] = value
     }
   })
+}
+
+export const prisonerProfileBacklink = (originalUrl: string, personIdentifier: string, suffix: string = '') => {
+  const searchParams = new URLSearchParams({
+    service: 'external-movements',
+    redirectPath: `/prisoner/${personIdentifier}${suffix}`,
+    returnPath: `/${originalUrl.split('/').slice(1).join('/')}`,
+  })
+  return `${config.serviceUrls.prisonerProfile}/save-backlink?${searchParams.toString()}`
 }

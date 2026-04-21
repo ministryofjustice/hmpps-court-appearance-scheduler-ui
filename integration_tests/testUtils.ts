@@ -5,7 +5,7 @@ import { resetStubs } from './mockApis/wiremock'
 
 export { resetStubs }
 
-const DEFAULT_ROLES = ['ROLE_SOME_REQUIRED_ROLE']
+const DEFAULT_ROLES = ['ROLE_COURT_APPEARANCE_SCHEDULER_RW']
 
 export const attemptHmppsAuthLogin = async (page: Page) => {
   await page.goto('/')
@@ -16,7 +16,12 @@ export const attemptHmppsAuthLogin = async (page: Page) => {
 
 export const login = async (
   page: Page,
-  { name, roles = DEFAULT_ROLES, active = true, authSource = 'nomis' }: UserToken & { active?: boolean } = {},
+  {
+    name = 'User Name',
+    roles = DEFAULT_ROLES,
+    active = true,
+    authSource = 'nomis',
+  }: UserToken & { active?: boolean } = {},
 ) => {
   await Promise.all([
     hmppsAuth.favicon(),
