@@ -3,7 +3,7 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
-import { initialiseName } from './utils'
+import { getQueryEntries, initialiseName, prisonerProfileBacklink } from './utils'
 import config from '../config'
 import logger from '../../logger'
 import applicationInfo from '../applicationInfo'
@@ -14,6 +14,14 @@ import {
   findError,
   findErrorMessage,
 } from '../middleware/validation/validationMiddleware'
+import { hasPermissionFilter } from '../middleware/permissions/requirePermissions'
+import {
+  firstNameSpaceLastName,
+  formatRefDataName,
+  lastNameCommaFirstName,
+  possessiveComma,
+  sentenceCase,
+} from './formatUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
@@ -62,11 +70,20 @@ export default function nunjucksSetup(app: express.Express): void {
 
   njkEnv.addExtension('HistoryExtension', historyExtension)
 
+  njkEnv.addGlobal('prisonerProfileBacklink', prisonerProfileBacklink)
+
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
+  njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
+  njkEnv.addFilter('lastNameCommaFirstName', lastNameCommaFirstName)
+  njkEnv.addFilter('possessiveComma', possessiveComma)
+  njkEnv.addFilter('sentenceCase', sentenceCase)
+  njkEnv.addFilter('formatRefDataName', formatRefDataName)
+  njkEnv.addFilter('getQueryEntries', getQueryEntries)
 
   njkEnv.addFilter('findError', findError)
   njkEnv.addFilter('findErrorMessage', findErrorMessage)
   njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
   njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
+  njkEnv.addFilter('hasPermission', hasPermissionFilter)
 }

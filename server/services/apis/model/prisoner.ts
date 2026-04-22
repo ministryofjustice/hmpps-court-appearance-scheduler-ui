@@ -2,7 +2,7 @@ export default interface Prisoner {
   prisonerNumber: string
   firstName: string
   lastName: string
-  middleNames: string
+  middleNames?: string
   cellLocation: string
   prisonId: string
   dateOfBirth: string

@@ -24,6 +24,9 @@ import { auditApiCallMiddleware } from './middleware/audit/auditApiCallMiddlewar
 import logger from '../logger'
 import config from './config'
 import sentryMiddleware from './middleware/sentryMiddleware'
+import { AuthorisedRoles } from './middleware/permissions/populateUserPermissions'
+import PrisonerImageRoutes from './routes/prisonerImageRoutes'
+import { handleApiError } from './middleware/validation/handleApiError'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -58,9 +61,16 @@ export default function createApp(services: Services): express.Application {
     },
   )
 
-  app.use(authorisationMiddleware())
+  app.use(
+    authorisationMiddleware([
+      AuthorisedRoles.COURT_APPEARANCE_SCHEDULER_RO,
+      AuthorisedRoles.COURT_APPEARANCE_SCHEDULER_RW,
+    ]),
+  )
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
+
+  app.get('/prisoner-image/:prisonNumber', new PrisonerImageRoutes(services.prisonApiService).GET)
 
   app.get(
     /(.*)/,
@@ -98,6 +108,7 @@ export default function createApp(services: Services): express.Application {
       next(error)
     }
   })
+  app.use(handleApiError)
   app.use(errorHandler(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'e2e-test'))
 
   return app

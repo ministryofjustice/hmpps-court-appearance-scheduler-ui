@@ -31,7 +31,7 @@ export default class PrisonerSearchApiService {
     )
   }
 
-  async getPrisonerDetails(context: ApiRequestContext, prisonerNumber: string): Promise<Prisoner | null> {
+  async getPrisonerDetails(context: ApiRequestContext, prisonerNumber: string): Promise<Prisoner> {
     const prisoner = await this.prisonerSearchApiClient
       .withContext(context)
       .get<Prisoner>({ path: `/prisoner/${prisonerNumber}` })
@@ -44,12 +44,19 @@ export default class PrisonerSearchApiService {
 
     if (permission['prisoner:base-record:read']) return prisoner
 
-    return null
+    return {
+      ...prisoner,
+      prisonName: '',
+      cellLocation: '',
+      dateOfBirth: '',
+    }
   }
 
-  searchPrisoner(context: ApiRequestContext, searchTerm: string): Promise<{ content: Prisoner[] }> {
-    return this.prisonerSearchApiClient.withContext(context).get<{ content: Prisoner[] }>({
-      path: `/prison/${context.res.locals.user.getActiveCaseloadId()}/prisoners?term=${encodeURIComponent(searchTerm)}`,
-    })
+  async searchPrisoner(context: ApiRequestContext, searchTerm: string): Promise<Prisoner[]> {
+    return (
+      await this.prisonerSearchApiClient.withContext(context).get<{ content: Prisoner[] }>({
+        path: `/prison/${context.res.locals.user.getActiveCaseloadId()}/prisoners?size=10&term=${encodeURIComponent(searchTerm)}`,
+      })
+    ).content
   }
 }
