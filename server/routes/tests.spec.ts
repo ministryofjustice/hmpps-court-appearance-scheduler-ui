@@ -5,16 +5,17 @@ import { CourtAppearancesHomepage } from './test.page'
 import auth from '../../integration_tests/mockApis/hmppsAuth'
 
 test.describe('homepage', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async () => {
     await Promise.all([auth.stubSignInPage(), stubComponents()])
-    await login(page, { name: 'A TestUser' })
   })
 
   test.afterEach(async () => {
     await resetStubs()
   })
 
-  test('should render homepage', async ({ page }) => {
+  test('should render homepage for MANAGE role user', async ({ page }) => {
+    await login(page, { name: 'A TestUser' })
+
     const testPage = await new CourtAppearancesHomepage(page).verifyContent()
 
     await expect(testPage.link('Add a court appearance')).toHaveAttribute(
@@ -22,6 +23,20 @@ test.describe('homepage', () => {
       /\/search-prisoner\/add-court-appearance/,
     )
     await expect(testPage.link('View and manage court appearances')).toBeVisible()
+    await expect(testPage.link('View a prisoner’s court appearance history')).toBeVisible()
+
+    await expect(testPage.link('View court appearances')).toHaveCount(0)
+  })
+
+  test('should render homepage for VIEW ONLY role user', async ({ page }) => {
+    await login(page, { name: 'A TestUser', roles: ['ROLE_COURT_APPEARANCE_SCHEDULER_RO'] })
+
+    const testPage = await new CourtAppearancesHomepage(page).verifyContent()
+
+    await expect(testPage.link('Add a court appearance')).toHaveCount(0)
+    await expect(testPage.link('View and manage court appearances')).toHaveCount(0)
+
+    await expect(testPage.link('View court appearances')).toBeVisible()
     await expect(testPage.link('View a prisoner’s court appearance history')).toBeVisible()
   })
 })

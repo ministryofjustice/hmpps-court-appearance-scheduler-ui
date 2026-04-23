@@ -13,21 +13,35 @@
         <div class="govuk-grid-column-full">
           <div class="card-group govuk-grid-row">
 
+            {% if user | hasPermission('MANAGE') %}
             <div class="govuk-grid-column-one-third card-group__item">
-              <div class="card card--clickable">
-                <h2 class="govuk-heading-m card__heading">
-                  <a class="govuk-link govuk-link--no-visited-state card__link" href="/search-prisoner/add-court-appearance">Add a court appearance</a>
-                </h2>
-                <p class="govuk-body card__description">Add a court appearance for a prisoner, including video links and in person appearances.</p>
+                <div class="card card--clickable">
+                  <h2 class="govuk-heading-m card__heading">
+                    <a class="govuk-link govuk-link--no-visited-state card__link" href="/search-prisoner/add-court-appearance">Add a court appearance</a>
+                  </h2>
+                  <p class="govuk-body card__description">Add a court appearance for a prisoner, including video links and in person appearances.</p>
+                </div>
               </div>
-            </div>
+            {% endif %}
 
             <div class="govuk-grid-column-one-third card-group__item">
               <div class="card card--clickable">
                 <h2 class="govuk-heading-m card__heading">
-                  <a class="govuk-link govuk-link--no-visited-state card__link" href="/court-appearances">View and manage court appearances</a>
+                  <a class="govuk-link govuk-link--no-visited-state card__link" href="/court-appearances">
+                    {% if user | hasPermission('MANAGE') %}
+                      View and manage court appearances
+                    {% else %}
+                      View court appearances
+                    {% endif %}
+                  </a>
                 </h2>
-                <p class="govuk-body card__description">View and manage court appearances across the prison, including editing and cancelling.</p>
+                <p class="govuk-body card__description">
+                  {% if user | hasPermission('MANAGE') %}
+                    View and manage court appearances across the prison, including editing and cancelling.
+                  {% else %}
+                    View all scheduled court appearances for a prisoner.
+                  {% endif %}
+                </p>
               </div>
             </div>
 
