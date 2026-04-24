@@ -29,6 +29,8 @@ export const services = () => {
     prisonApiService: new PrisonApiService(hmppsAuthClient),
     cacheStore: <T>(prefix: string): CacheInterface<T> =>
       redisClient ? new RedisCache<T>(redisClient, prefix) : new InMemoryCache<T>(prefix),
+    prisonPermissionsService,
+    telemetryClient,
   }
 }
 

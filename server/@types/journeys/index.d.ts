@@ -15,4 +15,21 @@ export type JourneyData = {
   journeyCompleted?: boolean
   b64History?: string | undefined
   stateGuard?: boolean
+  addCourtAppearance?: AddCourtAppearanceJourney
 }
+
+type CodedDescription = {
+  code: string
+  description: string
+}
+
+export type AddCourtAppearanceJourney = {
+  backUrl: string
+  historyQuery: string
+} & Partial<{
+  startDate: string
+  startTime: string
+  court: CodedDescription
+  reason: CodedDescription
+  comments: string | null
+}>

@@ -2,6 +2,9 @@ import { Router } from 'express'
 import { Services } from '../../services'
 import setUpJourneyData from '../../middleware/journey/setUpJourneyData'
 import { mergeObjects } from '../../utils/utils'
+import { requirePermissions } from '../../middleware/permissions/requirePermissions'
+import { UserPermissionLevel } from '../../interfaces/hmppsUser'
+import { AddCourtAppearanceRoutes } from './add-court-appearance/routes'
 
 export const JourneyRoutes = (services: Services) => {
   const router = Router({ mergeParams: true })
@@ -14,6 +17,12 @@ export const JourneyRoutes = (services: Services) => {
     }
     next()
   })
+
+  router.use(
+    '/add-court-appearance',
+    requirePermissions(UserPermissionLevel.MANAGE),
+    AddCourtAppearanceRoutes(services),
+  )
 
   if (process.env.NODE_ENV === 'e2e-test') {
     router.get('/inject-journey-data', (req, res) => {

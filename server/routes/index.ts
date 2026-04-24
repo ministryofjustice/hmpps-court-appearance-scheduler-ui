@@ -26,6 +26,11 @@ export default function routes(services: Services): Router {
         text: 'Court appearances',
         alias: Page.HOMEPAGE,
       },
+      {
+        matcher: /^\/search-prisoner\//,
+        text: 'Search prisoner',
+        alias: Page.SEARCH_PRISONER,
+      },
     ]),
   )
 
