@@ -4,7 +4,7 @@ import { stubComponents } from '../../../../integration_tests/mockApis/component
 import { stubSearchPrisoner } from '../../../../integration_tests/mockApis/prisonerSearchApi'
 import { stubGetPrisonerImage } from '../../../../integration_tests/mockApis/prisonApi'
 import { AddCourtAppearanceSearchPrisonerPage } from './test.page'
-import { login } from '../../../../integration_tests/testUtils'
+import { login, resetStubs } from '../../../../integration_tests/testUtils'
 import { testNotAuthorisedPage } from '../../../../integration_tests/steps/testNotAuthorisedPage'
 
 test.describe('/search-prisoner/add-court-appearance unauthorised', () => {
@@ -14,7 +14,7 @@ test.describe('/search-prisoner/add-court-appearance unauthorised', () => {
 })
 
 test.describe('/search-prisoner/add-court-appearance', () => {
-  test.beforeAll(async () => {
+  test.beforeEach(async ({ page }) => {
     await Promise.all([
       auth.stubSignInPage(),
       stubComponents(),
@@ -46,10 +46,12 @@ test.describe('/search-prisoner/add-court-appearance', () => {
         ],
       }),
     ])
+
+    await login(page)
   })
 
-  test.beforeEach(async ({ page }) => {
-    await login(page)
+  test.afterEach(async () => {
+    await resetStubs()
   })
 
   test('should try all cases', async ({ page }) => {

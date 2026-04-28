@@ -22,6 +22,7 @@ import {
   possessiveComma,
   sentenceCase,
 } from './formatUtils'
+import { formatDate, inputDate } from './dateTimeUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
@@ -70,6 +71,7 @@ export default function nunjucksSetup(app: express.Express): void {
 
   njkEnv.addExtension('HistoryExtension', historyExtension)
 
+  njkEnv.addGlobal('inputDate', inputDate)
   njkEnv.addGlobal('prisonerProfileBacklink', prisonerProfileBacklink)
 
   njkEnv.addFilter('initialiseName', initialiseName)
@@ -80,6 +82,8 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('sentenceCase', sentenceCase)
   njkEnv.addFilter('formatRefDataName', formatRefDataName)
   njkEnv.addFilter('getQueryEntries', getQueryEntries)
+
+  njkEnv.addFilter('formatDate', formatDate)
 
   njkEnv.addFilter('findError', findError)
   njkEnv.addFilter('findErrorMessage', findErrorMessage)

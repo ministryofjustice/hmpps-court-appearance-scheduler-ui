@@ -3,6 +3,7 @@ import HmppsAuditClient, { AuditEvent } from '../data/hmppsAuditClient'
 export enum Page {
   HOMEPAGE = 'HOMEPAGE',
   SEARCH_PRISONER = 'SEARCH_PRISONER',
+  ADD_COURT_APPEARANCE = 'ADD_COURT_APPEARANCE',
 }
 
 export interface PageViewEventDetails {
