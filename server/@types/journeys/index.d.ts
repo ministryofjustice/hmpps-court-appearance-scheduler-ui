@@ -21,6 +21,7 @@ export type JourneyData = {
 type CodedDescription = {
   code: string
   description: string
+  hintText?: string
 }
 
 export type AddCourtAppearanceJourney = {

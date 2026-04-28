@@ -3,7 +3,15 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
-import { getQueryEntries, initialiseName, prisonerProfileBacklink } from './utils'
+import {
+  addSelectValue,
+  fromCodedDescription,
+  getQueryEntries,
+  initialiseName,
+  prisonerProfileBacklink,
+  setCheckedValue,
+  setSelectedValue,
+} from './utils'
 import config from '../config'
 import logger from '../../logger'
 import applicationInfo from '../applicationInfo'
@@ -84,6 +92,11 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('getQueryEntries', getQueryEntries)
 
   njkEnv.addFilter('formatDate', formatDate)
+
+  njkEnv.addFilter('fromCodedDescription', fromCodedDescription)
+  njkEnv.addFilter('addSelectValue', addSelectValue)
+  njkEnv.addFilter('setSelectedValue', setSelectedValue)
+  njkEnv.addFilter('setCheckedValue', setCheckedValue)
 
   njkEnv.addFilter('findError', findError)
   njkEnv.addFilter('findErrorMessage', findErrorMessage)

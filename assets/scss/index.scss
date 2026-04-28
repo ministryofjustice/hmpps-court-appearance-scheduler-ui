@@ -7,7 +7,10 @@ $govuk-page-width: $moj-page-width;
 @import "govuk-frontend/dist/govuk/index";
 @import "@ministryofjustice/frontend/moj/all";
 
+@import 'node_modules/accessible-autocomplete/dist/accessible-autocomplete.min';
+
 @import './components/header-bar';
 @import './components/card';
 @import './components/mini-profile';
+@import './components/autocomplete';
 @import './overrides/local';

@@ -1,4 +1,5 @@
 import config from '../config'
+import { CodedDescription } from '../@types/journeys'
 
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0]!.toUpperCase() + word.toLowerCase().slice(1) : word
@@ -50,4 +51,57 @@ export const prisonerProfileBacklink = (originalUrl: string, personIdentifier: s
     returnPath: `/${originalUrl.split('/').slice(1).join('/')}`,
   })
   return `${config.serviceUrls.prisonerProfile}/save-backlink?${searchParams.toString()}`
+}
+
+export const fromCodedDescription = (items: CodedDescription[]) => {
+  return items.map(refData => ({
+    value: refData.code,
+    text: refData.description,
+    hint: refData.hintText ? { text: refData.hintText } : undefined,
+  }))
+}
+
+interface SelectOption {
+  text: string
+  value: string | number
+  selected?: boolean
+  attributes?: Record<string, string>
+}
+
+export const setSelectedValue = (items: SelectOption[] | null, selected: string | number): SelectOption[] | null => {
+  if (!items) return null
+  return items.map(entry => ({ ...entry, selected: entry && entry.value === selected }))
+}
+
+export const setCheckedValue = (
+  items: SelectOption[] | null,
+  selected: (string | number)[] | (string | number),
+): SelectOption[] | null => {
+  if (!items) return null
+  return items.map(entry => ({
+    ...entry,
+    checked: entry && Array.isArray(selected) ? selected.includes(entry.value) : entry.value === selected,
+  }))
+}
+
+export const addSelectValue = (
+  items: SelectOption[] | null,
+  text: string,
+  show: boolean = true,
+  value: string = '',
+  selected: boolean = true,
+): SelectOption[] | null => {
+  if (!items) return null
+  const attributes: Record<string, string> = {}
+  if (!show) attributes['hidden'] = ''
+
+  return [
+    {
+      text,
+      value,
+      selected,
+      attributes,
+    },
+    ...items,
+  ]
 }
