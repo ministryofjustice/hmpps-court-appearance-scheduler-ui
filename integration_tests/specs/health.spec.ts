@@ -1,18 +1,28 @@
 import { expect, test } from '@playwright/test'
-import exampleApi from '../mockApis/exampleApi'
 import hmppsAuth from '../mockApis/hmppsAuth'
 import tokenVerification from '../mockApis/tokenVerification'
 
 import { resetStubs } from '../testUtils'
+import { stubPrisonApiHealth } from '../mockApis/prisonApi'
+import { stubPrisonerSearchPing } from '../mockApis/prisonerSearchApi'
+import { stubCourtAppearanceSchedulerPing } from '../mockApis/courtAppearanceSchedulerApi'
+import { stubCourtRegisterPing } from '../mockApis/courtRegisterApi'
 
-test.skip('Health', () => {
+test.describe('Health', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
 
   test.describe('All healthy', () => {
     test.beforeEach(async () => {
-      await Promise.all([hmppsAuth.stubPing(), exampleApi.stubPing(), tokenVerification.stubPing()])
+      await Promise.all([
+        hmppsAuth.stubPing(),
+        tokenVerification.stubPing(),
+        stubPrisonApiHealth(),
+        stubPrisonerSearchPing(),
+        stubCourtAppearanceSchedulerPing(),
+        stubCourtRegisterPing(),
+      ])
     })
 
     test('Health check is accessible and status is UP', async ({ page }) => {
@@ -36,7 +46,7 @@ test.skip('Health', () => {
 
   test.describe('Some unhealthy', () => {
     test.beforeEach(async () => {
-      await Promise.all([hmppsAuth.stubPing(), exampleApi.stubPing(), tokenVerification.stubPing(500)])
+      await Promise.all([hmppsAuth.stubPing(), tokenVerification.stubPing(500)])
     })
 
     test('Health check status is down', async ({ page }) => {

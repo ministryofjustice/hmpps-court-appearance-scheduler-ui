@@ -1,0 +1,44 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = 'Add court appearance details - Add a court appearance' %}
+
+{% block meta %}
+  <meta name="autocompleteElements" content="court"/>
+  <meta name="autocompleteElements" content="reason"/>
+{% endblock %}
+
+{% block innerContent %}
+  <div class="govuk-width-container">
+    <span class="govuk-caption-l">Add a court appearance</span>
+    <h1 class="govuk-heading-l">Add court appearance details</h1>
+    <form method="post">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+      {{ govukSelect({
+        id: "court",
+        name: "court",
+        label: { text: "Which court is this appearance at?", classes: "govuk-label--m" },
+        hint: { text: "Start typing the name of the court" },
+        items: courts | fromCodedDescription | addSelectValue('') | setSelectedValue(court),
+        errorMessage: validationErrors | findError('court')
+      }) }}
+
+      {{ govukSelect({
+        id: "reason",
+        name: "reason",
+        label: { text: "Enter a reason for this court appearance", classes: "govuk-label--m" },
+        hint: { text: "Start typing the reason" },
+        items: reasons | fromCodedDescription | addSelectValue('') | setSelectedValue(reason),
+        errorMessage: validationErrors | findError('reason')
+      }) }}
+
+      {{ govukButton({
+        classes: 'govuk-!-margin-top-6',
+        text: "Continue",
+        preventDoubleClick: true
+      }) }}
+    </form>
+  </div>
+{% endblock %}

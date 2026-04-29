@@ -102,7 +102,7 @@ export default {
       },
       agent: new AgentConfig(Number(get('PRISONER_SEARCH_API_TIMEOUT_RESPONSE', 20000))),
     },
-    documentGenerationApi: {
+    courtAppearanceScheduler: {
       url: get('COURT_APPEARANCE_SCHEDULER_API_URL', 'http://localhost:8080', requiredInProduction),
       healthPath: '/health/ping',
       timeout: {
@@ -110,6 +110,15 @@ export default {
         deadline: Number(get('COURT_APPEARANCE_SCHEDULER_API_TIMEOUT_DEADLINE', 5000)),
       },
       agent: new AgentConfig(Number(get('COURT_APPEARANCE_SCHEDULER_API_TIMEOUT_RESPONSE', 5000))),
+    },
+    courtRegister: {
+      url: get('COURT_REGISTER_API_URL', 'http://localhost:8080', requiredInProduction),
+      healthPath: '/health/ping',
+      timeout: {
+        response: Number(get('COURT_REGISTER_API_TIMEOUT_RESPONSE', 5000)),
+        deadline: Number(get('COURT_REGISTER_API_TIMEOUT_DEADLINE', 5000)),
+      },
+      agent: new AgentConfig(Number(get('COURT_REGISTER_API_TIMEOUT_RESPONSE', 5000))),
     },
   },
   sqs: {

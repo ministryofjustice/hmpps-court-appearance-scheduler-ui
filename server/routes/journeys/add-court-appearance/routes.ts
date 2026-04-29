@@ -6,6 +6,7 @@ import preventNavigationToExpiredJourneys from '../../../middleware/journey/prev
 import journeyStateGuard from '../../../middleware/journey/journeyStateGuard'
 import redirectCheckAnswersMiddleware from '../../../middleware/journey/redirectCheckAnswersMiddleware'
 import { CourtAppearanceDateTimeRoutes } from './date-and-time/routes'
+import { CourtAppearanceDetailsRoutes } from './details/routes'
 
 export const AddCourtAppearanceRoutes = (services: Services) => {
   const { router, get } = BaseRouter()
@@ -47,6 +48,7 @@ export const AddCourtAppearanceRoutes = (services: Services) => {
   )
 
   router.use('/date-and-time', CourtAppearanceDateTimeRoutes())
+  router.use('/details', CourtAppearanceDetailsRoutes(services))
 
   return router
 }
