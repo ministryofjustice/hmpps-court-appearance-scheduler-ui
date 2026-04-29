@@ -1,0 +1,31 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = 'Enter any comments for this  court appearance - Add a court appearance' %}
+
+{% block innerContent %}
+  <div class="govuk-width-container">
+    <span class="govuk-caption-l">Add a court appearance</span>
+    <form method="post">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      {{ govukCharacterCount({
+        name: "comments",
+        errorMessage: validationErrors | findError('comments'),
+        maxlength: 4000,
+        rows: 10,
+        label: {
+          text: "Enter any comments for this  court appearance (optional)",
+          classes: "govuk-label--l",
+          isPageHeading: true
+        },
+        value: comments
+      }) }}
+
+      {{ govukButton({
+        text: "Continue",
+        preventDoubleClick: true
+      }) }}
+    </form>
+  </div>
+{% endblock %}

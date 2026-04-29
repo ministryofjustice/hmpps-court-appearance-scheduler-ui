@@ -8,7 +8,7 @@ import logger from '../../../logger'
 export default class PrisonApiService {
   private prisonApiClient: RestClient
 
-  constructor(authenticationClient: AuthenticationClient) {
+  constructor(protected readonly authenticationClient: AuthenticationClient) {
     this.prisonApiClient = new RestClient('Prison API', config.apis.prisonApi, logger, authenticationClient)
   }
 
