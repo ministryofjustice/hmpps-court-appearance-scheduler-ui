@@ -6,12 +6,12 @@ export class CourtAppearanceCommentsPage extends BaseTestPage {
       pageUrl: /\/add-court-appearance\/comments/,
       title: 'Enter any comments for this court appearance - Add a court appearance - DPS',
       caption: 'Add a court appearance',
-      heading: 'Enter any comments for this  court appearance (optional)',
+      heading: 'Enter any comments for this court appearance (optional)',
       backUrl: /details/,
     })
   }
 
   commentsField() {
-    return this.textbox('Enter any comments for this  court appearance (optional)')
+    return this.textbox('Enter any comments for this court appearance (optional)')
   }
 }

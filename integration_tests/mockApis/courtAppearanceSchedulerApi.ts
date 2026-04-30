@@ -31,3 +31,10 @@ export const stubGetReasons = () =>
       ],
     },
   })
+
+export const stubPostCourtAppearance = (prisonNumber: string, resultId: string = 'court-appearance-id') =>
+  successStub({
+    method: 'POST',
+    urlPattern: `/court-appearance-scheduler-api/court-appearances/${prisonNumber}`,
+    response: { id: resultId },
+  })

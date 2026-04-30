@@ -1,0 +1,82 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% set pageTitle = 'Check this information before saving this court appearance - Add a court appearance' %}
+
+{% block innerContent %}
+  <div class="govuk-width-container">
+    <span class="govuk-caption-l">Add a court appearance</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check this information before saving this court appearance</h1>
+
+    {{ govukSummaryList({
+      classes: "govuk-!-margin-bottom-7",
+      rows: [
+        {
+          key: { text: "Date and time" },
+          value: { text: startDate | formatDate("d MMMM yyyy") + ' at ' + startTime },
+          actions: {
+          items: [
+            {
+              href: "date-and-time",
+              text: "Change",
+              visuallyHiddenText: "date and time",
+              classes: "govuk-link--no-visited-state"
+            }
+          ]
+        }
+        },
+        {
+          key: { text: "Court location" },
+          value: { text: court.description  },
+          actions: {
+          items: [
+            {
+              href: 'details#court',
+              text: "Change",
+              visuallyHiddenText: "court location",
+              classes: "govuk-link--no-visited-state"
+            }
+          ]
+        }
+        },
+        {
+          key: { text: "Reason" },
+          value: { text: reason.description  },
+          actions: {
+          items: [
+            {
+              href: 'details#reason',
+              text: "Change",
+              visuallyHiddenText: "reason",
+              classes: "govuk-link--no-visited-state"
+            }
+          ]
+        }
+        },
+        {
+          key: { text: "Comments" },
+          value: { text: (comments or 'Not provided') | escape | nl2br },
+          actions: {
+          items: [
+            {
+              href: "comments",
+              text: "Change",
+              visuallyHiddenText: "comments",
+              classes: "govuk-link--no-visited-state"
+            }
+          ]
+        }
+        }
+      ]
+    }) }}
+
+    <form method="post">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      {{ govukButton({
+        text: "Confirm and save",
+        preventDoubleClick: true
+      }) }}
+    </form>
+  </div>
+{% endblock %}

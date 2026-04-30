@@ -1,0 +1,29 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% set pageTitle = 'Court appearance saved - Add a court appearance' %}
+
+{% block innerContent %}
+  <div class="govuk-width-container">
+    {{ govukPanel({
+      titleText: "Court appearance saved for " + prisonerDetails | firstNameSpaceLastName,
+      text: ""
+    }) }}
+
+    <p class="govuk-body">
+      <a class="govuk-link govuk-link--no-visited-state" href="/court-appearances/{{ result.id }}?history={{ historyQuery }}">View and manage this court appearance</a>
+    </p>
+
+    <p class="govuk-body">
+      <a class="govuk-link govuk-link--no-visited-state" href="/search-prisoner/add-court-appearance?history={{ historyQuery }}">Add another court appearance</a>
+    </p>
+
+    <p class="govuk-body">
+      <a class="govuk-link govuk-link--no-visited-state" href="/court-appearances?history={{ historyQuery }}">View court appearances in your establishment</a>
+    </p>
+
+    <p class="govuk-body">
+      <a class="govuk-link govuk-link--no-visited-state" href="{{ digitalPrisonServicesUrl }}">Return to the DPS homepage</a>
+    </p>
+  </div>
+{% endblock %}

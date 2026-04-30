@@ -1,3 +1,5 @@
+import { components } from '../courtAppearanceScheduler'
+
 export interface PrisonerDetails {
   prisonerNumber: string
   lastName: string
@@ -33,4 +35,5 @@ export type AddCourtAppearanceJourney = {
   court: CodedDescription
   reason: CodedDescription
   comments: string | null
+  result: components['schemas']['ReferenceId']
 }>
