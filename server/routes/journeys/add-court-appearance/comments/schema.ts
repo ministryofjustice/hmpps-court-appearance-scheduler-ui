@@ -1,13 +1,11 @@
 import { z } from 'zod'
 import { createSchema } from '../../../../middleware/validation/validationMiddleware'
+import { optionalString } from '../../../../utils/validations/validateString'
 
 const ERROR_MSG = 'The maximum character limit is 4000'
 
 export const schema = createSchema({
-  comments: z
-    .string()
-    .max(4000, { message: ERROR_MSG })
-    .transform(val => (val.trim().length ? val : null)),
+  comments: optionalString({ maxChar: { count: 4000, errorMessage: ERROR_MSG } }),
 })
 
 export type SchemaType = z.infer<typeof schema>
