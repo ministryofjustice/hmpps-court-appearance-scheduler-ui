@@ -34,4 +34,15 @@ export default class CourtAppearanceSchedulerService {
       })
     ).items
   }
+
+  createCourtAppearance(
+    context: ApiRequestContext,
+    prisonNumber: string,
+    request: components['schemas']['ScheduleCourtAppearance'],
+  ) {
+    return this.restClient.withContext(context).post<components['schemas']['ReferenceId']>({
+      path: `/court-appearances/${prisonNumber}`,
+      data: request,
+    })
+  }
 }

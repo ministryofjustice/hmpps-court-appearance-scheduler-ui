@@ -8,11 +8,13 @@ import redirectCheckAnswersMiddleware from '../../../middleware/journey/redirect
 import { CourtAppearanceDateTimeRoutes } from './date-and-time/routes'
 import { CourtAppearanceDetailsRoutes } from './details/routes'
 import { CourtAppearanceCommentsRoutes } from './comments/routes'
+import { CourtAppearanceCheckAnswersRoutes } from './check-answers/routes'
+import { CourtAppearanceConfirmationRoutes } from './confirmation/routes'
 
 export const AddCourtAppearanceRoutes = (services: Services) => {
   const { router, get } = BaseRouter()
 
-  router.use(redirectCheckAnswersMiddleware([/check-answers/]))
+  router.use(redirectCheckAnswersMiddleware([/check-answers/, /confirmation/]))
 
   const START_ENTRY_PAGES: string[] = [Page.SEARCH_PRISONER]
 
@@ -51,6 +53,8 @@ export const AddCourtAppearanceRoutes = (services: Services) => {
   router.use('/date-and-time', CourtAppearanceDateTimeRoutes())
   router.use('/details', CourtAppearanceDetailsRoutes(services))
   router.use('/comments', CourtAppearanceCommentsRoutes())
+  router.use('/check-answers', CourtAppearanceCheckAnswersRoutes(services))
+  router.use('/confirmation', CourtAppearanceConfirmationRoutes())
 
   return router
 }
