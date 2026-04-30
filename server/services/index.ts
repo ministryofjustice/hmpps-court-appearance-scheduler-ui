@@ -17,6 +17,9 @@ export const services = () => {
 
   const redisClient = config.redis.enabled ? createRedisClient() : null
 
+  const cacheStore = <T>(prefix: string): CacheInterface<T> =>
+    redisClient ? new RedisCache<T>(redisClient, prefix) : new InMemoryCache<T>(prefix)
+
   const prisonPermissionsService = PermissionsService.create({
     prisonerSearchConfig: config.apis.prisonerSearchApi,
     authenticationClient: hmppsAuthClient,
@@ -30,9 +33,8 @@ export const services = () => {
     prisonerSearchService: new PrisonerSearchApiService(hmppsAuthClient, prisonPermissionsService),
     prisonApiService: new PrisonApiService(hmppsAuthClient),
     courtAppearanceSchedulerService: new CourtAppearanceSchedulerService(hmppsAuthClient),
-    courtRegisterService: new CourtRegisterService(hmppsAuthClient),
-    cacheStore: <T>(prefix: string): CacheInterface<T> =>
-      redisClient ? new RedisCache<T>(redisClient, prefix) : new InMemoryCache<T>(prefix),
+    courtRegisterService: new CourtRegisterService(hmppsAuthClient, cacheStore),
+    cacheStore,
     prisonPermissionsService,
     telemetryClient,
   }

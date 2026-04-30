@@ -11,7 +11,7 @@ export default class PrisonerSearchApiService {
   private prisonerSearchApiClient: CustomRestClient
 
   constructor(
-    authenticationClient: AuthenticationClient,
+    protected readonly authenticationClient: AuthenticationClient,
     private readonly prisonPermissionsService: PermissionsService,
   ) {
     this.prisonerSearchApiClient = new CustomRestClient(

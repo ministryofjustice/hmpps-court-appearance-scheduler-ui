@@ -9,7 +9,7 @@ import { CodedDescription } from '../../@types/journeys'
 export default class CourtAppearanceSchedulerService {
   private restClient: CustomRestClient
 
-  constructor(authenticationClient: AuthenticationClient) {
+  constructor(protected readonly authenticationClient: AuthenticationClient) {
     this.restClient = new CustomRestClient(
       'Court Appearance Scheduler API',
       config.apis.courtAppearanceScheduler,

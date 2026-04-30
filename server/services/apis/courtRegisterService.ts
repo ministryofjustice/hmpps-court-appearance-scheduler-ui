@@ -5,11 +5,19 @@ import config from '../../config'
 import logger from '../../../logger'
 import { Court } from './model/court'
 import { CodedDescription } from '../../@types/journeys'
+import CacheInterface from '../../data/cache/cacheInterface'
 
 export default class CourtRegisterService {
   private restClient: CustomRestClient
 
-  constructor(authenticationClient: AuthenticationClient) {
+  private cache: CacheInterface<CodedDescription[]>
+
+  private readonly COURT_REGISTER_CACHE_TIMEOUT = Number(process.env['COURT_REGISTER_CACHE_TIMEOUT'] ?? 60)
+
+  constructor(
+    protected readonly authenticationClient: AuthenticationClient,
+    cacheStore: (prefix: string) => CacheInterface<CodedDescription[]>,
+  ) {
     this.restClient = new CustomRestClient(
       'Court Register API',
       config.apis.courtRegister,
@@ -25,14 +33,23 @@ export default class CourtRegisterService {
         return undefined
       },
     )
+    this.cache = cacheStore('court-register')
   }
 
   async getCourts(context: ApiRequestContext): Promise<CodedDescription[]> {
-    return (await this.restClient.withContext(context).get<Court[]>({ path: '/courts' })).map(
+    const cacheKey = 'courts'
+    const cached = await this.cache.get(cacheKey)
+    if (cached) return cached
+
+    const courts = (await this.restClient.withContext(context).get<Court[]>({ path: '/courts' })).map(
       ({ courtId, courtName }) => ({
         code: courtId,
         description: courtName,
       }),
     )
+
+    await this.cache.set(cacheKey, courts, this.COURT_REGISTER_CACHE_TIMEOUT)
+
+    return courts
   }
 }
