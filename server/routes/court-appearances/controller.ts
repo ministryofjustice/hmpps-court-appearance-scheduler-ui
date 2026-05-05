@@ -21,22 +21,12 @@ export class BrowseCourtAppearancesController {
   GET = async (_req: Request, res: Response) => {
     const resQuery = res.locals['query'] as ResQuerySchemaType
 
+    if (resQuery.searchTerm?.trim()) {
+      res.setAuditDetails.searchTerm(resQuery.searchTerm.trim())
+    }
+
     let searchResponse: components['schemas']['CourtAppearanceSearchResponse'] | undefined
     let results: components['schemas']['CourtAppearanceResult'][] = []
-
-    const filterQueries = [
-      `searchTerm=${resQuery?.searchTerm ?? ''}`,
-      `start=${resQuery?.start ?? ''}`,
-      `end=${resQuery?.end ?? ''}`,
-      `court=${resQuery?.court ?? ''}`,
-      `reason=${resQuery?.reason ?? ''}`,
-      // eslint-disable-next-line no-nested-ternary
-      ...(Array.isArray(resQuery?.type)
-        ? resQuery.type.map(itm => `type=${itm}`)
-        : resQuery.type
-          ? [`type=${resQuery.type}`]
-          : []),
-    ].join('&')
 
     try {
       if (resQuery.validated) {
@@ -66,7 +56,19 @@ export class BrowseCourtAppearancesController {
         resQuery?.validated?.page ?? 1,
         searchResponse?.metadata?.totalElements ?? 0,
         results.length,
-        `?page={page}&${filterQueries}&sort=${resQuery?.sort ?? this.DEFAULT_SORT}`,
+        `?page={page}&sort=${resQuery?.sort ?? this.DEFAULT_SORT}&${[
+          `searchTerm=${resQuery?.searchTerm ?? ''}`,
+          `start=${resQuery?.start ?? ''}`,
+          `end=${resQuery?.end ?? ''}`,
+          `court=${resQuery?.court ?? ''}`,
+          `reason=${resQuery?.reason ?? ''}`,
+          // eslint-disable-next-line no-nested-ternary
+          ...(Array.isArray(resQuery?.type)
+            ? resQuery.type.map(itm => `type=${itm}`)
+            : resQuery.type
+              ? [`type=${resQuery.type}`]
+              : []),
+        ].join('&')}`,
       )
     } catch (error: unknown) {
       res.locals['validationErrors'] = { apiError: [getApiUserErrorMessage(error as HTTPError)] }
@@ -76,8 +78,8 @@ export class BrowseCourtAppearancesController {
       showBreadcrumbs: true,
       courts: await this.courtRegisterService.getCourts({ res }),
       reasons: await this.courtAppearanceSchedulerService.getReasons({ res }),
+      hasValidationError: !resQuery.validated,
       results,
-      filterQueries,
       searchTerm: resQuery.searchTerm,
       start: resQuery.validated?.start ? formatInputDate(resQuery.validated.start) : resQuery.start,
       end: resQuery.validated?.end ? formatInputDate(resQuery.validated.end) : resQuery.end,
@@ -85,7 +87,6 @@ export class BrowseCourtAppearancesController {
       reason: resQuery.reason,
       type: resQuery.type,
       sort: resQuery?.sort ?? this.DEFAULT_SORT,
-      hasValidationError: !resQuery.validated,
     })
   }
 }

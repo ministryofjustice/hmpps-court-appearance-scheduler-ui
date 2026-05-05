@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test'
 import tokenVerification from './mockApis/tokenVerification'
 import hmppsAuth, { type UserToken } from './mockApis/hmppsAuth'
-import { resetStubs } from './mockApis/wiremock'
+import { resetStubs, stubFor } from './mockApis/wiremock'
 
 export { resetStubs }
 
@@ -13,6 +13,21 @@ export const attemptHmppsAuthLogin = async (page: Page) => {
   const url = await hmppsAuth.getSignInUrl()
   await page.goto(url)
 }
+
+const stubAuditSqs = () =>
+  stubFor({
+    request: {
+      method: 'POST',
+      url: '/',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/xml',
+      },
+      body: '{ }',
+    },
+  })
 
 export const login = async (
   page: Page,
@@ -29,6 +44,7 @@ export const login = async (
     hmppsAuth.stubSignOutPage(),
     hmppsAuth.token({ name, roles, authSource }),
     tokenVerification.stubVerifyToken(active),
+    stubAuditSqs(),
   ])
   await attemptHmppsAuthLogin(page)
 }
