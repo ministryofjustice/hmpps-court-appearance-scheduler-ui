@@ -9,7 +9,7 @@ export const schema = createSchema({
   searchTerm: z
     .string()
     .optional()
-    .transform(val => val?.trim()),
+    .transform(val => val?.replace(/[\r\n]/g, '').trim()),
   start: validateTransformOptionalDate('Enter or select a valid date from'),
   end: validateTransformOptionalDate('Enter or select a valid date to'),
   court: z.string().optional(),
