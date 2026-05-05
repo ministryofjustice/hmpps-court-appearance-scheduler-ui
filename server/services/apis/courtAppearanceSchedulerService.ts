@@ -45,4 +45,13 @@ export default class CourtAppearanceSchedulerService {
       data: request,
     })
   }
+
+  searchCourtAppearances(context: ApiRequestContext, request: components['schemas']['CourtAppearanceSearchRequest']) {
+    return this.restClient
+      .withContext({ ...context, readOnly: true })
+      .post<components['schemas']['CourtAppearanceSearchResponse']>({
+        path: `/search/prisons/${context.res.locals.user.getActiveCaseloadId()}/court-appearances`,
+        data: request,
+      })
+  }
 }

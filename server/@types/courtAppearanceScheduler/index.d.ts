@@ -305,16 +305,20 @@ export interface components {
       prisonCodeAtTimeOfScheduling: string
       agyLocId: string
       /** Format: int64 */
-      eventId: number
+      eventId?: number | null
       /** Format: date */
       eventDate: string
       startTime: string
       courtEventType: string
       eventStatus: string
       commentText?: string | null
+      externalReferenceUrn?: string | null
     }
     SyncCourtEvent: {
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       occurredAt: string
       user: components['schemas']['SyncUser']
       courtEvent: components['schemas']['CourtEvent']
@@ -333,9 +337,9 @@ export interface components {
       /** Format: uuid */
       dpsCourtAppearanceScheduleId?: string
       /** Format: int64 */
-      offenderBookId: number
+      offenderBookId?: number
       /** Format: int32 */
-      movementSeq: number
+      movementSeq?: number
       /** Format: date */
       movementDate: string
       movementTime: string
@@ -346,13 +350,19 @@ export interface components {
       commentText?: string | null
     }
     SyncCourtEventMovement: {
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       occurredAt: string
       user: components['schemas']['SyncUser']
       movement: components['schemas']['CourtEventMovement']
     }
     AtAndBy: {
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       at: string
       by: string
     }
@@ -458,7 +468,10 @@ export interface components {
     }
     AuditedAction: {
       user: components['schemas']['User']
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       occurredAt: string
       domainEvents: string[]
       reason?: string | null
@@ -480,6 +493,7 @@ export interface components {
       end: string
       status: ('SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'EXPIRED')[]
       reason: string[]
+      courtCodes: string[]
       external?: boolean | null
       query?: string | null
       /** Format: int32 */
@@ -510,9 +524,15 @@ export interface components {
       court: components['schemas']['Court']
       reason: components['schemas']['AppearanceReason']
       external: boolean
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       start: string
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       end?: string | null
       comments?: string | null
       status: components['schemas']['AppearanceStatus']
@@ -544,6 +564,7 @@ export interface components {
       end: string
       status: ('SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'EXPIRED')[]
       reason: string[]
+      courtCodes: string[]
       external?: boolean | null
       /** Format: int32 */
       page: number
@@ -558,9 +579,15 @@ export interface components {
       court: components['schemas']['Court']
       reason: components['schemas']['AppearanceReason']
       external: boolean
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       start: string
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       end?: string | null
       status: components['schemas']['AppearanceStatus']
       detail: components['schemas']['Detail']
@@ -580,6 +607,7 @@ export interface components {
       end?: string | null
       status: ('SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'EXPIRED')[]
       reason: string[]
+      courtCodes: string[]
       external?: boolean | null
       /** Format: int32 */
       page: number
@@ -590,14 +618,24 @@ export interface components {
     ScheduleCourtAppearance: {
       courtCode: string
       reasonCode: string
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       start: string
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       end?: string | null
       comments?: string | null
     }
+    ReconciliationCourtEvent: {
+      courtEvent: components['schemas']['CourtEvent']
+      movements: components['schemas']['CourtEventMovement'][]
+    }
     ReconciliationResponse: {
-      courtEvents: components['schemas']['CourtEvent'][]
+      courtEvents: components['schemas']['ReconciliationCourtEvent'][]
       unscheduledMovements: components['schemas']['CourtEventMovement'][]
     }
     Appearance: {
@@ -608,9 +646,15 @@ export interface components {
       court: components['schemas']['Court']
       reason: components['schemas']['AppearanceReason']
       external: boolean
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       start: string
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @example 2026-04-30T17:54:54
+       */
       end?: string | null
       comments?: string | null
       status: components['schemas']['AppearanceStatus']

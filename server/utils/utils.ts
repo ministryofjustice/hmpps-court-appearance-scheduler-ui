@@ -1,3 +1,4 @@
+import { HTTPError } from 'superagent'
 import config from '../config'
 import { CodedDescription } from '../@types/journeys'
 
@@ -104,4 +105,13 @@ export const addSelectValue = (
     },
     ...items,
   ]
+}
+
+export const getApiUserErrorMessage = (error: HTTPError) => {
+  try {
+    const errorRespData = JSON.parse(error.text) as { userMessage?: string }
+    return errorRespData!.userMessage!
+  } catch {
+    return 'API error'
+  }
 }
