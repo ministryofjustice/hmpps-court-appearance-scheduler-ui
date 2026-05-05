@@ -144,9 +144,9 @@
               <form id="sortForm">
                 {{ hiddenInputs(query | getQueryEntries(['searchTerm','start','end','court','reason','type','history'])) }}
                 <label class="govuk-label" for="sort">Sort by</label>
-                <select class="govuk-select hmpps-sort-selector__select" id="sort" name="sort" value="{{ sort or 'start,DESC' }}">
-                  <option value="start,DESC" {{ 'selected' if sort === 'start,DESC' else '' }}>Start date (most recent)</option>
-                  <option value="start,ASC" {{ 'selected' if sort === 'start,ASC' else '' }}>Start date (oldest)</option>
+                <select class="govuk-select hmpps-sort-selector__select" id="sort" name="sort" value="{{ sort or 'start,desc' }}">
+                  <option value="start,desc" {{ 'selected' if sort === 'start,desc' else '' }}>Start date (most recent)</option>
+                  <option value="start,asc" {{ 'selected' if sort === 'start,asc' else '' }}>Start date (oldest)</option>
                 </select>
                 <button type="submit" data-prevent-double-click="true" class="govuk-button hmpps-sort-selector__sort-button">
                   Sort
