@@ -103,4 +103,6 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
   njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
   njkEnv.addFilter('hasPermission', hasPermissionFilter)
+
+  njkEnv.addFilter('isArray', Array.isArray)
 }

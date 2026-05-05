@@ -13,6 +13,7 @@ import { populateUserPermissions } from '../middleware/permissions/populateUserP
 import { UserPermissionLevel } from '../interfaces/hmppsUser'
 import { SearchPrisonerRoutes } from './search-prisoner/routes'
 import { requirePermissions } from '../middleware/permissions/requirePermissions'
+import { BrowseCourtAppearancesRoutes } from './court-appearances/routes'
 
 export default function routes(services: Services): Router {
   const { router, get } = BaseRouter()
@@ -30,6 +31,11 @@ export default function routes(services: Services): Router {
         matcher: /^\/search-prisoner\//,
         text: 'Search prisoner',
         alias: Page.SEARCH_PRISONER,
+      },
+      {
+        matcher: /^\/court-appearances$/,
+        text: 'Browse court appearances',
+        alias: Page.BROWSE_COURT_APPEARANCES,
       },
     ]),
   )
@@ -51,6 +57,11 @@ export default function routes(services: Services): Router {
   })
 
   router.use('/search-prisoner', requirePermissions(UserPermissionLevel.VIEW_ONLY), SearchPrisonerRoutes(services))
+  router.use(
+    '/court-appearances',
+    requirePermissions(UserPermissionLevel.VIEW_ONLY),
+    BrowseCourtAppearancesRoutes(services),
+  )
 
   router.use(insertJourneyIdentifier())
   router.use('/:journeyId', JourneyRoutes(services))
