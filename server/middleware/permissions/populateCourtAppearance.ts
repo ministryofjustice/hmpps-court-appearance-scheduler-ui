@@ -18,7 +18,7 @@ export const populateCourtAppearance =
         withHistory ? courtAppearanceSchedulerService.getCourtAppearanceAuditHistory({ res }, req.params.id) : null,
       ])
       if (!res.locals.user.caseLoads?.find(caseLoad => caseLoad.caseLoadId === courtAppearance.prison.code)) {
-        return res.notFound
+        return res.notAuthorised()
       }
 
       req.middleware ??= {}
