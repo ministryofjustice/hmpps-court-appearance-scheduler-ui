@@ -54,4 +54,16 @@ export default class CourtAppearanceSchedulerService {
         data: request,
       })
   }
+
+  getCourtAppearance(context: ApiRequestContext, courtAppearanceId: string) {
+    return this.restClient.withContext(context).get<components['schemas']['Appearance']>({
+      path: `/court-appearances/${courtAppearanceId}`,
+    })
+  }
+
+  getCourtAppearanceAuditHistory(context: ApiRequestContext, courtAppearanceId: string) {
+    return this.restClient.withContext(context).get<components['schemas']['AuditHistory']>({
+      path: `/court-appearances/${courtAppearanceId}/history`,
+    })
+  }
 }

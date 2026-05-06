@@ -37,6 +37,11 @@ export default function routes(services: Services): Router {
         text: 'Browse court appearances',
         alias: Page.BROWSE_COURT_APPEARANCES,
       },
+      {
+        matcher: /^\/court-appearances\/(\w|-)+$/,
+        text: 'Court appearance',
+        alias: Page.MANAGE_COURT_APPEARANCE,
+      },
     ]),
   )
 

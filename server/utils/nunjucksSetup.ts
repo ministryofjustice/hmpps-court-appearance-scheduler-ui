@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 import path from 'path'
+// @ts-expect-error no type for Moj frontend filters
+import MojFilter from '@ministryofjustice/frontend/moj/filters/all'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
@@ -79,6 +81,11 @@ export default function nunjucksSetup(app: express.Express): void {
 
   njkEnv.addExtension('HistoryExtension', historyExtension)
 
+  // date and mojDate filters required by mojTimeline component
+  const { date, mojDate } = MojFilter()
+  njkEnv.addFilter('date', date)
+  njkEnv.addFilter('mojDate', mojDate)
+
   njkEnv.addGlobal('inputDate', inputDate)
   njkEnv.addGlobal('prisonerProfileBacklink', prisonerProfileBacklink)
 
@@ -103,6 +110,12 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
   njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
   njkEnv.addFilter('hasPermission', hasPermissionFilter)
+
+  njkEnv.addFilter(
+    'showChangeLinksIf',
+    (items: { key: unknown; value: unknown; actions: unknown }[], condition: boolean) =>
+      condition ? items : items.map(({ actions, ...item }) => item),
+  )
 
   njkEnv.addFilter('isArray', Array.isArray)
 }
