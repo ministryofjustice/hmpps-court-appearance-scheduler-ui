@@ -48,6 +48,16 @@ export const stubSearchCourtAppearances = (response: components['schemas']['Cour
     response,
   })
 
+export const stubSearchCourtAppearanceHistory = (
+  prisonNumber: string,
+  response: components['schemas']['CourtAppearanceSearchResponse'],
+) =>
+  successStub({
+    method: 'POST',
+    urlPattern: `/court-appearance-scheduler-api/search/people/${prisonNumber}/court-appearances`,
+    response,
+  })
+
 export const stubGetCourtAppearance = (response: components['schemas']['Appearance'] = testCourtAppearance) =>
   successStub({
     method: 'GET',

@@ -24,5 +24,19 @@ export const SearchPrisonerRoutes = ({ prisonerSearchService }: Services) => {
     }).GET,
   )
 
+  get(
+    '/view-court-appearance-history',
+    Page.SEARCH_PRISONER,
+    requirePermissions(UserPermissionLevel.VIEW_ONLY),
+    validateOnGET(schema, 'searchTerm'),
+    new SearchPrisonerController(prisonerSearchService, {
+      caption: 'View a prisoners court appearance history',
+      action: {
+        label: 'View court appearance history',
+        url: '/view-court-appearance-history/',
+      },
+    }).GET,
+  )
+
   return router
 }

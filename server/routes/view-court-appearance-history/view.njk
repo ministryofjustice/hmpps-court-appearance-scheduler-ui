@@ -1,0 +1,177 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "moj/components/date-picker/macro.njk" import mojDatePicker %}
+{% from "partials/hiddenInputs/macro.njk" import hiddenInputs %}
+{% from "partials/simplePagination/macro.njk" import simplePagination %}
+{% from "partials/cardTable/macro.njk" import cardTable %}
+
+{% set fullWidth = true %}
+{% set pageTitle = 'Court appearance history - View a prisoners court appearance history' %}
+
+{% block meta %}
+  <meta name="autocompleteElements" content="court"/>
+  <meta name="autocompleteElements" content="reason"/>
+{% endblock %}
+
+{% block innerContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">View a prisoners court appearance history</span>
+      <h1 class="govuk-heading-l">{{ prisonerDetails | firstNameSpaceLastName | possessiveComma }} court appearance history</h1>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-quarter">
+      <form class="hmpps-side-filter" method="GET">
+        {{ hiddenInputs(query | getQueryEntries(['history'])) }}
+        <h2 class="hmpps-side-filter__header">Filter</h2>
+
+        {{ govukButton({
+          text: "Apply",
+          preventDoubleClick: true
+        }) }}
+
+        <div class="hmpps-side-filter__content">
+          {{ mojDatePicker({
+            id: "start",
+            name: "start",
+            label: {
+              text: 'Date from'
+            },
+            value: start,
+            errorMessage: validationErrors | findError('start'),
+            classes: 'hmpps-datepicker--fixed-width'
+          }) }}
+
+          {{ mojDatePicker({
+            id: "end",
+            name: "end",
+            label: {
+              text: 'Date to'
+            },
+            value: end,
+            errorMessage: validationErrors | findError('end'),
+            classes: 'hmpps-datepicker--fixed-width'
+          }) }}
+
+          {{ govukSelect({
+            id: "court",
+            name: "court",
+            label: { text: "Court location", classes: "govuk-label--m" },
+            hint: { text: "For example, London" },
+            items: courts | fromCodedDescription | addSelectValue('') | setSelectedValue(court),
+            errorMessage: validationErrors | findError('court')
+          }) }}
+
+          {{ govukSelect({
+            id: "reason",
+            name: "reason",
+            label: { text: "Reason", classes: "govuk-label--m" },
+            hint: { text: "For example, Court appearance" },
+            items: reasons | fromCodedDescription | addSelectValue('') | setSelectedValue(reason),
+            errorMessage: validationErrors | findError('reason')
+          }) }}
+
+          {{ govukCheckboxes({
+            id: "type",
+            name: "type",
+            fieldset: {
+              legend: {
+                text: "Appearance type",
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            classes: "govuk-checkboxes--small",
+            errorMessage: validationErrors | findError('type'),
+            items: [
+              {
+                value: 'IN_PERSON',
+                text: "In person"
+              },
+              {
+                value: 'VIDEO_LINK',
+                text: "Video link"
+              }
+            ] | setCheckedValue(type or '')
+          }) }}
+        </div>
+      </form>
+    </div>
+
+    <div class="govuk-grid-column-three-quarters">
+      {% if hasValidationError %}
+        <p class="govuk-!-margin-bottom-6"><strong>Enter a valid filter to search and view court appearances.</strong></p>
+      {% elseif not results.length %}
+        <p class="govuk-!-margin-bottom-6"><strong>No court appearances match your search.</strong></p>
+      {% else %}
+        <div class="govuk-!-display-none-print govuk-!-margin-bottom-5">
+          <div>
+            <form id="sortForm">
+              {{ hiddenInputs(query | getQueryEntries(['start','end','court','reason','type','history'])) }}
+              <label class="govuk-label" for="sort">Sort by</label>
+              <select class="govuk-select hmpps-sort-selector__select" id="sort" name="sort" value="{{ sort or 'start,desc' }}">
+                <option value="start,desc" {{ 'selected' if sort === 'start,desc' else '' }}>Start date (most recent)</option>
+                <option value="start,asc" {{ 'selected' if sort === 'start,asc' else '' }}>Start date (oldest)</option>
+              </select>
+              <button type="submit" data-prevent-double-click="true" class="govuk-button hmpps-sort-selector__sort-button">
+                Sort
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {{ simplePagination(paginationParams) }}
+
+        {% set rows = [] %}
+        {% for result in results %}
+          {% set rows = (rows.push(
+            {
+              title: { text: 'Court appearance' },
+              action: { html: '<strong>Prison where it was added: </strong>' + result.prison.name },
+              data: [
+              result.court.name,
+              result.start | formatDate("d MMMM yyyy"),
+              result.start | formatDate("HH:mm"),
+              result.reason.description
+            ]
+            }
+          ), rows) %}
+        {% endfor %}
+
+        {{ cardTable({
+          columns: [
+            { text: 'Court location', width: 35 },
+            { text: 'Date', width: 20 },
+            { text: 'Time', width: 15 },
+            { text: 'Reason', width: 30 }
+          ],
+          rows: rows
+        }) }}
+
+        {{ simplePagination(paginationParams) }}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block pageScripts %}
+  <script nonce="{{ cspNonce }}">
+    window.onload = function () {
+      $button = document.querySelector('.hmpps-sort-selector__sort-button')
+      if ($button) {
+        $button.classList.add('govuk-!-display-none')
+      }
+      Array.from(document.getElementsByClassName('hmpps-sort-selector__select')).forEach(s => {
+        s.addEventListener('change', () => {
+          s.form.submit()
+        })
+      })
+    }
+  </script>
+{% endblock %}

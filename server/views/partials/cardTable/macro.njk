@@ -19,11 +19,25 @@ Parameters:
           <strong>{{ row.title.text }}</strong>
         {% endif %}
       </div>
-      <div class="align-right">
-        <a class="govuk-link govuk-link--no-visited-state" href="{{ row.action.href }}">
-          {{ row.action.text }}
-        </a>
-      </div>
+      {% if row.action %}
+        {% if row.action.href %}
+          <div class="align-right">
+            <a class="govuk-link govuk-link--no-visited-state" href="{{ row.action.href }}">
+              {% if row.action.html %}
+                {{ row.action.html | safe }}
+              {% else %}
+                {{ row.action.text }}
+              {% endif %}
+            </a>
+          </div>
+        {% else %}
+          {% if row.action.html %}
+            {{ row.action.html | safe }}
+          {% else %}
+            {{ row.action.text }}
+          {% endif %}
+        {% endif %}
+      {% endif %}
     </div>
 
     <div class="govuk-grid-row govuk-!-margin-top-3">
