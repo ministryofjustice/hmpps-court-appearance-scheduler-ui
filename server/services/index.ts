@@ -11,6 +11,7 @@ import { createRedisClient } from '../data/redisClient'
 import PrisonApiService from './apis/prisonApiService'
 import CourtAppearanceSchedulerService from './apis/courtAppearanceSchedulerService'
 import CourtRegisterService from './apis/courtRegisterService'
+import { populateCourtAppearance } from '../middleware/permissions/populateCourtAppearance'
 
 export const services = () => {
   const { applicationInfo, hmppsAuditClient, hmppsAuthClient, telemetryClient } = dataAccess()
@@ -27,16 +28,20 @@ export const services = () => {
     telemetryClient,
   })
 
+  const courtAppearanceSchedulerService = new CourtAppearanceSchedulerService(hmppsAuthClient)
+  const prisonerSearchService = new PrisonerSearchApiService(hmppsAuthClient, prisonPermissionsService)
+
   return {
     applicationInfo,
     auditService: new AuditService(hmppsAuditClient),
-    prisonerSearchService: new PrisonerSearchApiService(hmppsAuthClient, prisonPermissionsService),
     prisonApiService: new PrisonApiService(hmppsAuthClient),
-    courtAppearanceSchedulerService: new CourtAppearanceSchedulerService(hmppsAuthClient),
     courtRegisterService: new CourtRegisterService(hmppsAuthClient, cacheStore),
+    prisonerSearchService,
+    courtAppearanceSchedulerService,
     cacheStore,
     prisonPermissionsService,
     telemetryClient,
+    populateCourtAppearanceMiddleware: populateCourtAppearance(courtAppearanceSchedulerService, prisonerSearchService),
   }
 }
 

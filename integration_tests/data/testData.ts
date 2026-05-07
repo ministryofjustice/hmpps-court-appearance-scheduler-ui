@@ -1,3 +1,5 @@
+import { components } from '../../server/@types/courtAppearanceScheduler'
+
 export const testPrisonerDetails = {
   prisonerNumber: 'A9965EA',
   bookingId: '1223167',
@@ -46,4 +48,35 @@ export const testPrisonerDetails = {
   phoneNumbers: [],
   identifiers: [],
   allConvictedOffences: [],
+}
+
+export const testCourtAppearance: components['schemas']['Appearance'] = {
+  id: 'court-appearance-id',
+  person: {
+    personIdentifier: 'A9965EA',
+    firstName: 'PRISONER-NAME',
+    lastName: 'PRISONER-SURNAME',
+    prisonCode: 'LEI',
+    cellLocation: 'TAP',
+  },
+  prison: {
+    code: 'LEI',
+    name: 'Leeds (HMP)',
+  },
+  court: {
+    code: 'COURT1',
+    name: 'Some Court',
+  },
+  reason: {
+    code: 'REASON1',
+    description: 'Some Reason',
+    external: true,
+  },
+  external: true,
+  start: '2001-01-01T10:00:00',
+  end: '2001-10-01T17:00:00',
+  status: {
+    code: 'SCHEDULED',
+    description: 'Scheduled',
+  },
 }

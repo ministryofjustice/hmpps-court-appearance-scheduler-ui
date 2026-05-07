@@ -1,6 +1,7 @@
 import type { SuperAgentRequest } from 'superagent'
 import { stubFor, successStub } from './wiremock'
 import { components } from '../../server/@types/courtAppearanceScheduler'
+import { testCourtAppearance } from '../data/testData'
 
 export const stubCourtAppearanceSchedulerPing = (httpStatus = 200): SuperAgentRequest =>
   stubFor({
@@ -44,5 +45,22 @@ export const stubSearchCourtAppearances = (response: components['schemas']['Cour
   successStub({
     method: 'POST',
     urlPattern: '/court-appearance-scheduler-api/search/prisons/LEI/court-appearances',
+    response,
+  })
+
+export const stubGetCourtAppearance = (response: components['schemas']['Appearance'] = testCourtAppearance) =>
+  successStub({
+    method: 'GET',
+    urlPattern: `/court-appearance-scheduler-api/court-appearances/${response.id}`,
+    response,
+  })
+
+export const stubGetCourtAppearanceHistory = (
+  courtAppearanceId: string,
+  response: components['schemas']['AuditHistory'],
+) =>
+  successStub({
+    method: 'GET',
+    urlPattern: `/court-appearance-scheduler-api/court-appearances/${courtAppearanceId}/history`,
     response,
   })

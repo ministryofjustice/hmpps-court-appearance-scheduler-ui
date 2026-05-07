@@ -1,0 +1,69 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "partials/auditHistory/macro.njk" import auditHistory %}
+
+{% set fullWidth = true %}
+{% set pageTitle = 'Manage court appearance - View and manage court appearances' %}
+
+{% block innerContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">View and manage court appearances</span>
+      <h1 class="govuk-heading-l">Manage {{ prisonerDetails | firstNameSpaceLastName | possessiveComma }} court appearance</h1>
+
+      {% set baseEditUrl = "/court-appearances/start-edit/" + courtAppearance.id %}
+
+      {{ govukTabs({
+        items: [
+          {
+            label: "Manage court appearance",
+            id: "view-court-appearance",
+            panel: { html: govukSummaryList({
+            card: {
+              classes: "govuk-!-margin-bottom-2",
+              title: {
+                text: "Court appearance information"
+              }
+            },
+            rows: [
+              {
+                key: { text: "Date and time" },
+                value: { text: courtAppearance.start | formatDate("d MMMM yyyy 'at' HH:mm") },
+                actions: { items: [{ href: baseEditUrl + "/date-and-time", text: "Change", visuallyHiddenText: "date and time" }] }
+              },
+              {
+                key: { text: "Court location" },
+                value: { text: courtAppearance.court.name },
+                actions: { items: [{ href: baseEditUrl + "/details#court", text: "Change", visuallyHiddenText: "court location" }] }
+              },
+              {
+                key: { text: "Reason" },
+                value: { text: courtAppearance.reason.description },
+                actions: { items: [{ href: baseEditUrl + "/details#reason", text: "Change", visuallyHiddenText: "reason" }] }
+              },
+              {
+                key: { text: "Comments" },
+                value: { text: (courtAppearance.comments or 'Not provided') | escape | nl2br },
+                actions: { items: [{ href: baseEditUrl + "/comments", text: "Change", visuallyHiddenText: "comments" }] }
+              }
+            ] | showChangeLinksIf(user | hasPermission('MANAGE'))
+          }) }
+          },
+          {
+            label: "Appearance history",
+            id: "court-appearance-history",
+            panel: { html: auditHistory({ actions: auditedActions, prisonerName: prisonerDetails | firstNameSpaceLastName }) }
+          }
+        ]
+      }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-quarter float-right">
+      {% if user | hasPermission('MANAGE') and prisonerDetails.prisonId === user.activeCaseLoad.caseLoadId %}
+        <h2 class="govuk-heading-m">Related tasks</h2>
+        <p><a class="govuk-link govuk-link--no-visited-state" href="/add-court-appearance/start/{{ prisonerDetails.prisonerNumber }}">Create a new court appearance for {{ prisonerDetails | firstNameSpaceLastName }}</a></p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

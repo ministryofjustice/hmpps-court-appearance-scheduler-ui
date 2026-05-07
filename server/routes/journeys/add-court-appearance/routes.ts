@@ -16,7 +16,7 @@ export const AddCourtAppearanceRoutes = (services: Services) => {
 
   router.use(redirectCheckAnswersMiddleware([/check-answers/, /confirmation/]))
 
-  const START_ENTRY_PAGES: string[] = [Page.SEARCH_PRISONER]
+  const START_ENTRY_PAGES: string[] = [Page.SEARCH_PRISONER, Page.MANAGE_COURT_APPEARANCE]
 
   get('/start/:prisonNumber', populatePrisonerDetails(services), (req, res) => {
     if (req.middleware?.prisonerData) {
