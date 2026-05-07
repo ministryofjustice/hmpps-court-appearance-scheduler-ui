@@ -15,7 +15,7 @@ import {
 } from '../../../../integration_tests/mockApis/courtAppearanceSchedulerApi'
 import { testCourtAppearance } from '../../../../integration_tests/data/testData'
 
-test.describe('/temporary-absences/:id', () => {
+test.describe('/court-apperances/:id', () => {
   test.beforeEach(async () => {
     await Promise.all([auth.stubSignInPage(), stubComponents(), stubGetPrisonerImage(), stubGetPrisonerDetails()])
   })

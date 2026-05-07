@@ -74,7 +74,7 @@ export const testCourtAppearance: components['schemas']['Appearance'] = {
   },
   external: true,
   start: '2001-01-01T10:00:00',
-  end: '2001-010-01T17:00:00',
+  end: '2001-10-01T17:00:00',
   status: {
     code: 'SCHEDULED',
     description: 'Scheduled',

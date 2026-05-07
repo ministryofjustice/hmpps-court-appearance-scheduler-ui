@@ -85,19 +85,19 @@ export const parseAuditHistory = (history: components['schemas']['AuditedAction'
         const eventText = DOMAIN_EVENT_MAP[event]
         if (!eventText) return null
 
-        if (!eventText.content) {
-          eventText.changes = action.changes
-            .map(change => {
-              return `${CHANGE_PROPERTY_MAP[change.propertyName] ?? change.propertyName} ${change.propertyName === 'comments' ? 'were' : 'was'} changed from ${parseChangedPropertyValue(event, change.propertyName, change.previous)} to ${parseChangedPropertyValue(event, change.propertyName, change.change)}.`
-            })
-            .filter(itm => Boolean(itm))
-        }
-
+        const changes = !eventText.content
+          ? action.changes
+              .map(change => {
+                return `${CHANGE_PROPERTY_MAP[change.propertyName] ?? change.propertyName} ${change.propertyName === 'comments' ? 'were' : 'was'} changed from ${parseChangedPropertyValue(event, change.propertyName, change.previous)} to ${parseChangedPropertyValue(event, change.propertyName, change.change)}.`
+              })
+              .filter(itm => Boolean(itm))
+          : null
         return {
           ...eventText,
           reason: action.reason,
           user: eventText.skipUser ? null : action.user,
           occurredAt: action.occurredAt,
+          ...(changes ? { changes } : {}),
         }
       }),
     )
