@@ -12,6 +12,7 @@ import PrisonApiService from './apis/prisonApiService'
 import CourtAppearanceSchedulerService from './apis/courtAppearanceSchedulerService'
 import CourtRegisterService from './apis/courtRegisterService'
 import { populateCourtAppearance } from '../middleware/permissions/populateCourtAppearance'
+import { populatePrisonerDetails } from '../middleware/populatePrisonerDetails'
 
 export const services = () => {
   const { applicationInfo, hmppsAuditClient, hmppsAuthClient, telemetryClient } = dataAccess()
@@ -39,9 +40,9 @@ export const services = () => {
     prisonerSearchService,
     courtAppearanceSchedulerService,
     cacheStore,
-    prisonPermissionsService,
     telemetryClient,
     populateCourtAppearanceMiddleware: populateCourtAppearance(courtAppearanceSchedulerService, prisonerSearchService),
+    populatePrisonerMiddleware: populatePrisonerDetails(prisonPermissionsService),
   }
 }
 

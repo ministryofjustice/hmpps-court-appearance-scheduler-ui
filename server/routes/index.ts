@@ -14,6 +14,7 @@ import { UserPermissionLevel } from '../interfaces/hmppsUser'
 import { SearchPrisonerRoutes } from './search-prisoner/routes'
 import { requirePermissions } from '../middleware/permissions/requirePermissions'
 import { BrowseCourtAppearancesRoutes } from './court-appearances/routes'
+import { CourtAppearanceHistoryRoutes } from './view-court-appearance-history/routes'
 
 export default function routes(services: Services): Router {
   const { router, get } = BaseRouter()
@@ -66,6 +67,11 @@ export default function routes(services: Services): Router {
     '/court-appearances',
     requirePermissions(UserPermissionLevel.VIEW_ONLY),
     BrowseCourtAppearancesRoutes(services),
+  )
+  router.use(
+    '/view-court-appearance-history',
+    requirePermissions(UserPermissionLevel.VIEW_ONLY),
+    CourtAppearanceHistoryRoutes(services),
   )
 
   router.use(insertJourneyIdentifier())

@@ -1,7 +1,7 @@
 import { Services } from '../../../services'
 import { BaseRouter } from '../../common/routes'
 import { Page } from '../../../services/auditService'
-import { populatePrisonerDetails, toPrisonerDetails } from '../../../middleware/populatePrisonerDetails'
+import { toPrisonerDetails } from '../../../middleware/populatePrisonerDetails'
 import preventNavigationToExpiredJourneys from '../../../middleware/journey/preventNavigationToExpiredJourneys'
 import journeyStateGuard from '../../../middleware/journey/journeyStateGuard'
 import redirectCheckAnswersMiddleware from '../../../middleware/journey/redirectCheckAnswersMiddleware'
@@ -18,7 +18,7 @@ export const AddCourtAppearanceRoutes = (services: Services) => {
 
   const START_ENTRY_PAGES: string[] = [Page.SEARCH_PRISONER, Page.MANAGE_COURT_APPEARANCE]
 
-  get('/start/:prisonNumber', populatePrisonerDetails(services), (req, res) => {
+  get('/start/:prisonNumber', services.populatePrisonerMiddleware, (req, res) => {
     if (req.middleware?.prisonerData) {
       req.journeyData.prisonerDetails = toPrisonerDetails(req.middleware.prisonerData)
 
