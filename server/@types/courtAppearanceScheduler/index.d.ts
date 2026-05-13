@@ -93,14 +93,11 @@ export interface paths {
     }
     /**
      * @description Requires one of the following roles:
-     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RO
-     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RW
      *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER_UI
      */
     get: operations['getCourtAppearance']
     /**
      * @description Requires one of the following roles:
-     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RW
      *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER_UI
      */
     put: operations['applyAction']
@@ -183,11 +180,58 @@ export interface paths {
     put?: never
     /**
      * @description Requires one of the following roles:
-     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RW
      *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER_UI
      */
     post: operations['scheduleCourtAppearance']
     delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/sync/court-appearances/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * @description Requires one of the following roles:
+     *     * ROLE_COURT_APPEARANCES__SYNC__RW
+     */
+    get: operations['getCourtAppearance_1']
+    put?: never
+    post?: never
+    /**
+     * @description Requires one of the following roles:
+     *     * ROLE_COURT_APPEARANCES__SYNC__RW
+     */
+    delete: operations['deleteCourtAppearance']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/sync/court-appearance-movements/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * @description Requires one of the following roles:
+     *     * ROLE_COURT_APPEARANCES__SYNC__RW
+     */
+    get: operations['getCourtAppearanceMovement']
+    put?: never
+    post?: never
+    /**
+     * @description Requires one of the following roles:
+     *     * ROLE_COURT_APPEARANCES__SYNC__RW
+     */
+    delete: operations['deleteCourtAppearanceMovement']
     options?: never
     head?: never
     patch?: never
@@ -205,6 +249,69 @@ export interface paths {
      *     * ROLE_COURT_APPEARANCES__SYNC__RW
      */
     get: operations['getCourtAppearances']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/integrations/court-appearances/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * @description Requires one of the following roles:
+     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RO
+     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RW
+     */
+    get: operations['appearance']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/integrations/court-appearances/{id}/movements': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * @description Requires one of the following roles:
+     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RO
+     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RW
+     */
+    get: operations['appearanceMovements']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/integrations/court-appearance-movements/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * @description Requires one of the following roles:
+     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RO
+     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RW
+     */
+    get: operations['movement']
     put?: never
     post?: never
     delete?: never
@@ -242,54 +349,12 @@ export interface paths {
     }
     /**
      * @description Requires one of the following roles:
-     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RO
-     *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER__RW
      *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER_UI
      */
     get: operations['getCourtAppearanceReasons']
     put?: never
     post?: never
     delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/sync/court-appearances/{id}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    /**
-     * @description Requires one of the following roles:
-     *     * ROLE_COURT_APPEARANCES__SYNC__RW
-     */
-    delete: operations['deleteCourtAppearance']
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/sync/court-appearance-movements/{id}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    /**
-     * @description Requires one of the following roles:
-     *     * ROLE_COURT_APPEARANCES__SYNC__RW
-     */
-    delete: operations['deleteCourtAppearanceMovement']
     options?: never
     head?: never
     patch?: never
@@ -317,7 +382,7 @@ export interface components {
     SyncCourtEvent: {
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -352,7 +417,7 @@ export interface components {
     SyncCourtEventMovement: {
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -361,7 +426,7 @@ export interface components {
     AtAndBy: {
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       at: string
       by: string
@@ -470,7 +535,7 @@ export interface components {
       user: components['schemas']['User']
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       occurredAt: string
       domainEvents: string[]
@@ -526,12 +591,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       end?: string | null
       comments?: string | null
@@ -581,12 +646,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       end?: string | null
       status: components['schemas']['AppearanceStatus']
@@ -620,12 +685,12 @@ export interface components {
       reasonCode: string
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       end?: string | null
       comments?: string | null
@@ -638,6 +703,61 @@ export interface components {
       courtEvents: components['schemas']['ReconciliationCourtEvent'][]
       unscheduledMovements: components['schemas']['CourtEventMovement'][]
     }
+    IntegrationAppearance: {
+      /** Format: uuid */
+      id: string
+      personIdentifier: string
+      prisonCode: string
+      courtCode: string
+      reason: components['schemas']['IntegrationReason']
+      /**
+       * Format: date-time
+       * @example 2026-05-13T12:44:08
+       */
+      start: string
+      /**
+       * Format: date-time
+       * @example 2026-05-13T12:44:08
+       */
+      end?: string | null
+      comments?: string | null
+    }
+    IntegrationReason: {
+      code: string
+      description: string
+    }
+    IntegrationResponseIntegrationAppearance: {
+      data: components['schemas']['IntegrationAppearance']
+      previousUrl?: string | null
+      nextUrl?: string | null
+    }
+    IntegrationMovement: {
+      /** Format: uuid */
+      id: string
+      /** Format: uuid */
+      scheduleId?: string | null
+      personIdentifier: string
+      prisonCode: string
+      courtCode: string
+      /** @enum {string} */
+      direction: 'IN' | 'OUT'
+      reason: components['schemas']['IntegrationReason']
+      /**
+       * Format: date-time
+       * @example 2026-05-13T12:44:08
+       */
+      occurredAt: string
+      comments?: string | null
+    }
+    IntegrationResponseIntegrationMovement: {
+      data: components['schemas']['IntegrationMovement']
+      previousUrl?: string | null
+      nextUrl?: string | null
+    }
+    IntegrationResponsesIntegrationMovement: {
+      data: components['schemas']['IntegrationResponseIntegrationMovement'][]
+      previousUrl?: string | null
+    }
     Appearance: {
       /** Format: uuid */
       id: string
@@ -648,12 +768,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-04-30T17:54:54
+       * @example 2026-05-13T12:44:08
        */
       end?: string | null
       comments?: string | null
@@ -938,6 +1058,90 @@ export interface operations {
       }
     }
   }
+  getCourtAppearance_1: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['CourtEvent']
+        }
+      }
+    }
+  }
+  deleteCourtAppearance: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  getCourtAppearanceMovement: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['CourtEventMovement']
+        }
+      }
+    }
+  }
+  deleteCourtAppearanceMovement: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
   getCourtAppearances: {
     parameters: {
       query?: never
@@ -956,6 +1160,72 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['ReconciliationResponse']
+        }
+      }
+    }
+  }
+  appearance: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['IntegrationResponseIntegrationAppearance']
+        }
+      }
+    }
+  }
+  appearanceMovements: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['IntegrationResponsesIntegrationMovement']
+        }
+      }
+    }
+  }
+  movement: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['IntegrationResponseIntegrationMovement']
         }
       }
     }
@@ -999,46 +1269,6 @@ export interface operations {
         content: {
           '*/*': components['schemas']['CourtAppearanceReasons']
         }
-      }
-    }
-  }
-  deleteCourtAppearance: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description No Content */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  deleteCourtAppearanceMovement: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description No Content */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
       }
     }
   }
