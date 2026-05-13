@@ -60,8 +60,7 @@
           },
           {
             classes: 'govuk-link govuk-link--no-visited-state',
-            html: '<a class="govuk-link govuk-link--no-visited-state" href="' + action.url + prisoner.prisonerNumber + '">' + action.label + '<span class="govuk-visually-hidden"> for ' + prisoner | firstNameSpaceLastName + '</span></a>',
-            format: "numeric"
+            html: '<a class="govuk-link govuk-link--no-visited-state" href="' + action.url + prisoner.prisonerNumber + '">' + action.label + '<span class="govuk-visually-hidden"> for ' + prisoner | firstNameSpaceLastName + '</span></a>'
           }
         ]), rows) %}
       {% endfor %}
