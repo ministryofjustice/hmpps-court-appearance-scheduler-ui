@@ -40,6 +40,7 @@
   </div>
 
   <div class="govuk-width-container">
+    <div class="govuk-!-width-two-thirds">
     {% if not searchTerm %}
       <p class="govuk-!-margin-bottom-6"><strong>Start a search to view prisoner records.</strong></p>
     {% elseif not results.length %}
@@ -59,12 +60,10 @@
           },
           {
             classes: 'govuk-link govuk-link--no-visited-state',
-            html: '<a class="govuk-link govuk-link--no-visited-state" href="' + action.url + prisoner.prisonerNumber + '">' + action.label + '<span class="govuk-visually-hidden"> for ' + prisoner | firstNameSpaceLastName + '</span></a>',
-            format: "numeric"
+            html: '<a class="govuk-link govuk-link--no-visited-state" href="' + action.url + prisoner.prisonerNumber + '">' + action.label + '<span class="govuk-visually-hidden"> for ' + prisoner | firstNameSpaceLastName + '</span></a>'
           }
         ]), rows) %}
       {% endfor %}
-
       {{ govukTable({
         firstCellIsHeader: false,
         classes: 'table-vertical-align-middle govuk-!-margin-top-6',
@@ -79,12 +78,12 @@
             text: 'Location'
           },
           {
-            text: "Action",
-            format: "numeric"
+            text: "Action"
           }
         ],
         rows: rows
       }) }}
     {% endif %}
+    </div>
   </div>
 {% endblock %}
