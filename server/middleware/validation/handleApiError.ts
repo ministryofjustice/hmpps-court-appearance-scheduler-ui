@@ -24,7 +24,7 @@ export const processApiError = (error: HTTPError, req: Request, flashFormRespons
 
 export const handleApiError = (error: HTTPError, req: Request, res: Response, next: NextFunction) => {
   if (processApiError(error, req, true)) {
-    res.redirect(req.get('Referrer') || '/')
+    res.redirect(req.get('Referrer') ?? (req.method === 'GET' ? '/' : req.originalUrl))
   } else {
     next(error)
   }

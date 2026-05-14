@@ -74,26 +74,12 @@ export class BrowseCourtAppearancesController {
       res.locals['validationErrors'] = { apiError: [getApiUserErrorMessage(error as HTTPError)] }
     }
 
-    const courtAddresses = await this.courtRegisterService.getCourtsWithAddress({ res })
-
     res.render('court-appearances/view', {
       showBreadcrumbs: true,
       courts: await this.courtRegisterService.getCourts({ res }),
       reasons: await this.courtAppearanceSchedulerService.getReasons({ res }),
       hasValidationError: !resQuery.validated,
-      results: results.map(itm => {
-        const courtAddress = courtAddresses.find(address => address.code === itm.court.code)
-        if (courtAddress) {
-          return {
-            ...itm,
-            court: {
-              code: courtAddress.code,
-              name: courtAddress.description,
-            },
-          }
-        }
-        return itm
-      }),
+      results,
       searchTerm: resQuery.searchTerm,
       start: resQuery.validated?.start ? formatInputDate(resQuery.validated.start) : resQuery.start,
       end: resQuery.validated?.end ? formatInputDate(resQuery.validated.end) : resQuery.end,
