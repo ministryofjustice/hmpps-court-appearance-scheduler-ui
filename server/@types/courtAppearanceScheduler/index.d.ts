@@ -382,7 +382,7 @@ export interface components {
     SyncCourtEvent: {
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -417,7 +417,7 @@ export interface components {
     SyncCourtEventMovement: {
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -426,7 +426,7 @@ export interface components {
     AtAndBy: {
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       at: string
       by: string
@@ -445,7 +445,6 @@ export interface components {
     ResyncCourtEvents: {
       courtEvents: components['schemas']['ResyncCourtEvent'][]
       unscheduledMovements: components['schemas']['ResyncCourtEventMovement'][]
-      isEmpty: boolean
     }
     CourtEventMapping: {
       /** Format: uuid */
@@ -472,6 +471,11 @@ export interface components {
       scheduleIds: string[]
       unscheduledMovementIds: string[]
     }
+    CancelAppearance: {
+      type: 'CancelAppearance'
+    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
+      reason?: string | null
+    })
     ChangeAppearanceComments: {
       type: 'ChangeAppearanceComments'
     } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
@@ -535,7 +539,7 @@ export interface components {
       user: components['schemas']['User']
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       occurredAt: string
       domainEvents: string[]
@@ -591,12 +595,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       end?: string | null
       comments?: string | null
@@ -646,12 +650,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       end?: string | null
       status: components['schemas']['AppearanceStatus']
@@ -685,12 +689,12 @@ export interface components {
       reasonCode: string
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       end?: string | null
       comments?: string | null
@@ -712,12 +716,12 @@ export interface components {
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       end?: string | null
       comments?: string | null
@@ -744,7 +748,7 @@ export interface components {
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       occurredAt: string
       comments?: string | null
@@ -768,12 +772,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-05-13T12:44:08
+       * @example 2026-05-18T16:36:13
        */
       end?: string | null
       comments?: string | null
@@ -928,6 +932,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json':
+          | components['schemas']['CancelAppearance']
           | components['schemas']['ChangeAppearanceComments']
           | components['schemas']['CompleteAppearance']
           | components['schemas']['ExpireAppearance']

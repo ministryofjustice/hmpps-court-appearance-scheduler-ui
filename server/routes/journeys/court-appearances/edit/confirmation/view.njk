@@ -1,0 +1,44 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% set pageTitle = 'Change court apperance confirmation - View and manage court appearances' %}
+
+{% set EVENT_DESCRIPTION = {
+  'person.court-appearance.relocated': 'Court appearance relocated',
+  'person.court-appearance.recategorised': 'Court appearance reason changed',
+  'person.court-appearance.rescheduled': 'Court appearance rescheduled',
+  'person.court-appearance.comments-changed': 'Court appearance comments changed'
+} %}
+
+{% block innerContent %}
+  <div class="govuk-width-container">
+    {% switch domainEvent %}
+    {% case 'person.court-appearance.cancelled' %}
+      {{ govukPanel({
+        titleText: "Court appearance cancelled for " + prisonerDetails | firstNameSpaceLastName,
+        text: ""
+      }) }}
+
+      <p class="govuk-body">
+        <a class="govuk-link govuk-link--no-visited-state" href="/">Back to Court appearances</a>
+      </p>
+
+      <p class="govuk-body">
+        <a class="govuk-link govuk-link--no-visited-state" href="/court-appearances?history={{ historyQuery }}">Back to Manage court appearance</a>
+      </p>
+    {% default %}
+      {{ govukPanel({
+        titleText: (EVENT_DESCRIPTION[domainEvent] or "Court appearance updated") + " for " + prisonerDetails | firstNameSpaceLastName,
+        text: ""
+      }) }}
+
+      <p class="govuk-body">
+        <a class="govuk-link govuk-link--no-visited-state" href="/court-appearances/{{ courtAppearance.id }}?history={{ historyQuery }}">View this appearance</a>
+      </p>
+
+      <p class="govuk-body">
+        <a class="govuk-link govuk-link--no-visited-state" href="/court-appearances?history={{ historyQuery }}">View court appearances in {{ user.activeCaseLoad.description }}</a>
+      </p>
+    {% endswitch %}
+  </div>
+{% endblock %}

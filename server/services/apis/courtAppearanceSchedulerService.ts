@@ -3,7 +3,7 @@ import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients
 import CustomRestClient, { ApiRequestContext } from '../../data/customRestClient'
 import config from '../../config'
 import logger from '../../../logger'
-import { components } from '../../@types/courtAppearanceScheduler'
+import { components, operations } from '../../@types/courtAppearanceScheduler'
 import { CodedDescription } from '../../@types/journeys'
 
 export default class CourtAppearanceSchedulerService {
@@ -78,5 +78,16 @@ export default class CourtAppearanceSchedulerService {
         path: `/search/people/${prisonNumber}/court-appearances`,
         data: request,
       })
+  }
+
+  updateCourtAppearance(
+    context: ApiRequestContext,
+    courtAppearanceId: string,
+    request: operations['applyAction']['requestBody']['content']['application/json'],
+  ) {
+    return this.restClient.withContext(context).put<components['schemas']['AuditHistory']>({
+      path: `/court-appearances/${courtAppearanceId}`,
+      data: request,
+    })
   }
 }

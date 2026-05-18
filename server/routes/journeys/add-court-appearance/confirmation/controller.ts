@@ -6,6 +6,7 @@ export class CourtAppearanceConfirmationController {
 
     res.render('add-court-appearance/confirmation/view', {
       result: req.journeyData.addCourtAppearance!.result,
+      historyQuery: req.journeyData.addCourtAppearance!.historyQuery,
     })
   }
 }

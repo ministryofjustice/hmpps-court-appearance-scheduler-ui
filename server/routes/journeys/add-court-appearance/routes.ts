@@ -28,7 +28,7 @@ export const AddCourtAppearanceRoutes = (services: Services) => {
           lastLandmark && START_ENTRY_PAGES.includes(lastLandmark.alias || '')
             ? lastLandmark.href
             : `${res.locals.prisonerProfileUrl}/prisoner/${req.journeyData.prisonerDetails.prisonerNumber}`,
-        historyQuery: String(req.query['history']),
+        historyQuery: encodeURIComponent(String(req.query['history'])),
         startTime: '10:00',
       }
       res.redirect('../date-and-time')
