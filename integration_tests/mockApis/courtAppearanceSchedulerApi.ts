@@ -74,3 +74,10 @@ export const stubGetCourtAppearanceHistory = (
     urlPattern: `/court-appearance-scheduler-api/court-appearances/${courtAppearanceId}/history`,
     response,
   })
+
+export const stubPutCourtAppearance = (courtAppearanceId: string, response: components['schemas']['AuditHistory']) =>
+  successStub({
+    method: 'PUT',
+    urlPattern: `/court-appearance-scheduler-api/court-appearances/${courtAppearanceId}`,
+    response,
+  })
