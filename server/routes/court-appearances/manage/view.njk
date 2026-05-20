@@ -16,7 +16,7 @@
       {% set baseEditUrl = "/court-appearances/start-edit/" + courtAppearance.id %}
 
       <div class="govuk-button-group">
-        {% if user | hasPermission('MANAGE') %}
+        {% if cancellable and user | hasPermission('MANAGE') %}
           {{ govukButton({
             classes: "govuk-button--warning",
             text: "Cancel this appearance",

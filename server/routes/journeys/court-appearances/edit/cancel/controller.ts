@@ -13,22 +13,13 @@ export class CourtAppearanceCancelController {
   submitToApi = async (req: Request, res: Response, next: NextFunction) => {
     const journey = req.journeyData.updateCourtAppearance!
     try {
-      await this.courtAppearanceSchedulerService.updateCourtAppearance({ res }, journey.courtAppearance.id, {
-        type: 'CancelAppearance',
-      })
-      journey.result = {
-        content: [
-          {
-            domainEvents: ['person.court-appearance.cancelled'],
-            user: {
-              username: '',
-              name: '',
-            },
-            occurredAt: '',
-            changes: [],
-          },
-        ],
-      }
+      journey.result = await this.courtAppearanceSchedulerService.updateCourtAppearance(
+        { res },
+        journey.courtAppearance.id,
+        {
+          type: 'CancelAppearance',
+        },
+      )
       next()
     } catch (e) {
       next(e)
