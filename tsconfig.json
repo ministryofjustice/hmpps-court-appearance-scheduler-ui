@@ -6,7 +6,7 @@
     "outDir": "./dist",
     "sourceMap": true,
     "skipLibCheck": true,
-    "noEmit": false,
+    "noEmit": true,
     "lib": ["dom", "es2015.promise", "DOM.Iterable", "ESNext"],
     "types": ["express", "express-session"],
     "resolveJsonModule": true,
@@ -23,7 +23,8 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "inlineSources": true,
-    "sourceRoot": "/"
+    "sourceRoot": "/",
+    "rootDir": "."
   },
   "exclude": ["node_modules", "assets", "dist", "esbuild", "eslint.config.mjs"],
   "include": ["**/*.js", "**/*.ts"]
