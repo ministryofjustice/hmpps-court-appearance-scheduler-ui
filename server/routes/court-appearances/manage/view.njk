@@ -2,6 +2,7 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "partials/auditHistory/macro.njk" import auditHistory %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set fullWidth = true %}
 {% set pageTitle = 'Manage court appearance - View and manage court appearances' %}
@@ -13,6 +14,17 @@
       <h1 class="govuk-heading-l">Manage {{ prisonerDetails | firstNameSpaceLastName | possessiveComma }} court appearance</h1>
 
       {% set baseEditUrl = "/court-appearances/start-edit/" + courtAppearance.id %}
+
+      <div class="govuk-button-group">
+        {% if cancellable and user | hasPermission('MANAGE') %}
+          {{ govukButton({
+            classes: "govuk-button--warning",
+            text: "Cancel this appearance",
+            href: baseEditUrl + "/cancel",
+            preventDoubleClick: true
+          }) }}
+        {% endif %}
+      </div>
 
       {{ govukTabs({
         items: [

@@ -77,6 +77,7 @@ test.describe('/court-appearances/:id', () => {
     await expect(testPage.link('Change reason (Court appearance information)')).toBeVisible()
     await expect(testPage.link('Change comments (Court appearance information)')).toBeVisible()
 
+    await expect(testPage.button('Cancel this appearance')).toBeVisible()
     await expect(testPage.link('Create a new court appearance for Prisoner-Name Prisoner-Surname')).toBeVisible()
 
     // verify history tab
@@ -117,6 +118,7 @@ test.describe('/court-appearances/:id', () => {
     await expect(testPage.link('Change reason (Court appearance information)')).toHaveCount(0)
     await expect(testPage.link('Change comments (Court appearance information)')).toHaveCount(0)
 
+    await expect(testPage.button('Cancel this appearance')).toHaveCount(0)
     await expect(testPage.link('Create a new court appearance for Prisoner-Name Prisoner-Surname')).toHaveCount(0)
   })
 })

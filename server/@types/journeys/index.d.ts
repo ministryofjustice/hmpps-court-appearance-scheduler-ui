@@ -18,6 +18,7 @@ export type JourneyData = {
   b64History?: string | undefined
   stateGuard?: boolean
   addCourtAppearance?: AddCourtAppearanceJourney
+  updateCourtAppearance?: UpdateCourtAppearanceJourney
 }
 
 type CodedDescription = {
@@ -36,4 +37,12 @@ export type AddCourtAppearanceJourney = {
   reason: CodedDescription
   comments: string | null
   result: components['schemas']['ReferenceId']
+}>
+
+export type UpdateCourtAppearanceJourney = {
+  backUrl: string
+  historyQuery: string
+  courtAppearance: components['schemas']['Appearance']
+} & Partial<{
+  result: components['schemas']['AuditHistory']
 }>

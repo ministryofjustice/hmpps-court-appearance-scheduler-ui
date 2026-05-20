@@ -5,6 +5,7 @@ import { mergeObjects } from '../../utils/utils'
 import { requirePermissions } from '../../middleware/permissions/requirePermissions'
 import { UserPermissionLevel } from '../../interfaces/hmppsUser'
 import { AddCourtAppearanceRoutes } from './add-court-appearance/routes'
+import { UpdateCourtAppearanceRoutes } from './court-appearances/routes'
 
 export const JourneyRoutes = (services: Services) => {
   const router = Router({ mergeParams: true })
@@ -22,6 +23,12 @@ export const JourneyRoutes = (services: Services) => {
     '/add-court-appearance',
     requirePermissions(UserPermissionLevel.MANAGE),
     AddCourtAppearanceRoutes(services),
+  )
+
+  router.use(
+    '/court-appearances',
+    requirePermissions(UserPermissionLevel.MANAGE),
+    UpdateCourtAppearanceRoutes(services),
   )
 
   if (process.env.NODE_ENV === 'e2e-test') {

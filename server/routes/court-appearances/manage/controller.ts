@@ -6,6 +6,7 @@ export class ManageCourtAppearanceController {
     res.render('court-appearances/manage/view', {
       showBreadcrumbs: true,
       courtAppearance: req.middleware!.courtAppearance,
+      cancellable: req.middleware!.courtAppearance!.status.code === 'SCHEDULED',
       auditedActions: parseAuditHistory(
         req.middleware!.appearanceHistory!.content.sort((a, b) => b.occurredAt.localeCompare(a.occurredAt)),
       ),
