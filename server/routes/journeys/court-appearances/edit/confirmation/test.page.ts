@@ -4,7 +4,7 @@ export class EditCourtAppearanceConfirmationPage extends BaseTestPage {
   async verifyContent() {
     return this.verify({
       pageUrl: /\/court-appearances\/edit\/confirmation/,
-      title: 'Change court apperance confirmation - View and manage court appearances - DPS',
+      title: 'Change court appearance confirmation - View and manage court appearances - DPS',
       heading: /Court appearance .+/,
     })
   }
