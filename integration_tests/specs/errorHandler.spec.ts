@@ -20,5 +20,7 @@ test.describe('test error handlers', () => {
 
     await page.goto('/search-prisoner/add-court-appearance?searchTerm=test')
     await expect(page.getByRole('link', { name: 'Stubbed API error returned' })).toBeVisible()
+
+    expect(await page.title()).toMatch(/^Error: .* - DPS$/)
   })
 })
