@@ -60,7 +60,6 @@ const DOMAIN_EVENT_MAP: { [key: string]: DomainEventText } = {
 
 const CHANGE_PROPERTY_MAP: { [key: string]: string } = {
   start: 'Start date and time',
-  end: 'End date and time',
   court: 'Court location',
   reason: 'Reason',
   comments: 'Comments',
@@ -88,6 +87,7 @@ export const parseAuditHistory = (history: components['schemas']['AuditedAction'
 
         const changes = !eventText.content
           ? action.changes
+              .filter(({ propertyName }) => CHANGE_PROPERTY_MAP[propertyName])
               .map(change => {
                 return `${CHANGE_PROPERTY_MAP[change.propertyName] ?? change.propertyName} ${change.propertyName === 'comments' ? 'were' : 'was'} changed from ${parseChangedPropertyValue(event, change.propertyName, change.previous)} to ${parseChangedPropertyValue(event, change.propertyName, change.change)}.`
               })
