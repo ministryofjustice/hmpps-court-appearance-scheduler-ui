@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { parseAuditHistory } from '../../../views/partials/auditHistory/parseAuditHistory'
 import CourtRegisterService from '../../../services/apis/courtRegisterService'
+import { isCourtAppearanceEditable } from '../../../utils/utils'
 
 export class ManageCourtAppearanceController {
   constructor(private readonly courtRegisterService: CourtRegisterService) {}
@@ -9,6 +10,7 @@ export class ManageCourtAppearanceController {
     res.render('court-appearances/manage/view', {
       showBreadcrumbs: true,
       courtAppearance: req.middleware!.courtAppearance,
+      editable: isCourtAppearanceEditable(req.middleware!.courtAppearance!),
       cancellable: req.middleware!.courtAppearance!.status.code === 'SCHEDULED',
       auditedActions: parseAuditHistory(
         req.middleware!.appearanceHistory!.content.sort((a, b) => b.occurredAt.localeCompare(a.occurredAt)),

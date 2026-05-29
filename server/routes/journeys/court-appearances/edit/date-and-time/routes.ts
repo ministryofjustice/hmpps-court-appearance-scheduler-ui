@@ -1,8 +1,8 @@
 import { BaseRouter } from '../../../../common/routes'
 import { EditCourtAppearanceDateTimeController } from './controller'
 import { validate } from '../../../../../middleware/validation/validationMiddleware'
-import { schema } from './schema'
 import { Services } from '../../../../../services'
+import { schema } from '../../../add-court-appearance/date-and-time/schema'
 
 export const EditCourtAppearanceDateTimeRoutes = ({ courtAppearanceSchedulerService }: Services) => {
   const { router, get, post } = BaseRouter()

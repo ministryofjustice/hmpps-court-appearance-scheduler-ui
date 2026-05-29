@@ -59,7 +59,7 @@
                 value: { text: (courtAppearance.comments or 'Not provided') | escape | nl2br },
                 actions: { items: [{ href: baseEditUrl + "/comments", text: "Change", visuallyHiddenText: "comments" }] }
               }
-            ] | showChangeLinksIf(user | hasPermission('MANAGE'))
+            ] | showChangeLinksIf(user | hasPermission('MANAGE') and editable)
           }) }
           },
           {
