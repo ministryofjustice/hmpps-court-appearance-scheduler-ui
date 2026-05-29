@@ -1,5 +1,6 @@
 import { formatDate } from '../../../utils/dateTimeUtils'
 import { components } from '../../../@types/courtAppearanceScheduler'
+import { CodedDescription } from '../../../@types/journeys'
 
 type DomainEventText = {
   heading: string
@@ -65,8 +66,14 @@ const CHANGE_PROPERTY_MAP: { [key: string]: string } = {
   comments: 'Comments',
 }
 
-const parseChangedPropertyValue = (domain: string, property: string, value: unknown) => {
+const parseChangedPropertyValue = (domain: string, property: string, value: unknown, courts: CodedDescription[]) => {
   if (!value) return 'Not applicable'
+
+  if (property === 'courtCode') {
+    const court = courts.find(({ code }) => code === value)
+    if (court) return `“${court.description}”`
+    return `unknown court code “${value}”`
+  }
 
   if (domain.endsWith('comments-changed') && property === 'comments') return `“${value}”`
 
@@ -78,7 +85,7 @@ const parseChangedPropertyValue = (domain: string, property: string, value: unkn
   return String(value)
 }
 
-export const parseAuditHistory = (history: components['schemas']['AuditedAction'][]) =>
+export const parseAuditHistory = (history: components['schemas']['AuditedAction'][], courts: CodedDescription[] = []) =>
   history
     .flatMap(action =>
       action.domainEvents.map(event => {
@@ -89,7 +96,7 @@ export const parseAuditHistory = (history: components['schemas']['AuditedAction'
           ? action.changes
               .filter(({ propertyName }) => CHANGE_PROPERTY_MAP[propertyName])
               .map(change => {
-                return `${CHANGE_PROPERTY_MAP[change.propertyName] ?? change.propertyName} ${change.propertyName === 'comments' ? 'were' : 'was'} changed from ${parseChangedPropertyValue(event, change.propertyName, change.previous)} to ${parseChangedPropertyValue(event, change.propertyName, change.change)}.`
+                return `${CHANGE_PROPERTY_MAP[change.propertyName] ?? change.propertyName} ${change.propertyName === 'comments' ? 'were' : 'was'} changed from ${parseChangedPropertyValue(event, change.propertyName, change.previous, courts)} to ${parseChangedPropertyValue(event, change.propertyName, change.change, courts)}.`
               })
               .filter(itm => Boolean(itm))
           : null
