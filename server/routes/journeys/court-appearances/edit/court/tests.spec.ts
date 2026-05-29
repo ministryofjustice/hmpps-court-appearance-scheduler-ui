@@ -1,0 +1,81 @@
+import { v4 as uuidV4 } from 'uuid'
+import { expect, test } from '@playwright/test'
+import auth from '../../../../../../integration_tests/mockApis/hmppsAuth'
+import { stubComponents } from '../../../../../../integration_tests/mockApis/componentsApi'
+import { stubGetPrisonerDetails } from '../../../../../../integration_tests/mockApis/prisonerSearchApi'
+import { stubGetPrisonerImage } from '../../../../../../integration_tests/mockApis/prisonApi'
+import { EditCourtAppearanceCourtPage } from './test.page'
+import { testNotAuthorisedPage } from '../../../../../../integration_tests/steps/testNotAuthorisedPage'
+import { testCourtAppearance } from '../../../../../../integration_tests/data/testData'
+import { login, resetStubs } from '../../../../../../integration_tests/testUtils'
+import {
+  stubGetCourtAppearance,
+  stubPutCourtAppearance,
+} from '../../../../../../integration_tests/mockApis/courtAppearanceSchedulerApi'
+import { stubGetCourts } from '../../../../../../integration_tests/mockApis/courtRegisterApi'
+
+test.describe('/court-appearances/edit/court unauthorised', () => {
+  test('should show unauthorised error', async ({ page }) => {
+    await testNotAuthorisedPage(page, '/court-appearances/edit/court')
+  })
+})
+
+test.describe('/court-appearances/edit/court', () => {
+  const courtAppearanceId = uuidV4()
+
+  test.beforeEach(async () => {
+    await Promise.all([
+      auth.stubSignInPage(),
+      stubComponents(),
+      stubGetPrisonerImage(),
+      stubGetPrisonerDetails(),
+      stubGetCourts(),
+      stubGetCourtAppearance({
+        ...testCourtAppearance,
+        id: courtAppearanceId,
+      }),
+      stubPutCourtAppearance(courtAppearanceId, {
+        content: [
+          {
+            user: { username: 'USERNAME', name: 'User Name' },
+            occurredAt: '2025-12-01T17:50:20.421301',
+            domainEvents: ['person.court-appearance.relocated'],
+            changes: [{ propertyName: '', previous: '', change: '' }],
+          },
+        ],
+      }),
+    ])
+  })
+
+  test.afterEach(async () => {
+    await resetStubs()
+  })
+
+  test('should edit court appearance court location', async ({ page }) => {
+    await login(page)
+
+    const journeyId = uuidV4()
+    await page.goto(`${journeyId}/court-appearances/start-edit/${courtAppearanceId}/court`)
+
+    // verify page content
+    const testPage = await new EditCourtAppearanceCourtPage(page).verifyContent()
+
+    await expect(testPage.courtInput()).toBeVisible()
+    await expect(testPage.courtInput()).toHaveValue('Some Court')
+    await expect(testPage.button('Save')).toBeVisible()
+
+    // verify validation error
+    await testPage.courtInput().clear()
+    await testPage.clickButton('Save') // click outside courtInput to clear select option
+    await testPage.clickButton('Save')
+    await testPage.link('Enter and select a court location').click()
+    await expect(testPage.courtInput()).toBeFocused()
+
+    // verify next page routing
+    await testPage.courtInput().click()
+    await page.getByText('Another Court').first().click()
+    await testPage.clickButton('Save')
+
+    expect(page.url()).toMatch(/\/court-appearances\/edit\/confirmation/)
+  })
+})

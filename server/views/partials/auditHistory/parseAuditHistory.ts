@@ -60,7 +60,7 @@ const DOMAIN_EVENT_MAP: { [key: string]: DomainEventText } = {
 
 const CHANGE_PROPERTY_MAP: { [key: string]: string } = {
   start: 'Start date and time',
-  court: 'Court location',
+  courtCode: 'Court location',
   reason: 'Reason',
   comments: 'Comments',
 }
