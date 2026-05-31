@@ -31,7 +31,7 @@
     "npm": "^11"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1053.0",
+    "@aws-sdk/client-sqs": "^3.1054.0",
     "@ministryofjustice/frontend": "^9.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^2.0.0",
     "@ministryofjustice/hmpps-connect-dps-components": "5.5.0",
@@ -39,7 +39,7 @@
     "@ministryofjustice/hmpps-monitoring": "^2.1.0",
     "@ministryofjustice/hmpps-prison-permissions-lib": "2.6.0",
     "@ministryofjustice/hmpps-rest-client": "2.1.0",
-    "@sentry/node": "10.53.1",
+    "@sentry/node": "10.54.0",
     "accessible-autocomplete": "3.0.1",
     "applicationinsights": "^2.9.8",
     "bunyan": "^1.8.15",
