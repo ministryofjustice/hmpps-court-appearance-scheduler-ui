@@ -84,7 +84,21 @@
   {% endif %}
 {% endblock %}
 
-{% block pageTitle %}{{pageTitle or 'Court appearances'}} - DPS{% endblock %}
+{% set errorSummaryList = validationErrors | buildErrorSummaryList %}
+
+{% if errorSummaryList.length > 0 %}
+  {% set pageTitlePrefix = 'Error: ' %}
+{% elseif searchResultCount !== undefined %}
+  {% if searchResultCount === 0 %}
+    {% set pageTitlePrefix = 'No results found: ' %}
+  {% elseif searchResultCount === 1 %}
+    {% set pageTitlePrefix = '1 result found: ' %}
+  {% else %}
+    {% set pageTitlePrefix = searchResultCount + ' results found: ' %}
+  {% endif %}
+{% endif %}
+
+{% block pageTitle %}{{ pageTitlePrefix or '' }}{{pageTitle or 'Court appearances'}} - DPS{% endblock %}
 
 {% block header %}
   {{ feComponents.header | safe }}
@@ -113,7 +127,6 @@
         </div>
       {% endif %}
 
-      {% set errorSummaryList = validationErrors | buildErrorSummaryList %}
       {% if errorSummaryList.length > 0 %}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">

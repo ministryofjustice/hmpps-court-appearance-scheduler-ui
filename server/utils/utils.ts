@@ -1,6 +1,7 @@
 import { HTTPError } from 'superagent'
 import config from '../config'
 import { CodedDescription } from '../@types/journeys'
+import { components } from '../@types/courtAppearanceScheduler'
 
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0]!.toUpperCase() + word.toLowerCase().slice(1) : word
@@ -115,3 +116,6 @@ export const getApiUserErrorMessage = (error: HTTPError) => {
     return 'API error'
   }
 }
+
+export const isCourtAppearanceEditable = (courtAppearance: components['schemas']['Appearance']) =>
+  ['SCHEDULED', 'IN_PROGRESS'].includes(courtAppearance.status.code)
