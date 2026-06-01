@@ -14,10 +14,17 @@ import {
   stubGetCourtAppearanceHistory,
 } from '../../../../integration_tests/mockApis/courtAppearanceSchedulerApi'
 import { testCourtAppearance } from '../../../../integration_tests/data/testData'
+import { stubGetCourts } from '../../../../integration_tests/mockApis/courtRegisterApi'
 
 test.describe('/court-appearances/:id', () => {
   test.beforeEach(async () => {
-    await Promise.all([auth.stubSignInPage(), stubComponents(), stubGetPrisonerImage(), stubGetPrisonerDetails()])
+    await Promise.all([
+      auth.stubSignInPage(),
+      stubComponents(),
+      stubGetPrisonerImage(),
+      stubGetPrisonerDetails(),
+      stubGetCourts(),
+    ])
   })
 
   test.afterEach(async () => {

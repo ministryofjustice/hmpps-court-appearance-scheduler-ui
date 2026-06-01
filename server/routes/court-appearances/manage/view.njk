@@ -47,19 +47,19 @@
               {
                 key: { text: "Court location" },
                 value: { text: courtAppearance.court.name },
-                actions: { items: [{ href: baseEditUrl + "/details#court", text: "Change", visuallyHiddenText: "court location" }] }
+                actions: { items: [{ href: baseEditUrl + "/court", text: "Change", visuallyHiddenText: "court location" }] }
               },
               {
                 key: { text: "Reason" },
                 value: { text: courtAppearance.reason.description },
-                actions: { items: [{ href: baseEditUrl + "/details#reason", text: "Change", visuallyHiddenText: "reason" }] }
+                actions: { items: [{ href: baseEditUrl + "/reason", text: "Change", visuallyHiddenText: "reason" }] }
               },
               {
                 key: { text: "Comments" },
                 value: { text: (courtAppearance.comments or 'Not provided') | escape | nl2br },
                 actions: { items: [{ href: baseEditUrl + "/comments", text: "Change", visuallyHiddenText: "comments" }] }
               }
-            ] | showChangeLinksIf(user | hasPermission('MANAGE'))
+            ] | showChangeLinksIf(user | hasPermission('MANAGE') and editable)
           }) }
           },
           {

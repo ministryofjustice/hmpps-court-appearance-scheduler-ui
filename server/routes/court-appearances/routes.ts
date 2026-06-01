@@ -20,7 +20,7 @@ export const BrowseCourtAppearancesRoutes = ({
     '/:id',
     Page.MANAGE_COURT_APPEARANCE,
     populateCourtAppearanceMiddleware({ withHistory: true }),
-    new ManageCourtAppearanceController().GET,
+    new ManageCourtAppearanceController(courtRegisterService).GET,
   )
 
   return router

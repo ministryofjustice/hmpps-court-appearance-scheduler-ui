@@ -1,0 +1,33 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = 'Which court is this appearance at - View and manage court appearances' %}
+
+{% block meta %}
+  <meta name="autocompleteElements" content="court"/>
+{% endblock %}
+
+{% block innerContent %}
+  <div class="govuk-width-container">
+    <span class="govuk-caption-l">View and manage court appearances</span>
+    <form method="post">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+      {{ govukSelect({
+        id: "court",
+        name: "court",
+        label: { text: "Which court is this appearance at?", classes: "govuk-label--l", isPageHeading: true },
+        hint: { text: "Start typing the name of the court" },
+        items: courts | fromCodedDescription | addSelectValue('') | setSelectedValue(court),
+        errorMessage: validationErrors | findError('court')
+      }) }}
+
+      {{ govukButton({
+        classes: 'govuk-!-margin-top-6',
+        text: "Save",
+        preventDoubleClick: true
+      }) }}
+    </form>
+  </div>
+{% endblock %}
