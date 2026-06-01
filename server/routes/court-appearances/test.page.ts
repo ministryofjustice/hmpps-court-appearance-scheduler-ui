@@ -4,7 +4,7 @@ export class BrowseCourtAppearancesPage extends BaseTestPage {
   async verifyContent() {
     return this.verify({
       pageUrl: /\/court-appearances/,
-      title: 'Search for a prisoner - View and manage court appearances - DPS',
+      title: '11 results found: Search for a prisoner - View and manage court appearances - DPS',
       caption: 'View and manage court appearances',
       heading: /Search for a prisoner/,
     })
