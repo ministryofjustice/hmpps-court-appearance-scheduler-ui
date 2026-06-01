@@ -34,10 +34,10 @@
     "@aws-sdk/client-sqs": "^3.1054.0",
     "@ministryofjustice/frontend": "^9.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^2.0.0",
-    "@ministryofjustice/hmpps-connect-dps-components": "5.5.0",
-    "@ministryofjustice/hmpps-connect-dps-shared-items": "3.7.4",
+    "@ministryofjustice/hmpps-connect-dps-components": "6.0.0",
+    "@ministryofjustice/hmpps-connect-dps-shared-items": "4.0.0",
     "@ministryofjustice/hmpps-monitoring": "^2.1.0",
-    "@ministryofjustice/hmpps-prison-permissions-lib": "2.6.0",
+    "@ministryofjustice/hmpps-prison-permissions-lib": "3.0.0",
     "@ministryofjustice/hmpps-rest-client": "2.1.0",
     "@sentry/node": "10.54.0",
     "accessible-autocomplete": "3.0.1",
@@ -105,10 +105,5 @@
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.11",
     "typescript": "^5.9.3"
-  },
-  "overrides": {
-    "@aws-sdk/xml-builder": {
-      "fast-xml-parser": "^5.8.0"
-    }
   }
 }
