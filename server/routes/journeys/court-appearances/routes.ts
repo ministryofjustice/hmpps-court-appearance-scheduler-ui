@@ -4,6 +4,7 @@ import { BaseRouter } from '../../common/routes'
 import { createBackUrlFor } from '../../../middleware/history/historyMiddleware'
 import { toPrisonerDetails } from '../../../middleware/populatePrisonerDetails'
 import { EditCourtAppearanceRoutes } from './edit/routes'
+import { isCourtAppearanceEditable } from '../../../utils/utils'
 
 export const UpdateCourtAppearanceRoutes = (services: Services) => {
   const { router, get } = BaseRouter()
@@ -13,6 +14,11 @@ export const UpdateCourtAppearanceRoutes = (services: Services) => {
     '/start-edit/:id/:property',
     populateCourtAppearanceMiddleware({ withHistory: false }),
     async (req: Request<{ id: string; property: string }>, res: Response) => {
+      if (!isCourtAppearanceEditable(req.middleware!.courtAppearance!)) {
+        res.conflict()
+        return
+      }
+
       req.journeyData.updateCourtAppearance = {
         courtAppearance: req.middleware!.courtAppearance!,
         backUrl: createBackUrlFor(
