@@ -13,7 +13,7 @@ describe('parseAuditHistory', () => {
 
     expect(result).toBeTruthy()
     expect(result?.heading).toBe('Scheduled')
-    expect(result?.content).toBe('Court appearance scheduled for <prisoner>')
+    expect(result?.content).toBe('Court appearance scheduled for <prisoner><source>')
     expect(result?.user?.name).toBe('User Name')
     expect(result?.user?.username).toBe('USERNAME')
     expect(result?.occurredAt).toBe('2001-01-01T09:05:00')
