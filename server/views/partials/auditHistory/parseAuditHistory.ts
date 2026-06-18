@@ -18,7 +18,7 @@ const DOMAIN_EVENT_MAP: { [key: string]: DomainEventText } = {
   },
   'person.court-appearance.scheduled': {
     heading: 'Scheduled',
-    content: 'Court appearance scheduled for <prisoner>',
+    content: 'Court appearance scheduled for <prisoner><source>',
   },
   'person.court-appearance.expired': {
     heading: 'Expired',
@@ -27,7 +27,7 @@ const DOMAIN_EVENT_MAP: { [key: string]: DomainEventText } = {
   },
   'person.court-appearance.recorded': {
     heading: 'Recorded',
-    content: 'Court appearance recorded for <prisoner>',
+    content: 'Court appearance recorded for <prisoner><source>',
   },
   'person.court-appearance.started': {
     heading: 'Started',
