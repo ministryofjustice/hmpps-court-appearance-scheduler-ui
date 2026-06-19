@@ -3,24 +3,24 @@ import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients
 import CustomRestClient, { ApiRequestContext } from '../../data/customRestClient'
 import config from '../../config'
 import logger from '../../../logger'
-import { Court } from './model/court'
-import { CodedDescription } from '../../@types/journeys'
+import { Prison } from './model/prison'
 import CacheInterface from '../../data/cache/cacheInterface'
+import { CodedDescription } from '../../@types/journeys'
 
-export default class CourtRegisterService {
-  private restClient: CustomRestClient
+export default class PrisonRegisterService {
+  private apiClient: CustomRestClient
 
   private cache: CacheInterface<CodedDescription[]>
 
-  private readonly COURT_REGISTER_CACHE_TIMEOUT = Number(process.env['COURT_REGISTER_CACHE_TIMEOUT'] ?? 60)
+  private readonly CACHE_TIMEOUT = Number(process.env['PRISON_REGISTER_CACHE_TIMEOUT'] ?? 60)
 
   constructor(
-    protected readonly authenticationClient: AuthenticationClient,
+    authenticationClient: AuthenticationClient,
     cacheStore: (prefix: string) => CacheInterface<CodedDescription[]>,
   ) {
-    this.restClient = new CustomRestClient(
-      'Court Register API',
-      config.apis.courtRegister,
+    this.apiClient = new CustomRestClient(
+      'Prison Register API',
+      config.apis.prisonRegisterApi,
       logger,
       authenticationClient,
       false,
@@ -33,25 +33,24 @@ export default class CourtRegisterService {
         return undefined
       },
     )
-    this.cache = cacheStore('court-register')
+    this.cache = cacheStore('prison-register')
   }
 
-  async getCourts(context: ApiRequestContext): Promise<CodedDescription[] | null> {
-    const cacheKey = 'courts'
+  async getPrisons(context: ApiRequestContext): Promise<CodedDescription[] | null> {
+    const cacheKey = 'prisons'
     const cached = await this.cache.get(cacheKey)
     if (cached) return cached
 
     try {
-      const courts = (await this.restClient.withContext(context).get<Court[]>({ path: '/courts' })).map(
-        ({ courtId, courtName }) => ({
-          code: courtId,
-          description: courtName,
+      const prisons = (await this.apiClient.withContext(context).get<Prison[]>({ path: `/prisons` })).map(
+        ({ prisonId, prisonName }) => ({
+          code: prisonId,
+          description: prisonName,
         }),
       )
 
-      await this.cache.set(cacheKey, courts, this.COURT_REGISTER_CACHE_TIMEOUT)
-
-      return courts
+      await this.cache.set(cacheKey, prisons, this.CACHE_TIMEOUT)
+      return prisons
     } catch {
       return null
     }

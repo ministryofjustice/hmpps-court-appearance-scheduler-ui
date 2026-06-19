@@ -19,6 +19,8 @@ generic-service:
     PRISONER_PROFILE_URL: "https://prisoner-dev.digital.prison.service.justice.gov.uk"
     COURT_REGISTER_API_URL: "https://court-register-api-dev.hmpps.service.justice.gov.uk"
     COURT_REGISTER_CACHE_TIMEOUT: 60
+    PRISON_REGISTER_API_URL: "https://prison-register-dev.hmpps.service.justice.gov.uk"
+    PRISON_REGISTER_CACHE_TIMEOUT: 60
     ENVIRONMENT_NAME: DEV
     SENTRY_ENVIRONMENT: DEV
     AUDIT_ENABLED: "true"

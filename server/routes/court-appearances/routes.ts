@@ -9,6 +9,7 @@ import { ManageCourtAppearanceController } from './manage/controller'
 export const BrowseCourtAppearancesRoutes = ({
   courtAppearanceSchedulerService,
   courtRegisterService,
+  prisonRegisterService,
   populateCourtAppearanceMiddleware,
 }: Services) => {
   const { router, get } = BaseRouter()
@@ -20,7 +21,7 @@ export const BrowseCourtAppearancesRoutes = ({
     '/:id',
     Page.MANAGE_COURT_APPEARANCE,
     populateCourtAppearanceMiddleware({ withHistory: true }),
-    new ManageCourtAppearanceController(courtRegisterService).GET,
+    new ManageCourtAppearanceController(courtRegisterService, prisonRegisterService).GET,
   )
 
   return router

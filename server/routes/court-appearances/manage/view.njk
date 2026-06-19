@@ -13,6 +13,19 @@
       <span class="govuk-caption-l">View and manage court appearances</span>
       <h1 class="govuk-heading-l">Manage {{ prisonerDetails | firstNameSpaceLastName | possessiveComma }} court appearance</h1>
 
+      {% if courtRegistryError or prisonRegistryError %}
+        <div class="moj-api-error govuk-!-margin-bottom-6">
+          <p>Some information on this page is currently unavailable</p>
+          {% if courtRegistryError and prisonRegistryError %}
+            <p>Unable to retrieve information for courts and prisons. Try again later.</p>
+          {% elseif courtRegistryError %}
+            <p>Unable to retrieve information for courts. Try again later.</p>
+          {% else %}
+            <p>Unable to retrieve information for prisons. Try again later.</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
       {% set baseEditUrl = "/court-appearances/start-edit/" + courtAppearance.id %}
 
       <div class="govuk-button-group">

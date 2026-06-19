@@ -71,7 +71,7 @@ test.describe('/view-court-appearance-history', () => {
     await expect(testPage.reasonInput()).toBeVisible()
     await expect(testPage.reasonInput()).toHaveValue('')
 
-    await expect(page.getByText('Prison where it was added: LEEDS')).toBeVisible()
+    await expect(page.getByText('Responsible prison: LEEDS')).toBeVisible()
     await expect(page.locator('strong', { hasText: 'Court location' }).locator('..')).toContainText('Some Court')
     await expect(page.locator('strong', { hasText: 'Date' }).locator('..')).toContainText('1 January 2001')
     await expect(page.locator('strong', { hasText: 'Time' }).locator('..')).toContainText('10:00')
