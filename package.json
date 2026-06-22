@@ -34,7 +34,7 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1070.0",
     "@ministryofjustice/frontend": "^9.0.0",
-    "@ministryofjustice/hmpps-auth-clients": "^2.0.0",
+    "@ministryofjustice/hmpps-auth-clients": "^3.0.0",
     "@ministryofjustice/hmpps-connect-dps-components": "6.1.0",
     "@ministryofjustice/hmpps-connect-dps-shared-items": "4.1.1",
     "@ministryofjustice/hmpps-monitoring": "^2.1.0",
@@ -92,7 +92,7 @@
     "audit-ci": "^7.1.0",
     "aws-sdk-client-mock": "^4.1.0",
     "del": "8.0.1",
-    "esbuild": "^0.28.0",
+    "esbuild": "^0.28.1",
     "esbuild-plugin-copy": "^2.1.1",
     "esbuild-plugin-manifest": "^1.0.5",
     "esbuild-sass-plugin": "^3.7.0",
@@ -106,5 +106,8 @@
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.11",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "js-yaml": "4.2.0"
   }
 }
