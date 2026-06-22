@@ -57,6 +57,13 @@ const DOMAIN_EVENT_MAP: { [key: string]: DomainEventText } = {
   'person.court-appearance.comments-changed': {
     heading: 'Comments changed',
   },
+  'person.court-appearance.unscheduled': {
+    heading: 'Unscheduled',
+    content: 'Court appearance unscheduled for <prisoner>',
+  },
+  'person.court-appearance.responsible-prison-changed': {
+    heading: 'Court appearance responsible prison changed',
+  },
 }
 
 const CHANGE_PROPERTY_MAP: { [key: string]: string } = {
@@ -64,15 +71,28 @@ const CHANGE_PROPERTY_MAP: { [key: string]: string } = {
   courtCode: 'Court location',
   reason: 'Reason',
   comments: 'Comments',
+  prisonCode: 'Responsible prison',
 }
 
-const parseChangedPropertyValue = (domain: string, property: string, value: unknown, courts: CodedDescription[]) => {
+const parseChangedPropertyValue = (
+  domain: string,
+  property: string,
+  value: unknown,
+  courts: CodedDescription[],
+  prisons: CodedDescription[],
+) => {
   if (!value) return 'Not applicable'
 
   if (property === 'courtCode') {
     const court = courts.find(({ code }) => code === value)
     if (court) return `“${court.description}”`
     return `unknown court code “${value}”`
+  }
+
+  if (property === 'prisonCode') {
+    const prison = prisons.find(({ code }) => code === value)
+    if (prison) return `“${prison.description}”`
+    return `unknown prison code “${value}”`
   }
 
   if (domain.endsWith('comments-changed') && property === 'comments') return `“${value}”`
@@ -85,7 +105,11 @@ const parseChangedPropertyValue = (domain: string, property: string, value: unkn
   return String(value)
 }
 
-export const parseAuditHistory = (history: components['schemas']['AuditedAction'][], courts: CodedDescription[] = []) =>
+export const parseAuditHistory = (
+  history: components['schemas']['AuditedAction'][],
+  courts: CodedDescription[] = [],
+  prisons: CodedDescription[] = [],
+) =>
   history
     .flatMap(action =>
       action.domainEvents.map(event => {
@@ -96,7 +120,7 @@ export const parseAuditHistory = (history: components['schemas']['AuditedAction'
           ? action.changes
               .filter(({ propertyName }) => CHANGE_PROPERTY_MAP[propertyName])
               .map(change => {
-                return `${CHANGE_PROPERTY_MAP[change.propertyName] ?? change.propertyName} ${change.propertyName === 'comments' ? 'were' : 'was'} changed from ${parseChangedPropertyValue(event, change.propertyName, change.previous, courts)} to ${parseChangedPropertyValue(event, change.propertyName, change.change, courts)}.`
+                return `${CHANGE_PROPERTY_MAP[change.propertyName] ?? change.propertyName} ${change.propertyName === 'comments' ? 'were' : 'was'} changed from ${parseChangedPropertyValue(event, change.propertyName, change.previous, courts, prisons)} to ${parseChangedPropertyValue(event, change.propertyName, change.change, courts, prisons)}.`
               })
               .filter(itm => Boolean(itm))
           : null

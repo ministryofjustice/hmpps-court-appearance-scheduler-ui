@@ -19,6 +19,8 @@ generic-service:
     PRISONER_PROFILE_URL: "https://prisoner-preprod.digital.prison.service.justice.gov.uk"
     COURT_REGISTER_API_URL: "https://court-register-api-preprod.hmpps.service.justice.gov.uk"
     COURT_REGISTER_CACHE_TIMEOUT: 3600
+    PRISON_REGISTER_API_URL: "https://prison-register-preprod.hmpps.service.justice.gov.uk"
+    PRISON_REGISTER_CACHE_TIMEOUT: 3600
     ENVIRONMENT_NAME: PRE-PRODUCTION
     SENTRY_ENVIRONMENT: PRE-PRODUCTION
     AUDIT_ENABLED: "true"
