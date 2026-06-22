@@ -3,6 +3,7 @@ import { Breadcrumbs } from '../../middleware/history/breadcrumbs'
 import { PrisonerDetails, JourneyData } from '../journeys'
 import Prisoner from '../../services/apis/model/prisoner'
 import { components } from '../courtAppearanceScheduler'
+import { SwitchOffBanner } from '../../middleware/populateSwitchOffBanner'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -90,6 +91,7 @@ export declare global {
       breadcrumbs: Breadcrumbs
       historyBackUrl?: string
       history?: string[]
+      switchOffBanner?: SwitchOffBanner
     }
   }
 }

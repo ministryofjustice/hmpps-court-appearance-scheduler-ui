@@ -15,6 +15,7 @@ import { SearchPrisonerRoutes } from './search-prisoner/routes'
 import { requirePermissions } from '../middleware/permissions/requirePermissions'
 import { BrowseCourtAppearancesRoutes } from './court-appearances/routes'
 import { CourtAppearanceHistoryRoutes } from './view-court-appearance-history/routes'
+import { populateSwitchOffBanner } from '../middleware/populateSwitchOffBanner'
 
 export default function routes(services: Services): Router {
   const { router, get } = BaseRouter()
@@ -56,7 +57,7 @@ export default function routes(services: Services): Router {
     next()
   })
 
-  get('/', Page.HOMEPAGE, async (_req, res) => {
+  get('/', Page.HOMEPAGE, populateSwitchOffBanner, async (_req, res) => {
     res.render('view', {
       showBreadcrumbs: true,
     })
