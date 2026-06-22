@@ -46,7 +46,7 @@ export const stubComponents = () => {
               navEnabled: true,
             },
             {
-              id: 'external-movements',
+              id: 'court-appearance-scheduler',
             },
           ],
         },
