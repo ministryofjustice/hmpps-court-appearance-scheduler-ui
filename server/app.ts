@@ -27,6 +27,7 @@ import sentryMiddleware from './middleware/sentryMiddleware'
 import { AuthorisedRoles } from './middleware/permissions/populateUserPermissions'
 import PrisonerImageRoutes from './routes/prisonerImageRoutes'
 import { handleApiError } from './middleware/validation/handleApiError'
+import { permissionsMiddleware } from './middleware/permissions/permissionsMiddleware'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -96,6 +97,7 @@ export default function createApp(services: Services): express.Application {
     }),
   )
 
+  app.get(/(.*)/, permissionsMiddleware)
   app.use(routes(services))
 
   if (config.sentry.dsn) Sentry.setupExpressErrorHandler(app)
