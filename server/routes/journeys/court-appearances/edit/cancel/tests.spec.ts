@@ -7,7 +7,7 @@ import { stubGetPrisonerImage } from '../../../../../../integration_tests/mockAp
 import { CourtAppearanceCancelPage } from './test.page'
 
 import { login } from '../../../../../../integration_tests/testUtils'
-import { resetStubs } from '../../../../../../integration_tests/mockApis/wiremock'
+import { getApiBody, resetStubs } from '../../../../../../integration_tests/mockApis/wiremock'
 import {
   stubGetCourtAppearance,
   stubPutCourtAppearance,
@@ -70,5 +70,10 @@ test.describe('/court-appearances/edit/cancel', () => {
     // verify next page routing
     await testPage.clickButton('Cancel this appearance', 0)
     expect(page.url()).toMatch(/\/court-appearances\/edit\/confirmation/)
+
+    // verify API call
+    expect(
+      await getApiBody(`/court-appearance-scheduler-api/court-appearances/${courtAppearanceId}`, 'PUT'),
+    ).toContainEqual({ actions: [{ type: 'CancelAppearance' }] })
   })
 })

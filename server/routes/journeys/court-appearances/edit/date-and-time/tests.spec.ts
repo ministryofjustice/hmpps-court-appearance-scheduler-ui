@@ -14,6 +14,7 @@ import {
   stubGetCourtAppearance,
   stubPutCourtAppearance,
 } from '../../../../../../integration_tests/mockApis/courtAppearanceSchedulerApi'
+import { getApiBody } from '../../../../../../integration_tests/mockApis/wiremock'
 
 test.describe('/court-appearances/edit/date-and-time unauthorised', () => {
   test('should show unauthorised error', async ({ page }) => {
@@ -95,5 +96,12 @@ test.describe('/court-appearances/edit/date-and-time', () => {
     await testPage.clickButton('Save')
 
     expect(page.url()).toMatch(/\/court-appearances\/edit\/confirmation/)
+
+    // verify API call
+    expect(
+      await getApiBody(`/court-appearance-scheduler-api/court-appearances/${courtAppearanceId}`, 'PUT'),
+    ).toContainEqual({
+      actions: [{ end: '2026-06-23T17:00:00', start: '2026-06-23T23:59:00', type: 'RescheduleAppearance' }],
+    })
   })
 })

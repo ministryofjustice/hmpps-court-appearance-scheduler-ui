@@ -100,7 +100,7 @@ export interface paths {
      * @description Requires one of the following roles:
      *     * ROLE_COURT_APPEARANCES__COURT_APPEARANCE_SCHEDULER_UI
      */
-    put: operations['applyAction']
+    put: operations['applyActions']
     post?: never
     delete?: never
     options?: never
@@ -373,7 +373,7 @@ export interface components {
       eventId?: number | null
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       start: string
       courtEventType: string
@@ -386,7 +386,7 @@ export interface components {
     SyncCourtEvent: {
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -411,7 +411,7 @@ export interface components {
       movementSeq?: number
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       occurredAt: string
       movementReasonCode: string
@@ -423,7 +423,7 @@ export interface components {
     SyncCourtEventMovement: {
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -432,7 +432,7 @@ export interface components {
     AtAndBy: {
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       at: string
       by: string
@@ -488,6 +488,12 @@ export interface components {
       comments?: string | null
       reason?: string | null
     })
+    ChangeAppearancePrison: {
+      type: 'ChangeAppearancePrison'
+    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
+      prisonCode: string
+      reason?: string | null
+    })
     CompleteAppearance: {
       type: 'CompleteAppearance'
     } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
@@ -496,6 +502,24 @@ export interface components {
     CourtAppearanceAction: {
       reason?: string
       type: string
+    }
+    CourtAppearanceActions: {
+      actions: (
+        | components['schemas']['CancelAppearance']
+        | components['schemas']['ChangeAppearanceComments']
+        | components['schemas']['ChangeAppearancePrison']
+        | components['schemas']['CompleteAppearance']
+        | components['schemas']['ExpireAppearance']
+        | components['schemas']['RecategoriseAppearance']
+        | components['schemas']['RelocateAppearance']
+        | components['schemas']['RequestAppearanceByVideoLink']
+        | components['schemas']['RequestAppearanceInPerson']
+        | components['schemas']['RescheduleAppearance']
+        | components['schemas']['ScheduleAppearance']
+        | components['schemas']['StartAppearance']
+        | components['schemas']['UnscheduleAppearance']
+      )[]
+      reason?: string | null
     }
     ExpireAppearance: {
       type: 'ExpireAppearance'
@@ -555,7 +579,7 @@ export interface components {
       user: components['schemas']['User']
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       occurredAt: string
       domainEvents: string[]
@@ -611,12 +635,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       end?: string | null
       comments?: string | null
@@ -666,12 +690,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       end?: string | null
       status: components['schemas']['AppearanceStatus']
@@ -705,12 +729,12 @@ export interface components {
       reasonCode: string
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       end?: string | null
       comments?: string | null
@@ -732,12 +756,12 @@ export interface components {
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       end?: string | null
       comments?: string | null
@@ -764,7 +788,7 @@ export interface components {
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       occurredAt: string
       comments?: string | null
@@ -788,12 +812,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-19T14:22:51
+       * @example 2026-06-23T09:56:02
        */
       end?: string | null
       comments?: string | null
@@ -943,7 +967,7 @@ export interface operations {
       }
     }
   }
-  applyAction: {
+  applyActions: {
     parameters: {
       query?: never
       header?: {
@@ -957,19 +981,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json':
-          | components['schemas']['CancelAppearance']
-          | components['schemas']['ChangeAppearanceComments']
-          | components['schemas']['CompleteAppearance']
-          | components['schemas']['ExpireAppearance']
-          | components['schemas']['RecategoriseAppearance']
-          | components['schemas']['RelocateAppearance']
-          | components['schemas']['RequestAppearanceByVideoLink']
-          | components['schemas']['RequestAppearanceInPerson']
-          | components['schemas']['RescheduleAppearance']
-          | components['schemas']['ScheduleAppearance']
-          | components['schemas']['StartAppearance']
-          | components['schemas']['UnscheduleAppearance']
+        'application/json': components['schemas']['CourtAppearanceActions']
       }
     }
     responses: {
