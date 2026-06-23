@@ -13,6 +13,7 @@ import {
   stubPutCourtAppearance,
 } from '../../../../../../integration_tests/mockApis/courtAppearanceSchedulerApi'
 import { stubGetCourts } from '../../../../../../integration_tests/mockApis/courtRegisterApi'
+import { getApiBody } from '../../../../../../integration_tests/mockApis/wiremock'
 
 test.describe('/court-appearances/edit/court unauthorised', () => {
   test('should show unauthorised error', async ({ page }) => {
@@ -77,5 +78,10 @@ test.describe('/court-appearances/edit/court', () => {
     await testPage.clickButton('Save')
 
     expect(page.url()).toMatch(/\/court-appearances\/edit\/confirmation/)
+
+    // verify API call
+    expect(
+      await getApiBody(`/court-appearance-scheduler-api/court-appearances/${courtAppearanceId}`, 'PUT'),
+    ).toContainEqual({ actions: [{ type: 'RelocateAppearance', courtCode: 'COURT2' }] })
   })
 })
