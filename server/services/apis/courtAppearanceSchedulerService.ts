@@ -55,16 +55,24 @@ export default class CourtAppearanceSchedulerService {
       })
   }
 
-  getCourtAppearance(context: ApiRequestContext, courtAppearanceId: string) {
-    return this.restClient.withContext(context).get<components['schemas']['Appearance']>({
-      path: `/court-appearances/${courtAppearanceId}`,
-    })
+  async getCourtAppearance(context: ApiRequestContext, courtAppearanceId: string) {
+    try {
+      return await this.restClient.withContext(context).get<components['schemas']['Appearance']>({
+        path: `/court-appearances/${courtAppearanceId}`,
+      })
+    } catch (error) {
+      return this.handleGetError(error)
+    }
   }
 
-  getCourtAppearanceAuditHistory(context: ApiRequestContext, courtAppearanceId: string) {
-    return this.restClient.withContext(context).get<components['schemas']['AuditHistory']>({
-      path: `/court-appearances/${courtAppearanceId}/history`,
-    })
+  async getCourtAppearanceAuditHistory(context: ApiRequestContext, courtAppearanceId: string) {
+    try {
+      return await this.restClient.withContext(context).get<components['schemas']['AuditHistory']>({
+        path: `/court-appearances/${courtAppearanceId}/history`,
+      })
+    } catch (error) {
+      return this.handleGetError(error)
+    }
   }
 
   searchCourtAppearanceHistory(
@@ -94,5 +102,11 @@ export default class CourtAppearanceSchedulerService {
       path: `/court-appearances/${courtAppearanceId}`,
       data,
     })
+  }
+
+  private handleGetError = (error: unknown) => {
+    const statusCode = (error as { data?: { status?: number } })?.data?.status
+    if (statusCode && statusCode >= 400 && statusCode <= 499) return null
+    throw error
   }
 }
