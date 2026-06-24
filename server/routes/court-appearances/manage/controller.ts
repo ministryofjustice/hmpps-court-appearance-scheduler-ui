@@ -11,8 +11,6 @@ export class ManageCourtAppearanceController {
   ) {}
 
   GET = async (req: Request, res: Response) => {
-    const isFromRAS = req.middleware!.courtAppearance!.origin?.source.code === 'remand-and-sentencing'
-
     const courts = await this.courtRegisterService.getCourts({ res })
     const prisons = await this.prisonRegisterService.getPrisons({ res })
 
@@ -33,7 +31,7 @@ export class ManageCourtAppearanceController {
       courtAppearance: req.middleware!.courtAppearance,
       sourceName: req.middleware!.courtAppearance!.origin?.source.name,
       editable: isCourtAppearanceEditable(req.middleware!.courtAppearance!),
-      cancellable: req.middleware!.courtAppearance!.status.code === 'SCHEDULED' && !isFromRAS,
+      cancellable: req.middleware!.courtAppearance!.cancellable,
       auditedActions: parseAuditHistory(
         req.middleware!.appearanceHistory!.content.sort((a, b) => b.occurredAt.localeCompare(a.occurredAt)),
         courts ?? [],

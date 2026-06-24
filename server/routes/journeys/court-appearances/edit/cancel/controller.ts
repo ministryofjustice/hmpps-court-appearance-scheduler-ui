@@ -21,8 +21,26 @@ export class CourtAppearanceCancelController {
         },
       )
       next()
-    } catch (e) {
-      next(e)
+    } catch (error) {
+      const statusCode = (error as { data?: { status?: number } })?.data?.status
+
+      if (statusCode === 404) {
+        journey.result = {
+          content: [
+            {
+              user: { username: '', name: ' ' },
+              occurredAt: '',
+              domainEvents: ['person.court-appearance.cancelled'],
+              changes: [],
+            },
+          ],
+        }
+        next()
+      } else if (statusCode === 409) {
+        next({ text: JSON.stringify({ userMessage: 'This court appearance can no longer be cancelled' }) })
+      } else {
+        next(error)
+      }
     }
   }
 

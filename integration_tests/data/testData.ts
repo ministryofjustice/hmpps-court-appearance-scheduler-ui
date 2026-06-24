@@ -79,4 +79,5 @@ export const testCourtAppearance: components['schemas']['Appearance'] = {
     code: 'SCHEDULED',
     description: 'Scheduled',
   },
+  cancellable: true,
 }
