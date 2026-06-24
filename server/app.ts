@@ -104,8 +104,8 @@ export default function createApp(services: Services): express.Application {
 
   app.use((_req, res) => res.notFound())
   // Error handlers must go after `Sentry.setupExpressErrorHandler(app)` for errors to be captured by Sentry
-  app.use((error: { message?: string }, _req: Request, res: Response, next: NextFunction) => {
-    if (error?.message === 'NOT_AUTHORISED') {
+  app.use((error: { message?: string; status?: number }, _req: Request, res: Response, next: NextFunction) => {
+    if (error?.message === 'NOT_AUTHORISED' || error?.status === 403) {
       res.notAuthorised()
     } else {
       next(error)

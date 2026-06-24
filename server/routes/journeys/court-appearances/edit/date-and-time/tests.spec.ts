@@ -101,7 +101,13 @@ test.describe('/court-appearances/edit/date-and-time', () => {
     expect(
       await getApiBody(`/court-appearance-scheduler-api/court-appearances/${courtAppearanceId}`, 'PUT'),
     ).toContainEqual({
-      actions: [{ end: '2026-06-23T17:00:00', start: '2026-06-23T23:59:00', type: 'RescheduleAppearance' }],
+      actions: [
+        {
+          end: `${new Date().toISOString().substring(0, 10)}T17:00:00`,
+          start: `${new Date().toISOString().substring(0, 10)}T23:59:00`,
+          type: 'RescheduleAppearance',
+        },
+      ],
     })
   })
 })

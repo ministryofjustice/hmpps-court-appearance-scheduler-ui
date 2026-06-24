@@ -17,6 +17,10 @@ export const populateCourtAppearance =
         courtAppearanceSchedulerService.getCourtAppearance({ res }, req.params.id),
         withHistory ? courtAppearanceSchedulerService.getCourtAppearanceAuditHistory({ res }, req.params.id) : null,
       ])
+      if (!courtAppearance) {
+        return res.notFound()
+      }
+
       if (!res.locals.user.caseLoads?.find(caseLoad => caseLoad.caseLoadId === courtAppearance.prison.code)) {
         return res.notAuthorised()
       }
