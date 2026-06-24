@@ -373,7 +373,7 @@ export interface components {
       eventId?: number | null
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       start: string
       courtEventType: string
@@ -386,7 +386,7 @@ export interface components {
     SyncCourtEvent: {
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -411,7 +411,7 @@ export interface components {
       movementSeq?: number
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       occurredAt: string
       movementReasonCode: string
@@ -423,7 +423,7 @@ export interface components {
     SyncCourtEventMovement: {
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -432,7 +432,7 @@ export interface components {
     AtAndBy: {
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       at: string
       by: string
@@ -479,28 +479,21 @@ export interface components {
     }
     CancelAppearance: {
       type: 'CancelAppearance'
-    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
-      reason?: string | null
-    })
+    } & Omit<components['schemas']['CourtAppearanceAction'], 'type'>
     ChangeAppearanceComments: {
       type: 'ChangeAppearanceComments'
     } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
       comments?: string | null
-      reason?: string | null
     })
     ChangeAppearancePrison: {
       type: 'ChangeAppearancePrison'
     } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
       prisonCode: string
-      reason?: string | null
     })
     CompleteAppearance: {
       type: 'CompleteAppearance'
-    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
-      reason?: string | null
-    })
+    } & Omit<components['schemas']['CourtAppearanceAction'], 'type'>
     CourtAppearanceAction: {
-      reason?: string
       type: string
     }
     CourtAppearanceActions: {
@@ -523,31 +516,23 @@ export interface components {
     }
     ExpireAppearance: {
       type: 'ExpireAppearance'
-    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
-      reason?: string | null
-    })
+    } & Omit<components['schemas']['CourtAppearanceAction'], 'type'>
     RecategoriseAppearance: {
       type: 'RecategoriseAppearance'
     } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
       reasonCode: string
-      reason?: string | null
     })
     RelocateAppearance: {
       type: 'RelocateAppearance'
     } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
       courtCode: string
-      reason?: string | null
     })
     RequestAppearanceByVideoLink: {
       type: 'RequestAppearanceByVideoLink'
-    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
-      reason?: string | null
-    })
+    } & Omit<components['schemas']['CourtAppearanceAction'], 'type'>
     RequestAppearanceInPerson: {
       type: 'RequestAppearanceInPerson'
-    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
-      reason?: string | null
-    })
+    } & Omit<components['schemas']['CourtAppearanceAction'], 'type'>
     RescheduleAppearance: {
       type: 'RescheduleAppearance'
     } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
@@ -555,23 +540,16 @@ export interface components {
       start?: string | null
       /** Format: date-time */
       end?: string | null
-      reason?: string | null
     })
     ScheduleAppearance: {
       type: 'ScheduleAppearance'
-    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
-      reason?: string | null
-    })
+    } & Omit<components['schemas']['CourtAppearanceAction'], 'type'>
     StartAppearance: {
       type: 'StartAppearance'
-    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
-      reason?: string | null
-    })
+    } & Omit<components['schemas']['CourtAppearanceAction'], 'type'>
     UnscheduleAppearance: {
       type: 'UnscheduleAppearance'
-    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
-      reason?: string | null
-    })
+    } & Omit<components['schemas']['CourtAppearanceAction'], 'type'>
     AuditHistory: {
       content: components['schemas']['AuditedAction'][]
     }
@@ -579,7 +557,7 @@ export interface components {
       user: components['schemas']['User']
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       occurredAt: string
       domainEvents: string[]
@@ -635,12 +613,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       end?: string | null
       comments?: string | null
@@ -690,12 +668,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       end?: string | null
       status: components['schemas']['AppearanceStatus']
@@ -729,12 +707,12 @@ export interface components {
       reasonCode: string
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       end?: string | null
       comments?: string | null
@@ -756,12 +734,12 @@ export interface components {
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       end?: string | null
       comments?: string | null
@@ -788,7 +766,7 @@ export interface components {
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       occurredAt: string
       comments?: string | null
@@ -812,17 +790,18 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T09:56:02
+       * @example 2026-06-23T17:46:31
        */
       end?: string | null
       comments?: string | null
       status: components['schemas']['AppearanceStatus']
       origin?: components['schemas']['AppearanceOrigin'] | null
+      cancellable: boolean
     }
     AppearanceOrigin: {
       source: components['schemas']['OriginSource']
