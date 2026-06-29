@@ -56,6 +56,17 @@ export const schema = createSchema({
     })
   }
 
+  if (parsedHour?.success && parsedMinute?.success && `${parsedHour.data}:${parsedMinute.data}` >= '17:00') {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'Start time must be before 17:00',
+      path: ['startTimeHour'],
+    })
+    // empty error message to highlight both input fields with error
+    ctx.addIssue({ code: 'custom', message: '', path: ['startTime'] })
+    return z.NEVER
+  }
+
   if (parsedStartDate?.success && parsedHour?.success && parsedMinute?.success) {
     return {
       startDate: parsedStartDate.data,

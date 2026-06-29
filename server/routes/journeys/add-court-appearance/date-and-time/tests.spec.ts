@@ -68,10 +68,16 @@ test.describe('/add-court-appearance/date-and-time', () => {
     await testPage.link('Minute must be between 00 and 59').click()
     await expect(testPage.minuteField()).toBeFocused()
 
+    await testPage.hourField().fill('17')
+    await testPage.minuteField().fill('00')
+    await testPage.clickContinue()
+    await testPage.link('Start time must be before 17:00').click()
+    await expect(testPage.hourField()).toBeFocused()
+
     // verify next page routing
     const today = formatInputDate(new Date().toISOString())!
     await testPage.dateField().fill(today)
-    await testPage.hourField().fill('23')
+    await testPage.hourField().fill('16')
     await testPage.minuteField().fill('59')
     await testPage.clickContinue()
 
@@ -81,7 +87,7 @@ test.describe('/add-court-appearance/date-and-time', () => {
     await page.goBack()
     await page.reload()
     await expect(testPage.dateField()).toHaveValue(today)
-    await expect(testPage.hourField()).toHaveValue('23')
+    await expect(testPage.hourField()).toHaveValue('16')
     await expect(testPage.minuteField()).toHaveValue('59')
   })
 })

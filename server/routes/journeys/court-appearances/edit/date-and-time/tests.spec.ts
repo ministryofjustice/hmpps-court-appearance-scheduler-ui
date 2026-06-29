@@ -88,10 +88,16 @@ test.describe('/court-appearances/edit/date-and-time', () => {
     await testPage.link('Minute must be between 00 and 59').click()
     await expect(testPage.minuteField()).toBeFocused()
 
+    await testPage.hourField().fill('17')
+    await testPage.minuteField().fill('00')
+    await testPage.clickButton('Save')
+    await testPage.link('Start time must be before 17:00').click()
+    await expect(testPage.hourField()).toBeFocused()
+
     // verify next page routing
     const today = formatInputDate(new Date().toISOString())!
     await testPage.dateField().fill(today)
-    await testPage.hourField().fill('23')
+    await testPage.hourField().fill('16')
     await testPage.minuteField().fill('59')
     await testPage.clickButton('Save')
 
@@ -104,7 +110,7 @@ test.describe('/court-appearances/edit/date-and-time', () => {
       actions: [
         {
           end: `${new Date().toISOString().substring(0, 10)}T17:00:00`,
-          start: `${new Date().toISOString().substring(0, 10)}T23:59:00`,
+          start: `${new Date().toISOString().substring(0, 10)}T16:59:00`,
           type: 'RescheduleAppearance',
         },
       ],
