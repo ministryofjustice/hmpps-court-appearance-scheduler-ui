@@ -68,7 +68,6 @@ generic-service:
       - moj_cloud_platform
       - prisons
       - private_prisons
-      - accessibility-testing-1
 
 generic-prometheus-alerts:
   targetApplication: hmpps-court-appearance-scheduler-ui
