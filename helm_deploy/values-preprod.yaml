@@ -2,8 +2,6 @@
 # Per environment values which override defaults in hmpps-court-appearance-scheduler-ui/values.yaml
 
 generic-service:
-  replicaCount: 2
-
   ingress:
     host: court-appearance-scheduler-preprod.hmpps.service.justice.gov.uk
 
