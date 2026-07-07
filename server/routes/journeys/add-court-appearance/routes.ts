@@ -47,7 +47,7 @@ export const AddCourtAppearanceRoutes = (services: Services) => {
       next()
     },
     preventNavigationToExpiredJourneys(),
-    journeyStateGuard({}, services.telemetryClient),
+    journeyStateGuard({}),
   )
 
   router.use('/date-and-time', CourtAppearanceDateTimeRoutes())

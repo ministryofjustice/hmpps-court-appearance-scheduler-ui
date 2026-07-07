@@ -23,7 +23,7 @@ export const EditCourtAppearanceRoutes = (services: Services) => {
       next()
     },
     preventNavigationToExpiredJourneys(),
-    journeyStateGuard({ '*': () => undefined }, services.telemetryClient),
+    journeyStateGuard({ '*': () => undefined }),
   )
 
   router.use('/date-and-time', EditCourtAppearanceDateTimeRoutes(services))

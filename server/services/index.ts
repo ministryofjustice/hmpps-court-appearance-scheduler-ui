@@ -14,9 +14,10 @@ import CourtRegisterService from './apis/courtRegisterService'
 import { populateCourtAppearance } from '../middleware/permissions/populateCourtAppearance'
 import { populatePrisonerDetails } from '../middleware/populatePrisonerDetails'
 import PrisonRegisterService from './apis/prisonRegisterService'
+import { telemetryWrapper } from '../utils/telemetryWrapper'
 
 export const services = () => {
-  const { applicationInfo, hmppsAuditClient, hmppsAuthClient, telemetryClient } = dataAccess()
+  const { applicationInfo, hmppsAuditClient, hmppsAuthClient } = dataAccess()
 
   const redisClient = config.redis.enabled ? createRedisClient() : null
 
@@ -27,7 +28,8 @@ export const services = () => {
     prisonerSearchConfig: config.apis.prisonerSearchApi,
     authenticationClient: hmppsAuthClient,
     logger,
-    telemetryClient,
+    // @ts-expect-error cast hmpps-azure-telemetry into applicationinsight telemetry
+    telemetryClient: telemetryWrapper(),
   })
 
   const courtAppearanceSchedulerService = new CourtAppearanceSchedulerService(hmppsAuthClient)
@@ -42,7 +44,6 @@ export const services = () => {
     prisonerSearchService,
     courtAppearanceSchedulerService,
     cacheStore,
-    telemetryClient,
     populateCourtAppearanceMiddleware: populateCourtAppearance(courtAppearanceSchedulerService, prisonerSearchService),
     populatePrisonerMiddleware: populatePrisonerDetails(prisonPermissionsService),
   }
