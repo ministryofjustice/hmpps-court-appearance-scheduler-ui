@@ -137,7 +137,6 @@
           {% set rows = (rows.push(
             {
               title: { text: 'Court appearance' },
-              action: { html: '<strong>Responsible prison: </strong>' + result.prison.name },
               data: [
               result.court.name,
               result.start | formatDate("d MMMM yyyy"),
