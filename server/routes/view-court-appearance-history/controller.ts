@@ -16,7 +16,7 @@ export class CourtAppearanceHistoryController {
 
   private PAGE_SIZE = 10
 
-  private DEFAULT_SORT = 'start,desc'
+  private DEFAULT_SORT = 'start,asc'
 
   GET = async (req: Request, res: Response) => {
     const resQuery = res.locals['query'] as ResQuerySchemaType
