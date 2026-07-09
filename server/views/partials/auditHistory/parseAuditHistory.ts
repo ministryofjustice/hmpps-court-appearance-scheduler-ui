@@ -61,9 +61,6 @@ const DOMAIN_EVENT_MAP: { [key: string]: DomainEventText } = {
     heading: 'Unscheduled',
     content: 'Court appearance unscheduled for <prisoner>',
   },
-  'person.court-appearance.responsible-prison-changed': {
-    heading: 'Court appearance responsible prison changed',
-  },
 }
 
 const CHANGE_PROPERTY_MAP: { [key: string]: string } = {
