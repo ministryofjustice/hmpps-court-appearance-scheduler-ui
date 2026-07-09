@@ -16,7 +16,7 @@ export class BrowseCourtAppearancesController {
 
   private PAGE_SIZE = 10
 
-  private DEFAULT_SORT = 'start,desc'
+  private DEFAULT_SORT = 'start,asc'
 
   GET = async (_req: Request, res: Response) => {
     const resQuery = res.locals['query'] as ResQuerySchemaType

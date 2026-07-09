@@ -119,9 +119,9 @@
             <form id="sortForm">
               {{ hiddenInputs(query | getQueryEntries(['start','end','court','reason','type','history'])) }}
               <label class="govuk-label" for="sort">Sort by</label>
-              <select class="govuk-select hmpps-sort-selector__select" id="sort" name="sort" value="{{ sort or 'start,desc' }}">
-                <option value="start,desc" {{ 'selected' if sort === 'start,desc' else '' }}>Start date (most recent)</option>
+              <select class="govuk-select hmpps-sort-selector__select" id="sort" name="sort" value="{{ sort or 'start,asc' }}">
                 <option value="start,asc" {{ 'selected' if sort === 'start,asc' else '' }}>Start date (oldest)</option>
+                <option value="start,desc" {{ 'selected' if sort === 'start,desc' else '' }}>Start date (most recent)</option>
               </select>
               <button type="submit" data-prevent-double-click="true" class="govuk-button hmpps-sort-selector__sort-button">
                 Sort
