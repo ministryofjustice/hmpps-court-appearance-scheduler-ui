@@ -2,7 +2,6 @@ import express, { Request, Response, NextFunction } from 'express'
 
 import { getFrontendComponents, retrieveCaseLoadData } from '@ministryofjustice/hmpps-connect-dps-components'
 import * as Sentry from '@sentry/node'
-import './sentry'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
