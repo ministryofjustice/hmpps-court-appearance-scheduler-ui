@@ -24,14 +24,12 @@ if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
 }
 
 export default function addUsernameAndCaseloadToTelemetry(): RequestHandler {
-  return (_req, res, next) => {
+  // @ts-expect-error req may be used by telemetry and cannot be appended by an underscore
+  return (req, res, next) => {
     const { username } = res?.locals?.user || {}
-    const prisonerCaseloadId = res?.locals?.prisonerDetails?.prisonId
     const activeCaseloadId = res?.locals?.user.getActiveCaseloadId()
-
     telemetry.setSpanAttributes({
       ...(username && { username }),
-      ...(prisonerCaseloadId && { prisonerCaseloadId }),
       ...(activeCaseloadId && { activeCaseloadId }),
     })
     return next()
