@@ -26,11 +26,13 @@ if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
 export default function addUsernameAndCaseloadToTelemetry(): RequestHandler {
   return (_req, res, next) => {
     const { username } = res?.locals?.user || {}
-    const caseloadId = res?.locals?.user.getActiveCaseloadId()
+    const prisonerCaseloadId = res?.locals?.prisonerDetails?.prisonId
+    const activeCaseloadId = res?.locals?.user.getActiveCaseloadId()
 
     telemetry.setSpanAttributes({
       ...(username && { username }),
-      ...(caseloadId && { caseloadId }),
+      ...(prisonerCaseloadId && { prisonerCaseloadId }),
+      ...(activeCaseloadId && { activeCaseloadId }),
     })
     return next()
   }
