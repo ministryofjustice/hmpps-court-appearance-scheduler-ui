@@ -27,6 +27,7 @@ import { AuthorisedRoles } from './middleware/permissions/populateUserPermission
 import PrisonerImageRoutes from './routes/prisonerImageRoutes'
 import { handleApiError } from './middleware/validation/handleApiError'
 import { permissionsMiddleware } from './middleware/permissions/permissionsMiddleware'
+import addUsernameAndCaseloadToTelemetry from './utils/azureAppInsights'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -80,6 +81,8 @@ export default function createApp(services: Services): express.Application {
       dpsUrl: config.serviceUrls.digitalPrison,
     }),
   )
+
+  app.use(addUsernameAndCaseloadToTelemetry())
 
   app.use((_req, res, next) => {
     res.notFound = () => res.status(404).render('pages/not-found')
