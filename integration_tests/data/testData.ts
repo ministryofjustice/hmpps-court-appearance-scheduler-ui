@@ -59,10 +59,6 @@ export const testCourtAppearance: components['schemas']['Appearance'] = {
     prisonCode: 'LEI',
     cellLocation: 'TAP',
   },
-  prison: {
-    code: 'LEI',
-    name: 'Leeds (HMP)',
-  },
   court: {
     code: 'COURT1',
     name: 'Some Court',

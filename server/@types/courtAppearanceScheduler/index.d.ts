@@ -784,7 +784,6 @@ export interface components {
       /** Format: uuid */
       id: string
       person: components['schemas']['Person']
-      prison: components['schemas']['Prison']
       court: components['schemas']['Court']
       reason: components['schemas']['AppearanceReason']
       external: boolean

@@ -5,7 +5,6 @@ import { stubComponents } from '../../../../integration_tests/mockApis/component
 import { stubGetPrisonerDetails } from '../../../../integration_tests/mockApis/prisonerSearchApi'
 import { stubGetPrisonerImage } from '../../../../integration_tests/mockApis/prisonApi'
 import { ManageCourtAppearancePage } from './test.page'
-import { NotAuthorisedPage } from '../../../../integration_tests/pages/NotAuthorisedPage'
 
 import { login } from '../../../../integration_tests/testUtils'
 import { resetStubs } from '../../../../integration_tests/mockApis/wiremock'
@@ -29,20 +28,6 @@ test.describe('/court-appearances/:id', () => {
 
   test.afterEach(async () => {
     await resetStubs()
-  })
-
-  test('should show 403 error if court appearance is outside the user caseloads', async ({ page }) => {
-    await login(page)
-
-    const courtAppearanceId = uuidV4()
-    await stubGetCourtAppearance({
-      ...testCourtAppearance,
-      id: courtAppearanceId,
-      prison: { code: 'OUT', name: 'OUT' },
-    })
-    await stubGetCourtAppearanceHistory(courtAppearanceId, { content: [] })
-    await page.goto(`/court-appearances/${courtAppearanceId}`)
-    await new NotAuthorisedPage(page).verifyContent()
   })
 
   test('should show court appearance details and edit links', async ({ page }) => {
