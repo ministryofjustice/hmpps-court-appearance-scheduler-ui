@@ -21,10 +21,6 @@ export const populateCourtAppearance =
         return res.notFound()
       }
 
-      if (!res.locals.user.caseLoads?.find(caseLoad => caseLoad.caseLoadId === courtAppearance.prison.code)) {
-        return res.notAuthorised()
-      }
-
       req.middleware ??= {}
       req.middleware.courtAppearance = courtAppearance
       if (appearanceHistory) req.middleware.appearanceHistory = appearanceHistory
@@ -32,6 +28,13 @@ export const populateCourtAppearance =
         { res },
         courtAppearance.person.personIdentifier,
       )
+
+      if (
+        !res.locals.user.caseLoads?.find(caseLoad => caseLoad.caseLoadId === req.middleware!.prisonerData!.prisonId)
+      ) {
+        return res.notAuthorised()
+      }
+
       res.locals.prisonerDetails = req.middleware.prisonerData
 
       return next()
