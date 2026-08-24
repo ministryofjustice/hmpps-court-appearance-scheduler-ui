@@ -39,4 +39,18 @@
   .print-full-width {
     width: 100%!important;
   }
+
+  .govuk-table {
+    font-size: 14px!important;
+  }
+
+  .govuk-table__header, .govuk-table__cell {
+    padding: 5px 10px 5px 0;
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none;
+  }
 }
