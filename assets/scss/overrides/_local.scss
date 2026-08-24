@@ -34,3 +34,9 @@
 .float-right {
   float: right;
 }
+
+@media print {
+  .print-full-width {
+    width: 100%!important;
+  }
+}
