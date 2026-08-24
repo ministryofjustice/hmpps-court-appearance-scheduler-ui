@@ -23,7 +23,7 @@ test.describe('/court-appearances', () => {
       stubGetCourts(),
       stubGetReasons(),
       stubSearchCourtAppearances({
-        metadata: { totalElements: 11 },
+        metadata: { totalElements: 51 },
         content: [
           {
             id: 'court-appearance-1',

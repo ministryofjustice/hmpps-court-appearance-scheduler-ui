@@ -165,7 +165,7 @@
             <div class="govuk-grid-column-one-third">
               <form id="sizeForm">
                 {{ hiddenInputs(query | getQueryEntries(['searchTerm','start','end','court','reason','type','sort','history'])) }}
-                <label class="govuk-label" for="sort">Show results</label>
+                <label class="govuk-label" for="size">Show results</label>
                 <select class="govuk-select hmpps-sort-selector__select" id="size" name="size" value="{{ size }}">
                   <option value="10" {{ 'selected' if size == '10' }}>10 per page</option>
                   <option value="25" {{ 'selected' if size == '25' }}>25 page</option>
@@ -173,7 +173,7 @@
                   <option value="100" {{ 'selected' if size == '100' }}>100 per page</option>
                 </select>
                 <button type="submit" data-prevent-double-click="true" class="govuk-button hmpps-sort-selector__sort-button">
-                  Sort
+                  Reload
                 </button>
               </form>
             </div>
@@ -224,21 +224,4 @@
       </div>
     </div>
   </div>
-{% endblock %}
-
-{% block pageScripts %}
-  <script type="text/javascript" nonce="{{ cspNonce }}">
-    window.onload = function () {
-      const printOptions = document.getElementById('print-options');
-      if (printOptions) {
-        printOptions.classList.remove('govuk-!-display-none')
-      }
-
-      document.getElementById('print-options-button').onclick = e => {
-        e.preventDefault()
-        e.stopPropagation()
-        print()
-      }
-    }
-  </script>
 {% endblock %}
