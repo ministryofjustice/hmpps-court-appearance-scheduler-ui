@@ -34,3 +34,23 @@
 .float-right {
   float: right;
 }
+
+@media print {
+  .print-full-width {
+    width: 100%!important;
+  }
+
+  .govuk-table {
+    font-size: 12px!important;
+  }
+
+  .govuk-table__header, .govuk-table__cell {
+    padding: 5px 10px 5px 0;
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none;
+  }
+}

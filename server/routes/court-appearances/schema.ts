@@ -16,6 +16,15 @@ export const schema = createSchema({
   reason: z.string().optional(),
   type: z.union([typeEnum.transform(val => [val]), z.array(typeEnum)]).optional(),
   sort: z.string().optional(),
+  size: z
+    .string()
+    .optional()
+    .transform(val => {
+      if (!val) return 50
+      const num = Number(val)
+      if (!Number.isNaN(num)) return num
+      return 50
+    }),
   page: z
     .string()
     .optional()
