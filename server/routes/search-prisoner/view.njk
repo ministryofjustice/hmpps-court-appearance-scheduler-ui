@@ -18,9 +18,9 @@
     <label for="searchTerm"><h1 class="govuk-heading-l">Search for a prisoner</h1></label>
   </div>
 
-  <div class="block-background govuk-!-padding-top-6 govuk-!-padding-bottom-6 govuk-!-margin-bottom-7">
+  <div class="block-background govuk-!-padding-top-6 govuk-!-padding-bottom-1 govuk-!-margin-bottom-7">
     <div class="govuk-width-container">
-      <search class="moj-search govuk-!-width-two-thirds">
+      <search class="moj-search govuk-!-width-two-thirds ">
         <form method="GET">
           {{ hiddenInputs(query | getQueryEntries(['history'])) }}
           <div class="search-wrapper moj-search__input-wrapper">
