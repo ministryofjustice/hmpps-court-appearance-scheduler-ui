@@ -14,7 +14,6 @@ import { login } from '../../../../integration_tests/testUtils'
 import { getApiBody, resetStubs } from '../../../../integration_tests/mockApis/wiremock'
 import { CourtAppearanceCheckAnswersPage } from './check-answers/test.page'
 import { stubGetCourts } from '../../../../integration_tests/mockApis/courtRegisterApi'
-import { CourtAppearanceDateTimePage } from './date-and-time/test.page'
 import { formatInputDate } from '../../../utils/dateTimeUtils'
 import { CourtAppearanceDetailsPage } from './details/test.page'
 import { CourtAppearanceCommentsPage } from './comments/test.page'
@@ -43,11 +42,9 @@ test.describe('/add-court-appearance e2e ', () => {
     await page.goto(`/${journeyId}/add-court-appearance/start/${testPrisonerDetails.prisonerNumber}`)
 
     // fill in all pages
-    const dateTimePage = await new CourtAppearanceDateTimePage(page).verifyContent()
-    await dateTimePage.dateField().fill(formatInputDate(new Date().toISOString())!)
-    await dateTimePage.clickContinue()
-
     const detailsPage = await new CourtAppearanceDetailsPage(page).verifyContent()
+    await detailsPage.dateField().fill(formatInputDate(new Date().toISOString())!)
+    await detailsPage.clickContinue()
     await detailsPage.courtInput().click()
     await page.getByText('Some Court').first().click()
     await detailsPage.reasonInput().click()
@@ -65,9 +62,9 @@ test.describe('/add-court-appearance e2e ', () => {
 
     // verify changing answers
     await checkAnswersPage.clickLink('Change date and time')
-    await dateTimePage.hourField().fill('11')
-    await dateTimePage.minuteField().fill('30')
-    await dateTimePage.clickContinue()
+    await detailsPage.hourField().fill('11')
+    await detailsPage.minuteField().fill('30')
+    await detailsPage.clickContinue()
     await checkAnswersPage.verifyAnswer('Date and time', `${format(new Date(), 'd MMMM yyyy')} at 11:30`)
 
     await checkAnswersPage.clickLink('Change court location')
