@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { format } from 'date-fns'
 import { formatInputDate } from '../../../../../utils/dateTimeUtils'
 import CourtAppearanceSchedulerService from '../../../../../services/apis/courtAppearanceSchedulerService'
-import { SchemaType } from '../../../add-court-appearance/date-and-time/schema'
+import { SchemaType } from './schema'
 
 export class EditCourtAppearanceDateTimeController {
   constructor(private readonly courtAppearanceSchedulerService: CourtAppearanceSchedulerService) {}

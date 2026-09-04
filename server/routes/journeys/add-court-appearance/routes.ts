@@ -5,7 +5,6 @@ import { toPrisonerDetails } from '../../../middleware/populatePrisonerDetails'
 import preventNavigationToExpiredJourneys from '../../../middleware/journey/preventNavigationToExpiredJourneys'
 import journeyStateGuard from '../../../middleware/journey/journeyStateGuard'
 import redirectCheckAnswersMiddleware from '../../../middleware/journey/redirectCheckAnswersMiddleware'
-import { CourtAppearanceDateTimeRoutes } from './date-and-time/routes'
 import { CourtAppearanceDetailsRoutes } from './details/routes'
 import { CourtAppearanceCommentsRoutes } from './comments/routes'
 import { CourtAppearanceCheckAnswersRoutes } from './check-answers/routes'
@@ -31,7 +30,7 @@ export const AddCourtAppearanceRoutes = (services: Services) => {
         historyQuery: encodeURIComponent(String(req.query['history'])),
         startTime: '10:00',
       }
-      res.redirect('../date-and-time')
+      res.redirect('../details')
     } else {
       res.notFound()
     }
@@ -50,7 +49,6 @@ export const AddCourtAppearanceRoutes = (services: Services) => {
     journeyStateGuard({}),
   )
 
-  router.use('/date-and-time', CourtAppearanceDateTimeRoutes())
   router.use('/details', CourtAppearanceDetailsRoutes(services))
   router.use('/comments', CourtAppearanceCommentsRoutes())
   router.use('/check-answers', CourtAppearanceCheckAnswersRoutes(services))

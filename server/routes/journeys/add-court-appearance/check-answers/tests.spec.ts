@@ -60,7 +60,7 @@ test.describe('/add-court-appearance/check-answers', () => {
     await testPage.verifyAnswer('Reason', 'Some Reason')
     await testPage.verifyAnswer('Comments', 'Lorem ipsum')
 
-    await testPage.verifyLink('Change date and time', /date-and-time/)
+    await testPage.verifyLink('Change date and time', /details#startDate/)
     await testPage.verifyLink('Change court location', /details#court/)
     await testPage.verifyLink('Change reason', /details#reason/)
     await testPage.verifyLink('Change comments', /comments/)
