@@ -1,4 +1,5 @@
 import { components } from '../courtAppearanceScheduler'
+import { Clash } from '../../services/apis/model/clash'
 
 export interface PrisonerDetails {
   prisonerNumber: string
@@ -36,6 +37,7 @@ export type AddCourtAppearanceJourney = {
   court: CodedDescription
   reason: CodedDescription
   comments: string | null
+  clashes: Clash[]
   result: components['schemas']['ReferenceId']
 }>
 

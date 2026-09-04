@@ -104,6 +104,17 @@ export default class CourtAppearanceSchedulerService {
     })
   }
 
+  getClashes(context: ApiRequestContext, prisonNumber: string, start: string, end: string) {
+    const data: components['schemas']['ClashRequest'] = {
+      personIdentifiers: [{ type: 'PRISON_NUMBER', value: prisonNumber }],
+      ranges: [{ start, end }],
+    }
+    return this.restClient.withContext({ ...context, readOnly: true }).post<components['schemas']['ClashResponse']>({
+      path: '/search/people/clashes',
+      data,
+    })
+  }
+
   private handleGetError = (error: unknown) => {
     const statusCode = (error as { data?: { status?: number } })?.data?.status
     if (statusCode && statusCode >= 400 && statusCode <= 499) return null

@@ -10,8 +10,13 @@ import { testNotAuthorisedPage } from '../../../../../integration_tests/steps/te
 import { testPrisonerDetails } from '../../../../../integration_tests/data/testData'
 import { login, resetStubs } from '../../../../../integration_tests/testUtils'
 import { stubGetCourts } from '../../../../../integration_tests/mockApis/courtRegisterApi'
-import { stubGetReasons } from '../../../../../integration_tests/mockApis/courtAppearanceSchedulerApi'
+import {
+  stubGetCourtAppearanceClashes,
+  stubGetReasons,
+} from '../../../../../integration_tests/mockApis/courtAppearanceSchedulerApi'
 import { formatInputDate } from '../../../../utils/dateTimeUtils'
+import { stubGetTemporaryAbsenceClashes } from '../../../../../integration_tests/mockApis/externalMovementsApi'
+import { stubGetTransferClashes } from '../../../../../integration_tests/mockApis/transferSchedulerApi'
 
 test.describe('/add-court-appearance/details unauthorised', () => {
   test('should show unauthorised error', async ({ page }) => {
@@ -44,6 +49,12 @@ test.describe('/add-court-appearance/details', () => {
   test('should try all cases', async ({ page }) => {
     const journeyId = uuidV4()
     await startJourney(page, journeyId)
+
+    await Promise.all([
+      stubGetCourtAppearanceClashes([]),
+      stubGetTemporaryAbsenceClashes([]),
+      stubGetTransferClashes([]),
+    ])
 
     // verify page content
     const testPage = await new CourtAppearanceDetailsPage(page).verifyContent()
@@ -112,5 +123,47 @@ test.describe('/add-court-appearance/details', () => {
     await expect(testPage.minuteField()).toHaveValue('59')
     await expect(testPage.courtInput()).toHaveValue('Some Court')
     await expect(testPage.reasonInput()).toHaveValue('Some Reason')
+  })
+
+  test('should proceed to clashes page', async ({ page }) => {
+    const journeyId = uuidV4()
+    await startJourney(page, journeyId)
+
+    await Promise.all([
+      stubGetCourtAppearanceClashes([
+        {
+          start: '2001-01-01T10:00:00',
+          end: '2001-01-01T17:00:00',
+          description: {
+            full: 'Police production',
+            short: '',
+          },
+          location: {
+            description: '',
+          },
+          additionalInformation: {
+            courtCode: '',
+          },
+        },
+      ]),
+      stubGetTemporaryAbsenceClashes([]),
+      stubGetTransferClashes([]),
+    ])
+
+    // verify page content
+    const testPage = await new CourtAppearanceDetailsPage(page).verifyContent()
+
+    // verify next page routing
+    const today = formatInputDate(new Date().toISOString())!
+    await testPage.dateField().fill(today)
+    await testPage.hourField().fill('16')
+    await testPage.minuteField().fill('59')
+    await testPage.courtInput().click()
+    await page.getByText('Some Court').first().click()
+    await testPage.reasonInput().click()
+    await page.getByText('Some Reason').first().click()
+    await testPage.clickContinue()
+
+    expect(page.url()).toMatch(/\/add-court-appearance\/clashes/)
   })
 })

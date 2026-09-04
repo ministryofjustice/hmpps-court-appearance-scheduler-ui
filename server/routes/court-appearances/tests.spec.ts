@@ -33,10 +33,6 @@ test.describe('/court-appearances', () => {
               lastName: 'PRISONER-SURNAME',
               cellLocation: '2-1-005',
             },
-            prison: {
-              code: 'LEI',
-              name: 'LEEDS',
-            },
             status: { code: 'IN_PROGRESS', description: 'In progress' },
             start: '2001-01-01T10:00:00',
             end: '2001-01-01T17:00:00',
