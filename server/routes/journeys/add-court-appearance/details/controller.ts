@@ -3,11 +3,13 @@ import CourtAppearanceSchedulerService from '../../../../services/apis/courtAppe
 import CourtRegisterService from '../../../../services/apis/courtRegisterService'
 import { SchemaType } from './schema'
 import { formatInputDate } from '../../../../utils/dateTimeUtils'
+import CheckClashesService from '../../../../services/checkClashesService'
 
 export class CourtAppearanceDetailsController {
   constructor(
     private readonly courtAppearanceSchedulerService: CourtAppearanceSchedulerService,
     private readonly courtRegisterService: CourtRegisterService,
+    private readonly checkClashesService: CheckClashesService,
   ) {}
 
   GET = async (req: Request, res: Response) => {
@@ -31,10 +33,20 @@ export class CourtAppearanceDetailsController {
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
-    req.journeyData.addCourtAppearance!.startDate = req.body.startDate
-    req.journeyData.addCourtAppearance!.startTime = `${req.body.startTimeHour}:${req.body.startTimeMinute}`
-    req.journeyData.addCourtAppearance!.court = req.body.court
-    req.journeyData.addCourtAppearance!.reason = req.body.reason
-    res.redirect('comments')
+    const journey = req.journeyData.addCourtAppearance!
+
+    journey.startDate = req.body.startDate
+    journey.startTime = `${req.body.startTimeHour}:${req.body.startTimeMinute}`
+    journey.court = req.body.court
+    journey.reason = req.body.reason
+
+    journey.clashes = await this.checkClashesService.getClashes(
+      { res },
+      req.journeyData.prisonerDetails!.prisonerNumber,
+      `${journey.startDate}T${journey.startTime}:00`,
+      `${journey.startDate}T17:00:00`,
+    )
+
+    res.redirect(journey.clashes.length ? 'clashes' : 'comments')
   }
 }

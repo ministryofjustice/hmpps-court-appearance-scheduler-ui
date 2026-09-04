@@ -10,6 +10,8 @@ generic-service:
     HMPPS_AUTH_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     COURT_APPEARANCE_SCHEDULER_API_URL: "https://court-appearance-scheduler-api.hmpps.service.justice.gov.uk"
+    EXTERNAL_MOVEMENTS_API_URL: 'https://external-movements-api.hmpps.service.justice.gov.uk'
+    TRANSFER_SCHEDULER_API_URL: "https://transfer-scheduler-api.hmpps.service.justice.gov.uk"
     PRISON_API_URL: "https://prison-api.prison.service.justice.gov.uk"
     PRISONER_SEARCH_API_URL: "https://prisoner-search.prison.service.justice.gov.uk"
     COMPONENT_API_URL: "https://frontend-components.hmpps.service.justice.gov.uk"
