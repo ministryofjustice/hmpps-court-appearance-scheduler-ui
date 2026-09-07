@@ -11,17 +11,26 @@ export default class CheckClashesService {
     private readonly transferSchedulerService: TransferSchedulerService,
   ) {}
 
-  async getClashes(context: ApiRequestContext, prisonNumber: string, start: string, end: string): Promise<Clash[]> {
-    const [courtClashes, tapClashes, transferClashes] = await Promise.all([
-      this.courtAppearanceSchedulerService.getClashes(context, prisonNumber, start, end),
-      this.externalMovementsService.getClashes(context, prisonNumber, start, end),
-      this.transferSchedulerService.getClashes(context, prisonNumber, start, end),
-    ])
+  async getClashes(
+    context: ApiRequestContext,
+    prisonNumber: string,
+    start: string,
+    end: string,
+  ): Promise<Clash[] | null> {
+    try {
+      const [courtClashes, tapClashes, transferClashes] = await Promise.all([
+        this.courtAppearanceSchedulerService.getClashes(context, prisonNumber, start, end),
+        this.externalMovementsService.getClashes(context, prisonNumber, start, end),
+        this.transferSchedulerService.getClashes(context, prisonNumber, start, end),
+      ])
 
-    return [
-      ...courtClashes.data.flatMap(itm => itm.clashes.map(clash => ({ ...clash, type: 'Court appearance' }))),
-      ...tapClashes.data.flatMap(itm => itm.clashes.map(clash => ({ ...clash, type: 'Temporary absence' }))),
-      ...transferClashes.data.flatMap(itm => itm.clashes.map(clash => ({ ...clash, type: 'Transfer' }))),
-    ]
+      return [
+        ...courtClashes.data.flatMap(itm => itm.clashes.map(clash => ({ ...clash, type: 'Court appearance' }))),
+        ...tapClashes.data.flatMap(itm => itm.clashes.map(clash => ({ ...clash, type: 'Temporary absence' }))),
+        ...transferClashes.data.flatMap(itm => itm.clashes.map(clash => ({ ...clash, type: 'Transfer' }))),
+      ]
+    } catch {
+      return null
+    }
   }
 }

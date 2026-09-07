@@ -9,6 +9,13 @@
     <span class="govuk-caption-l">Add a court appearance</span>
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check this information before saving this court appearance</h1>
 
+    {% if failedToReadClashes %}
+      <div class="moj-api-error govuk-!-margin-bottom-6">
+        <p>Some information is currently unavailable</p>
+        <p>Unable to retrieve information for whether conflicting events exist or not.</p>
+      </div>
+    {% endif %}
+
     {{ govukSummaryList({
       classes: "govuk-!-margin-bottom-7",
       rows: [

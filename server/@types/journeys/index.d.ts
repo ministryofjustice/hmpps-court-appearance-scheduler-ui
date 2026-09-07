@@ -37,7 +37,7 @@ export type AddCourtAppearanceJourney = {
   court: CodedDescription
   reason: CodedDescription
   comments: string | null
-  clashes: Clash[]
+  clashes: Clash[] | null
   result: components['schemas']['ReferenceId']
 }>
 

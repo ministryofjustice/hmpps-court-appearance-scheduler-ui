@@ -8,7 +8,7 @@ export class CourtAppearanceCheckAnswersController {
   GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
 
-    const { startDate, startTime, court, reason, comments } = req.journeyData.addCourtAppearance!
+    const { startDate, startTime, court, reason, comments, clashes } = req.journeyData.addCourtAppearance!
 
     res.render('add-court-appearance/check-answers/view', {
       backUrl: 'check-answers/back',
@@ -17,6 +17,7 @@ export class CourtAppearanceCheckAnswersController {
       court,
       reason,
       comments,
+      failedToReadClashes: !clashes,
     })
   }
 

@@ -47,6 +47,6 @@ export class CourtAppearanceDetailsController {
       `${journey.startDate}T17:00:00`,
     )
 
-    res.redirect(journey.clashes.length ? 'clashes' : 'comments')
+    res.redirect(journey.clashes?.length ? 'clashes' : 'comments')
   }
 }
