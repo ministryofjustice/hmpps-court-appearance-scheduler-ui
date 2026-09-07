@@ -6,9 +6,6 @@
 
 {% block innerContent %}
   <div class="govuk-width-container">
-    <span class="govuk-caption-l">Add a court appearance</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check this information before saving this court appearance</h1>
-
     {% if failedToReadClashes %}
       <div class="moj-api-error govuk-!-margin-bottom-6">
         <p>Some information is currently unavailable</p>
@@ -16,6 +13,8 @@
       </div>
     {% endif %}
 
+    <span class="govuk-caption-l">Add a court appearance</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check this information before saving this court appearance</h1>
     {{ govukSummaryList({
       classes: "govuk-!-margin-bottom-7",
       rows: [
