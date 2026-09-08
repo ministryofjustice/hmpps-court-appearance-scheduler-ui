@@ -9,11 +9,12 @@ import { CourtAppearanceDetailsRoutes } from './details/routes'
 import { CourtAppearanceCommentsRoutes } from './comments/routes'
 import { CourtAppearanceCheckAnswersRoutes } from './check-answers/routes'
 import { CourtAppearanceConfirmationRoutes } from './confirmation/routes'
+import { CourtAppearanceClashesRoutes } from './clashes/routes'
 
 export const AddCourtAppearanceRoutes = (services: Services) => {
   const { router, get } = BaseRouter()
 
-  router.use(redirectCheckAnswersMiddleware([/check-answers/, /confirmation/]))
+  router.use(redirectCheckAnswersMiddleware([/check-answers/, /confirmation/], [/clashes/]))
 
   const START_ENTRY_PAGES: string[] = [Page.SEARCH_PRISONER, Page.MANAGE_COURT_APPEARANCE]
 
@@ -50,6 +51,7 @@ export const AddCourtAppearanceRoutes = (services: Services) => {
   )
 
   router.use('/details', CourtAppearanceDetailsRoutes(services))
+  router.use('/clashes', CourtAppearanceClashesRoutes())
   router.use('/comments', CourtAppearanceCommentsRoutes())
   router.use('/check-answers', CourtAppearanceCheckAnswersRoutes(services))
   router.use('/confirmation', CourtAppearanceConfirmationRoutes())

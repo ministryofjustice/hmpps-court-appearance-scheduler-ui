@@ -169,6 +169,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/search/people/clashes': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * @description Requires one of the following roles:
+     *     * ROLE_SCHEDULES__CLASHES__RO
+     */
+    post: operations['findTapClashes']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/court-appearances/{personIdentifier}': {
     parameters: {
       query?: never
@@ -367,13 +387,12 @@ export interface components {
     CourtEvent: {
       /** Format: uuid */
       dpsId?: string | null
-      prisonCodeAtTimeOfScheduling: string
       agyLocId: string
       /** Format: int64 */
       eventId?: number | null
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       start: string
       courtEventType: string
@@ -386,7 +405,7 @@ export interface components {
     SyncCourtEvent: {
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -405,13 +424,14 @@ export interface components {
       dpsId?: string | null
       /** Format: uuid */
       dpsCourtAppearanceScheduleId?: string
+      dpsCourtAppearanceExternalReference?: string
       /** Format: int64 */
       offenderBookId?: number
       /** Format: int32 */
       movementSeq?: number
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       occurredAt: string
       movementReasonCode: string
@@ -423,7 +443,7 @@ export interface components {
     SyncCourtEventMovement: {
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -432,7 +452,7 @@ export interface components {
     AtAndBy: {
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       at: string
       by: string
@@ -485,11 +505,6 @@ export interface components {
     } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
       comments?: string | null
     })
-    ChangeAppearancePrison: {
-      type: 'ChangeAppearancePrison'
-    } & (Omit<components['schemas']['CourtAppearanceAction'], 'type'> & {
-      prisonCode: string
-    })
     CompleteAppearance: {
       type: 'CompleteAppearance'
     } & Omit<components['schemas']['CourtAppearanceAction'], 'type'>
@@ -500,7 +515,6 @@ export interface components {
       actions: (
         | components['schemas']['CancelAppearance']
         | components['schemas']['ChangeAppearanceComments']
-        | components['schemas']['ChangeAppearancePrison']
         | components['schemas']['CompleteAppearance']
         | components['schemas']['ExpireAppearance']
         | components['schemas']['RecategoriseAppearance']
@@ -557,7 +571,7 @@ export interface components {
       user: components['schemas']['User']
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       occurredAt: string
       domainEvents: string[]
@@ -607,20 +621,19 @@ export interface components {
       /** Format: uuid */
       id: string
       person: components['schemas']['Person']
-      prison: components['schemas']['Prison']
       court: components['schemas']['Court']
       reason: components['schemas']['AppearanceReason']
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
-      end?: string | null
+      end: string
       comments?: string | null
       status: components['schemas']['AppearanceStatus']
     }
@@ -638,10 +651,6 @@ export interface components {
       lastName: string
       prisonCode?: string | null
       cellLocation?: string | null
-    }
-    Prison: {
-      code: string
-      name: string
     }
     AppearanceScheduleSearchRequest: {
       personIdentifiers: string[]
@@ -668,12 +677,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       end?: string | null
       status: components['schemas']['AppearanceStatus']
@@ -702,17 +711,78 @@ export interface components {
       size: number
       sort: string
     }
+    ClashPersonIdentifier: {
+      /** @enum {string} */
+      type: 'PRISON_NUMBER'
+      value: string
+    }
+    ClashRange: {
+      /**
+       * Format: date-time
+       * @example 2026-09-04T13:16:58
+       */
+      start: string
+      /**
+       * Format: date-time
+       * @example 2026-09-04T13:16:58
+       */
+      end: string
+    }
+    ClashRequest: {
+      personIdentifiers: components['schemas']['ClashPersonIdentifier'][]
+      ranges: components['schemas']['ClashRange'][]
+    }
+    AdditionalInformation: {
+      courtCode: string
+    }
+    Clash: {
+      /**
+       * Format: date-time
+       * @example 2026-09-04T13:16:58
+       */
+      start: string
+      /**
+       * Format: date-time
+       * @example 2026-09-04T13:16:58
+       */
+      end: string
+      description: components['schemas']['Description']
+      location: components['schemas']['Location']
+      additionalInformation: components['schemas']['AdditionalInformation']
+    }
+    ClashOrigin: {
+      source: components['schemas']['ClashSource']
+    }
+    ClashResponse: {
+      origin: components['schemas']['ClashOrigin']
+      data: components['schemas']['PersonClashes'][]
+    }
+    ClashSource: {
+      productId: string
+      name: string
+    }
+    Description: {
+      full: string
+      short: string
+    }
+    Location: {
+      description: string
+    }
+    PersonClashes: {
+      personIdentifier: components['schemas']['ClashPersonIdentifier']
+      clashes: components['schemas']['Clash'][]
+    }
     ScheduleCourtAppearance: {
       courtCode: string
       reasonCode: string
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       end?: string | null
       comments?: string | null
@@ -729,17 +799,16 @@ export interface components {
       /** Format: uuid */
       id: string
       personIdentifier: string
-      prisonCode: string
       courtCode: string
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       end?: string | null
       comments?: string | null
@@ -766,7 +835,7 @@ export interface components {
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       occurredAt: string
       comments?: string | null
@@ -789,14 +858,14 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-06-23T17:46:31
+       * @example 2026-09-04T13:16:58
        */
-      end?: string | null
+      end: string
       comments?: string | null
       status: components['schemas']['AppearanceStatus']
       origin?: components['schemas']['AppearanceOrigin'] | null
@@ -1048,6 +1117,30 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['CourtAppearanceSearchResponse']
+        }
+      }
+    }
+  }
+  findTapClashes: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ClashRequest']
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['ClashResponse']
         }
       }
     }
