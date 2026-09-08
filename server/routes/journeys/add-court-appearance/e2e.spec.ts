@@ -86,6 +86,11 @@ test.describe('/add-court-appearance e2e ', () => {
     await commentsPage.clickContinue()
     await checkAnswersPage.verifyAnswer('Comments', 'Lorem ipsum')
 
+    // verify content for failure to read clashes
+    await expect(
+      page.getByText('Unable to retrieve information for whether conflicting events exist or not.'),
+    ).toBeVisible()
+
     // proceed to confirmation
     await checkAnswersPage.clickButton('Confirm and save')
 
