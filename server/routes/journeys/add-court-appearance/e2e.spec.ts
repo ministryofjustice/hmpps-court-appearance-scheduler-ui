@@ -88,7 +88,7 @@ test.describe('/add-court-appearance e2e ', () => {
 
     // verify content for failure to read clashes
     await expect(
-      page.getByText('Unable to retrieve information for whether conflicting events exist or not.'),
+      page.getByText('Information about potential conflicting events is currently unavailable.'),
     ).toBeVisible()
 
     // proceed to confirmation
