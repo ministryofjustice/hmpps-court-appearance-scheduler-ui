@@ -56,6 +56,7 @@ export class BrowseCourtAppearancesController {
         results.length,
         `?page={page}&sort=${resQuery?.sort ?? this.DEFAULT_SORT}&${[
           `searchTerm=${resQuery?.searchTerm ?? ''}`,
+          `size=${resQuery?.validated?.size ?? 50}`,
           `start=${resQuery?.start ?? ''}`,
           `end=${resQuery?.end ?? ''}`,
           `court=${resQuery?.court ?? ''}`,

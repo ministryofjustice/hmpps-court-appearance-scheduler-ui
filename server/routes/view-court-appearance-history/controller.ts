@@ -54,6 +54,7 @@ export class CourtAppearanceHistoryController {
         searchResponse?.metadata?.totalElements ?? 0,
         results.length,
         `?page={page}&sort=${resQuery?.sort ?? this.DEFAULT_SORT}&${[
+          `size=${resQuery?.validated?.size ?? 50}`,
           `start=${resQuery?.start ?? ''}`,
           `end=${resQuery?.end ?? ''}`,
           `court=${resQuery?.court ?? ''}`,

@@ -17,7 +17,7 @@ export const schema = createSchema({
   type: z.union([typeEnum.transform(val => [val]), z.array(typeEnum)]).optional(),
   sort: z.string().optional(),
   size: z
-    .string()
+    .enum(['10', '25', '50', '100'])
     .optional()
     .transform(val => {
       if (!val) return 50
