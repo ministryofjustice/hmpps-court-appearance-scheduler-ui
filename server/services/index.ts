@@ -42,7 +42,7 @@ export const services = () => {
   return {
     applicationInfo,
     auditService: new AuditService(hmppsAuditClient),
-    prisonApiService: new PrisonApiService(hmppsAuthClient),
+    prisonApiService: new PrisonApiService(hmppsAuthClient, prisonerSearchService),
     courtRegisterService: new CourtRegisterService(hmppsAuthClient, cacheStore),
     prisonRegisterService: new PrisonRegisterService(hmppsAuthClient, cacheStore),
     checkClashesService: new CheckClashesService(
