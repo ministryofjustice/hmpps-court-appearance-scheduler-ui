@@ -26,13 +26,11 @@ generic-service:
     AUDIT_ENABLED: "true"
 
   allowlist:
-    kmpg: 195.68.59.74
     groups:
       - digital_staff_and_mojo
       - moj_cloud_platform
       - prisons
       - private_prisons
-      - accessibility-testing-1
 
 generic-prometheus-alerts:
   alertSeverity: move-and-improve-alerts-non-prod
