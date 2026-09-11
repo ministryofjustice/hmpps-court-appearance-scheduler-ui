@@ -4,7 +4,7 @@ export default function sanitiseUrl(req: Request, res: Response, next: NextFunct
   if (req.originalUrl.length > 2048) throw new Error(`Invalid url with length ${req.originalUrl.length}`)
 
   // remove trailing slash before query string, such as /add-any-alert/?alertType=D
-  if (req.originalUrl.match(/\/\?/)) {
+  if (req.originalUrl.match(/\/\?/) && !req.url.startsWith('/?')) {
     return res.redirect(req.originalUrl.replace(/\/\?/g, '?'))
   }
 
