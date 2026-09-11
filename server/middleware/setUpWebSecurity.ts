@@ -16,6 +16,15 @@ export default function setUpWebSecurity(): Router {
   })
   router.use(
     helmet({
+      strictTransportSecurity: {
+        maxAge: 63072000,
+        includeSubDomains: true,
+        preload: true,
+      },
+      xFrameOptions: { action: 'deny' },
+      referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+      crossOriginResourcePolicy: { policy: 'same-site' },
+      xXssProtection: false,
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
