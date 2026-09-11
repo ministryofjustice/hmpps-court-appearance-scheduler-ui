@@ -1,7 +1,13 @@
 import { Request, Response, NextFunction } from 'express'
 
 export default function sanitiseUrl(req: Request, res: Response, next: NextFunction) {
-  if (req.originalUrl.length > 2048) throw new Error(`Invalid url with length ${req.originalUrl.length}`)
+  if (
+    req.originalUrl.length > 2048 &&
+    !req.originalUrl.match(
+      /^\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\/inject-journey-data/,
+    )
+  )
+    throw new Error(`Invalid url with length ${req.originalUrl.length}`)
 
   // remove trailing slash before query string, such as /add-any-alert/?alertType=D
   if (req.originalUrl.match(/\/\?/) && !req.url.startsWith('/?')) {
