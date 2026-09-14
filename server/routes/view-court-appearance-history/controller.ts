@@ -14,7 +14,7 @@ export class CourtAppearanceHistoryController {
     private readonly courtRegisterService: CourtRegisterService,
   ) {}
 
-  private DEFAULT_SORT = 'start,asc'
+  private DEFAULT_SORT = 'start,desc'
 
   GET = async (req: Request, res: Response) => {
     const resQuery = res.locals['query'] as ResQuerySchemaType
