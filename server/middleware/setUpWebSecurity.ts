@@ -12,6 +12,7 @@ export default function setUpWebSecurity(): Router {
   // 2. https://www.npmjs.com/package/helmet
   router.use((_req: Request, res: Response, next: NextFunction) => {
     res.locals.cspNonce = crypto.randomBytes(16).toString('hex')
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
     next()
   })
   router.use(
