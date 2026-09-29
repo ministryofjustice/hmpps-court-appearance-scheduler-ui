@@ -171,7 +171,8 @@
               result.court.name,
               result.start | formatDate("d MMMM yyyy"),
               result.start | formatDate("HH:mm"),
-              result.reason.description
+              result.reason.description,
+              { html: '<span class="truncated-width-400">' + (result.comments or 'Not provided') + '</span>' }
             ]
             }
           ), rows) %}
@@ -181,7 +182,8 @@
               { text: result.reason.description },
               { text: result.court.name },
               { text: result.start | formatDate("d MMMM yyyy") },
-              { text: result.start | formatDate("HH:mm") }
+              { text: result.start | formatDate("HH:mm") },
+              { html: '<span class="truncated-width-100">' + (result.comments or 'Not provided') + '</span>' }
             ]
           ), tableRows) %}
         {% endfor %}
@@ -189,10 +191,15 @@
         <div class="govuk-!-display-none-print">
           {{ cardTable({
             columns: [
-              { text: 'Court location', width: 35 },
-              { text: 'Date', width: 20 },
-              { text: 'Time', width: 15 },
-              { text: 'Reason', width: 30 }
+              [
+                { text: 'Court location', width: 50 },
+                { text: 'Date', width: 30 },
+                { text: 'Time', width: 20 }
+              ],
+              [
+                { text: 'Reason', width: 50 },
+                { text: 'Comments', width: 50 }
+              ]
             ],
             rows: rows
           }) }}
@@ -206,7 +213,8 @@
             { text: "Court location" },
             { text: "Reason" },
             { text: "Date" },
-            { text: "Time" }
+            { text: "Time" },
+            { text: "Comments" }
           ],
           rows: tableRows
         }) }}
