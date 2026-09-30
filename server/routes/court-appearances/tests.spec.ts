@@ -33,10 +33,6 @@ test.describe('/court-appearances', () => {
               lastName: 'PRISONER-SURNAME',
               cellLocation: '2-1-005',
             },
-            prison: {
-              code: 'LEI',
-              name: 'LEEDS',
-            },
             status: { code: 'IN_PROGRESS', description: 'In progress' },
             start: '2001-01-01T10:00:00',
             end: '2001-01-01T17:00:00',
@@ -75,6 +71,7 @@ test.describe('/court-appearances', () => {
     await expect(page.locator('strong', { hasText: 'Date' }).locator('..')).toContainText('1 January 2001')
     await expect(page.locator('strong', { hasText: 'Time' }).locator('..')).toContainText('10:00')
     await expect(page.locator('strong', { hasText: 'Reason' }).locator('..')).toContainText('Some Reason')
+    await expect(page.locator('strong', { hasText: 'Comments' }).locator('..')).toContainText('Not provided')
     await expect(testPage.link('View details')).toHaveAttribute('href', /\/court-appearances\/court-appearance-1/)
 
     await testPage.endDateField().fill('2/2/2001')

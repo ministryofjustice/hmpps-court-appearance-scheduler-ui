@@ -14,7 +14,7 @@ export class CourtAppearanceHistoryController {
     private readonly courtRegisterService: CourtRegisterService,
   ) {}
 
-  private DEFAULT_SORT = 'start,asc'
+  private DEFAULT_SORT = 'start,desc'
 
   GET = async (req: Request, res: Response) => {
     const resQuery = res.locals['query'] as ResQuerySchemaType
@@ -54,6 +54,7 @@ export class CourtAppearanceHistoryController {
         searchResponse?.metadata?.totalElements ?? 0,
         results.length,
         `?page={page}&sort=${resQuery?.sort ?? this.DEFAULT_SORT}&${[
+          `size=${resQuery?.validated?.size ?? 50}`,
           `start=${resQuery?.start ?? ''}`,
           `end=${resQuery?.end ?? ''}`,
           `court=${resQuery?.court ?? ''}`,

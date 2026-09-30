@@ -34,28 +34,30 @@
     </div>
   </div>
 
-  <div class="block-background govuk-!-padding-top-6 govuk-!-padding-bottom-6 govuk-!-margin-bottom-7 govuk-!-display-none-print">
+  <div class="block-background govuk-!-padding-top-6 govuk-!-padding-bottom-1 govuk-!-margin-bottom-7 govuk-!-display-none-print">
     <div class="govuk-width-container">
-      <div class="moj-search govuk-!-width-two-thirds">
+      <search class="moj-search govuk-!-width-two-thirds">
         <form method="GET">
           {{ hiddenInputs(query | getQueryEntries(['start','end','court','reason','type','size','history'])) }}
-          {{ govukInput({
-            name: 'searchTerm',
-            classes: "moj-search__input",
-            hint: {
-              text: "Enter name or prison number."
-            },
-            value: searchTerm,
-            errorMessage: validationErrors | findError('searchTerm')
-          }) }}
+          <div class="search-wrapper moj-search__input-wrapper">
+            {{ govukInput({
+              name: 'searchTerm',
+              classes: "moj-search__input",
+              hint: {
+                text: "Enter name or prison number."
+              },
+              value: searchTerm,
+              errorMessage: validationErrors | findError('searchTerm')
+            }) }}
 
-          {{ govukButton({
-            classes: "moj-search__button",
-            text: "Search",
-            preventDoubleClick: true
-          }) }}
+            {{ govukButton({
+              classes: "search-button",
+              text: "Search",
+              preventDoubleClick: true
+            }) }}
+          </div>
         </form>
-      </div>
+      </search>
     </div>
   </div>
 
@@ -206,7 +208,8 @@
                   result.court.name,
                   result.start | formatDate("d MMMM yyyy"),
                   result.start | formatDate("HH:mm"),
-                  result.reason.description
+                  result.reason.description,
+                  { html: '<span class="truncated-width-400">' + (result.comments or 'Not provided') + '</span>' }
                 ]
               }
             ), rows) %}
@@ -217,7 +220,8 @@
                 { text: result.reason.description },
                 { text: result.court.name },
                 { text: result.start | formatDate("d MMMM yyyy") },
-                { text: result.start | formatDate("HH:mm") }
+                { text: result.start | formatDate("HH:mm") },
+                { html: '<span class="truncated-width-100">' + (result.comments or 'Not provided') + '</span>' }
               ]
             ), tableRows) %}
           {% endfor %}
@@ -225,10 +229,15 @@
           <div class="govuk-!-display-none-print">
             {{ cardTable({
               columns: [
-                { text: 'Court location', width: 35 },
-                { text: 'Date', width: 20 },
-                { text: 'Time', width: 15 },
-                { text: 'Reason', width: 30 }
+                [
+                  { text: 'Court location', width: 50 },
+                  { text: 'Date', width: 30 },
+                  { text: 'Time', width: 20 }
+                ],
+                [
+                  { text: 'Reason', width: 50 },
+                  { text: 'Comments', width: 50 }
+                ]
               ],
               rows: rows
             }) }}
@@ -242,7 +251,8 @@
               { text: "Court location" },
               { text: "Reason" },
               { text: "Date" },
-              { text: "Time" }
+              { text: "Time" },
+              { text: "Comments" }
             ],
             rows: tableRows
           }) }}

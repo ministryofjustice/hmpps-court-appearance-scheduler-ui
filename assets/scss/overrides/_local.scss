@@ -54,3 +54,33 @@
     display: none;
   }
 }
+
+.search-button {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 2px;
+  margin-left: 10px;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.truncated-width-400 {
+  width: 100%;
+  max-width: 400px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncated-width-100 {
+  width: 100%;
+  max-width: 100px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

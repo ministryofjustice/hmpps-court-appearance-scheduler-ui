@@ -69,6 +69,4 @@ export const validateTransformOptionalDate = (invalidDateErrorMsg: string) =>
       return date.toISOString().substring(0, 10)
     })
 
-export const getMinDateChecker = (minDate: Date) => (date: Date) => !isBefore(startOfDay(date), startOfDay(minDate))
-
-export const checkTodayOrFuture = getMinDateChecker(new Date())
+export const checkTodayOrFuture = (date: Date) => !isBefore(startOfDay(date), startOfDay(new Date()))

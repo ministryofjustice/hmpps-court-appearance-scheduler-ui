@@ -8,6 +8,8 @@ import { stubPrisonerSearchPing } from '../mockApis/prisonerSearchApi'
 import { stubCourtAppearanceSchedulerPing } from '../mockApis/courtAppearanceSchedulerApi'
 import { stubCourtRegisterPing } from '../mockApis/courtRegisterApi'
 import { stubPrisonRegisterApiHealth } from '../mockApis/prisonRegisterApi'
+import { stubExternalMovementsPing } from '../mockApis/externalMovementsApi'
+import { stubTransferSchedulerPing } from '../mockApis/transferSchedulerApi'
 
 test.describe('Health', () => {
   test.afterEach(async () => {
@@ -24,6 +26,8 @@ test.describe('Health', () => {
         stubCourtAppearanceSchedulerPing(),
         stubCourtRegisterPing(),
         stubPrisonRegisterApiHealth(),
+        stubExternalMovementsPing(),
+        stubTransferSchedulerPing(),
       ])
     })
 

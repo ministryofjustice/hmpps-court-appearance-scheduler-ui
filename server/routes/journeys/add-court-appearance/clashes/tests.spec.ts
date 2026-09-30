@@ -4,28 +4,21 @@ import auth from '../../../../../integration_tests/mockApis/hmppsAuth'
 import { stubComponents } from '../../../../../integration_tests/mockApis/componentsApi'
 import { stubGetPrisonerDetails } from '../../../../../integration_tests/mockApis/prisonerSearchApi'
 import { stubGetPrisonerImage } from '../../../../../integration_tests/mockApis/prisonApi'
-import { CourtAppearanceCheckAnswersPage } from './test.page'
+import { CourtAppearanceClashesPage } from './test.page'
 import { testNotAuthorisedPage } from '../../../../../integration_tests/steps/testNotAuthorisedPage'
 import { testPrisonerDetails } from '../../../../../integration_tests/data/testData'
 import { login, resetStubs } from '../../../../../integration_tests/testUtils'
 import { injectJourneyData } from '../../../../../integration_tests/steps/journey'
-import { stubPostCourtAppearance } from '../../../../../integration_tests/mockApis/courtAppearanceSchedulerApi'
 
-test.describe('/add-court-appearance/check-answers unauthorised', () => {
+test.describe('/add-court-appearance/clashes unauthorised', () => {
   test('should show unauthorised error', async ({ page }) => {
-    await testNotAuthorisedPage(page, '/add-court-appearance/check-answers')
+    await testNotAuthorisedPage(page, '/add-court-appearance/clashes')
   })
 })
 
-test.describe('/add-court-appearance/check-answers', () => {
+test.describe('/add-court-appearance/clashes', () => {
   test.beforeEach(async ({ page }) => {
-    await Promise.all([
-      auth.stubSignInPage(),
-      stubComponents(),
-      stubGetPrisonerImage(),
-      stubGetPrisonerDetails(),
-      stubPostCourtAppearance(testPrisonerDetails.prisonerNumber),
-    ])
+    await Promise.all([auth.stubSignInPage(), stubComponents(), stubGetPrisonerImage(), stubGetPrisonerDetails()])
     await login(page)
   })
 
@@ -43,10 +36,26 @@ test.describe('/add-court-appearance/check-answers', () => {
         startTime: '10:00',
         court: { code: 'COURT1', description: 'Some Court' },
         reason: { code: 'REASON1', description: 'Some Reason' },
-        comments: 'Lorem ipsum',
+        clashes: [
+          {
+            start: '2001-01-01T10:00:00',
+            end: '2001-01-01T17:00:00',
+            description: {
+              full: 'Police production',
+              short: '',
+            },
+            location: {
+              description: '',
+            },
+            additionalInformation: {
+              courtCode: '',
+            },
+            type: 'Temporary absence',
+          },
+        ],
       },
     })
-    await page.goto(`/${journeyId}/add-court-appearance/check-answers`)
+    await page.goto(`/${journeyId}/add-court-appearance/clashes`)
   }
 
   test('should try all cases', async ({ page }) => {
@@ -54,21 +63,17 @@ test.describe('/add-court-appearance/check-answers', () => {
     await startJourney(page, journeyId)
 
     // verify page content
-    const testPage = await new CourtAppearanceCheckAnswersPage(page).verifyContent()
-    await testPage.verifyAnswer('Date and time', '1 January 2001 at 10:00')
-    await testPage.verifyAnswer('Court location', 'Some Court')
-    await testPage.verifyAnswer('Reason', 'Some Reason')
-    await testPage.verifyAnswer('Comments', 'Lorem ipsum')
+    const testPage = await new CourtAppearanceClashesPage(page).verifyContent()
 
-    await testPage.verifyLink('Change date and time', /details#startDate/)
-    await testPage.verifyLink('Change court location', /details#court/)
-    await testPage.verifyLink('Change reason', /details#reason/)
-    await testPage.verifyLink('Change comments', /comments/)
-
-    await expect(testPage.button('Confirm and save')).toBeVisible()
+    await expect(page.getByText('Date: 1 January 2001')).toBeVisible()
+    await expect(page.getByText('Time: 10:00')).toBeVisible()
+    await expect(page.getByText('Schedule type: Temporary absence')).toBeVisible()
+    await expect(page.getByText('Schedule reason: Police production')).toBeVisible()
+    await expect(testPage.button('Continue')).toBeVisible()
+    await expect(testPage.link('Go back')).toHaveAttribute('href', /details/)
 
     // verify next page routing
-    await testPage.clickButton('Confirm and save')
-    expect(page.url()).toMatch(/\/add-court-appearance\/confirmation/)
+    await testPage.clickContinue()
+    expect(page.url()).toMatch(/\/add-court-appearance\/comments/)
   })
 })

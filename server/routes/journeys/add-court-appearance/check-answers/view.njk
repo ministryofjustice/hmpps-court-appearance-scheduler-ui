@@ -6,9 +6,15 @@
 
 {% block innerContent %}
   <div class="govuk-width-container">
+    {% if failedToReadClashes %}
+      <div class="moj-api-error govuk-!-margin-bottom-6">
+        <p>Some information is unavailable</p>
+        <p>Information about potential conflicting events is currently unavailable.</p>
+      </div>
+    {% endif %}
+
     <span class="govuk-caption-l">Add a court appearance</span>
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check this information before saving this court appearance</h1>
-
     {{ govukSummaryList({
       classes: "govuk-!-margin-bottom-7",
       rows: [
@@ -18,7 +24,7 @@
           actions: {
           items: [
             {
-              href: "date-and-time",
+              href: "details#startDate",
               text: "Change",
               visuallyHiddenText: "date and time",
               classes: "govuk-link--no-visited-state"

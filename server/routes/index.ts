@@ -16,10 +16,12 @@ import { requirePermissions } from '../middleware/permissions/requirePermissions
 import { BrowseCourtAppearancesRoutes } from './court-appearances/routes'
 import { CourtAppearanceHistoryRoutes } from './view-court-appearance-history/routes'
 import { populateSwitchOffBanner } from '../middleware/populateSwitchOffBanner'
+import sanitiseUrl from '../middleware/sanitiseUrl'
 
 export default function routes(services: Services): Router {
   const { router, get } = BaseRouter()
 
+  router.use(sanitiseUrl)
   router.use(populateUserPermissions)
   router.use(breadcrumbs())
   router.use(
