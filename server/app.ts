@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express'
 
 import { getFrontendComponents, retrieveCaseLoadData } from '@ministryofjustice/hmpps-connect-dps-components'
 import * as Sentry from '@sentry/node'
+import { telemetryMiddleware } from '@ministryofjustice/hmpps-azure-telemetry'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
@@ -26,7 +27,6 @@ import { AuthorisedRoles } from './middleware/permissions/populateUserPermission
 import PrisonerImageController from './routes/prisonerImageController'
 import { handleApiError } from './middleware/validation/handleApiError'
 import { permissionsMiddleware } from './middleware/permissions/permissionsMiddleware'
-import addUsernameAndCaseloadToTelemetry from './utils/azureAppInsights'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -95,7 +95,11 @@ export default function createApp(services: Services): express.Application {
 
   app.get('/prisoner-image/:prisonNumber', new PrisonerImageController(services.prisonApiService).GET)
 
-  app.use(addUsernameAndCaseloadToTelemetry())
+  app.use(
+    telemetryMiddleware.addUserMetadataToTelemetry({
+      getAttributes: (req: Request) => ({ username: req.user?.username }),
+    }),
+  )
 
   app.get(/(.*)/, permissionsMiddleware)
   app.use(routes(services))
