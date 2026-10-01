@@ -1,3 +1,4 @@
+import { UUID } from 'crypto'
 import { CaseLoad } from './caseLoad'
 
 export type AuthSource = 'nomis' | 'delius' | 'external' | 'azuread'
@@ -8,7 +9,8 @@ export type AuthSource = 'nomis' | 'delius' | 'external' | 'azuread'
 export interface BaseUser {
   authSource: AuthSource
   username: string
-  userId: string | undefined
+  userId: string | undefined // This is an id specific to the authSource, for example for NOMIS users this is the staffIdAdd a comment on  line R12Add diff commentMarkdown input:  edit mode selected.WritePreviewAdd a suggestionHeadingBold(command b) command⌘ bBItalic(command i) command⌘ iIQuote(command shift right angle bracket) command⌘ shift⇧ right angle bracket>Code(command e) command⌘ eELink(command k) command⌘ kKUnordered list(command 8) command⌘ 88Numbered list(command shift ampersand) command⌘ shift⇧ ampersand&Task list(command shift l) command⌘ shift⇧ lLMentionReferenceSlash commandsMore itemsSaved repliesAdd FilesPaste, drop, or click to add filesCancelCommentStart a review
+  userUuid: UUID | undefined // This is a UUID created by HMPPS Auth upon first user login that is unique to the user across all authSources
   name: string | undefined
   displayName: string
   userRoles: string[]
