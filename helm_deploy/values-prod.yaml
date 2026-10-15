@@ -23,6 +23,3 @@ generic-service:
     PRISON_REGISTER_CACHE_TIMEOUT: 3600
     SENTRY_ENVIRONMENT: PRODUCTION
     AUDIT_ENABLED: "true"
-
-generic-prometheus-alerts:
-  alertSeverity: move-and-improve-alerts
