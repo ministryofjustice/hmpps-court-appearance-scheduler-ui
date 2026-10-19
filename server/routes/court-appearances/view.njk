@@ -158,6 +158,8 @@
                 <select class="govuk-select hmpps-sort-selector__select" id="sort" name="sort" value="{{ sort or 'start,asc' }}">
                   <option value="start,asc" {{ 'selected' if sort === 'start,asc' else '' }}>Start date (oldest)</option>
                   <option value="start,desc" {{ 'selected' if sort === 'start,desc' else '' }}>Start date (most recent)</option>
+                  <option value="court,asc" {{ 'selected' if sort === 'court,asc' else '' }}>Court (A to Z)</option>
+                  <option value="court,desc" {{ 'selected' if sort === 'court,desc' else '' }}>Court (Z to A)</option>
                 </select>
                 <button type="submit" data-prevent-double-click="true" class="govuk-button hmpps-sort-selector__sort-button">
                   Sort
