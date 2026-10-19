@@ -392,7 +392,7 @@ export interface components {
       eventId?: number | null
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       start: string
       courtEventType: string
@@ -405,7 +405,7 @@ export interface components {
     SyncCourtEvent: {
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -431,7 +431,7 @@ export interface components {
       movementSeq?: number
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       occurredAt: string
       movementReasonCode: string
@@ -443,7 +443,7 @@ export interface components {
     SyncCourtEventMovement: {
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       occurredAt: string
       user: components['schemas']['SyncUser']
@@ -452,7 +452,7 @@ export interface components {
     AtAndBy: {
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       at: string
       by: string
@@ -571,7 +571,7 @@ export interface components {
       user: components['schemas']['User']
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       occurredAt: string
       domainEvents: string[]
@@ -626,12 +626,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       end: string
       comments?: string | null
@@ -677,12 +677,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       end?: string | null
       status: components['schemas']['AppearanceStatus']
@@ -719,12 +719,12 @@ export interface components {
     ClashRange: {
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       end: string
     }
@@ -738,12 +738,12 @@ export interface components {
     Clash: {
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       end: string
       description: components['schemas']['Description']
@@ -777,12 +777,12 @@ export interface components {
       reasonCode: string
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       end?: string | null
       comments?: string | null
@@ -803,12 +803,12 @@ export interface components {
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       end?: string | null
       comments?: string | null
@@ -835,7 +835,7 @@ export interface components {
       reason: components['schemas']['IntegrationReason']
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       occurredAt: string
       comments?: string | null
@@ -858,12 +858,12 @@ export interface components {
       external: boolean
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       start: string
       /**
        * Format: date-time
-       * @example 2026-09-04T13:16:58
+       * @example 2026-10-19T15:37:31
        */
       end: string
       comments?: string | null
