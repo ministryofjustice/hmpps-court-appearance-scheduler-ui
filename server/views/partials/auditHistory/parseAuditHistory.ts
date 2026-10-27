@@ -72,7 +72,7 @@ const CHANGE_PROPERTY_MAP: { [key: string]: string } = {
 }
 
 const parseChangedPropertyValue = (
-  domain: string,
+  _domain: string,
   property: string,
   value: unknown,
   courts: CodedDescription[],
@@ -92,12 +92,9 @@ const parseChangedPropertyValue = (
     return `unknown prison code “${value}”`
   }
 
-  if (domain.endsWith('comments-changed') && property === 'comments') return `“${value}”`
+  if (property === 'comments') return `“${value}”`
 
-  if (domain.endsWith('date-range-changed') && ['start', 'end'].includes(property)) return formatDate(String(value))
-
-  if (domain.endsWith('rescheduled') && ['start', 'end'].includes(property))
-    return formatDate(String(value), `d MMMM yyyy 'at' HH:mm`)
+  if (['start', 'end'].includes(property)) return formatDate(String(value), `d MMMM yyyy 'at' HH:mm`)
 
   return String(value)
 }
