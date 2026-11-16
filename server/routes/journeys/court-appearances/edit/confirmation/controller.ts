@@ -7,7 +7,7 @@ export class EditCourtAppearanceConfirmationController {
     const { courtAppearance, historyQuery, result } = req.journeyData.updateCourtAppearance!
 
     res.render('court-appearances/edit/confirmation/view', {
-      domainEvent: result!.content[0]!.domainEvents[0],
+      domainEvent: result!.content[0]?.domainEvents[0] ?? '',
       courtAppearance,
       historyQuery,
     })
