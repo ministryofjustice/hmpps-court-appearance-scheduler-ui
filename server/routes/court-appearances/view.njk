@@ -204,7 +204,7 @@
           {% for result in results %}
             {% set rows = (rows.push(
               {
-                title: { text: result.person | firstNameSpaceLastName + ' - ' + result.person.personIdentifier },
+                title: { html: '<a class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold" href="' + prisonerProfileBacklink(originalUrl, result.person.personIdentifier) + '">' + result.person | lastNameCommaFirstName + ' - ' + result.person.personIdentifier + '</a>' },
                 action: { text: 'View details', href: '/court-appearances/' + result.id },
                 data: [
                   result.court.name,
