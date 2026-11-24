@@ -66,7 +66,7 @@ test.describe('/court-appearances', () => {
     await expect(testPage.reasonInput()).toBeVisible()
     await expect(testPage.reasonInput()).toHaveValue('')
 
-    await expect(page.getByText('Prisoner-Name Prisoner-Surname - A9965EA').nth(0)).toBeVisible()
+    await expect(testPage.link('Prisoner-Surname, Prisoner-Name - A9965EA').nth(0)).toBeVisible()
     await expect(page.locator('strong', { hasText: 'Court location' }).locator('..')).toContainText('Some Court')
     await expect(page.locator('strong', { hasText: 'Date' }).locator('..')).toContainText('1 January 2001')
     await expect(page.locator('strong', { hasText: 'Time' }).locator('..')).toContainText('10:00')
