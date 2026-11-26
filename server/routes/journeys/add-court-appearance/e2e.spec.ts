@@ -18,6 +18,7 @@ import { formatInputDate } from '../../../utils/dateTimeUtils'
 import { CourtAppearanceDetailsPage } from './details/test.page'
 import { CourtAppearanceCommentsPage } from './comments/test.page'
 import { CourtAppearanceConfirmationPage } from './confirmation/test.page'
+import { verifyAuditEvents } from '../../../../integration_tests/steps/verifyAuditEvents'
 
 test.describe('/add-court-appearance e2e ', () => {
   test.beforeEach(async ({ page }) => {
@@ -105,5 +106,17 @@ test.describe('/add-court-appearance e2e ', () => {
       reasonCode: 'REASON2',
       comments: 'Lorem ipsum',
     })
+
+    await verifyAuditEvents([
+      {
+        what: 'API_CALL_SUCCESS',
+        subjectType: 'NOT_APPLICABLE',
+        details: `{"apiUrl":"POST /court-appearances/${testPrisonerDetails.prisonerNumber}","activeCaseLoadId":"LEI"}`,
+        service: 'hmpps-court-appearance-scheduler-ui',
+        who: 'USER1',
+        correlationId: expect.any(String),
+        when: expect.any(String),
+      },
+    ])
   })
 })
