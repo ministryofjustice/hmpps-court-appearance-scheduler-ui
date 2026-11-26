@@ -15,7 +15,7 @@ export default class CourtAppearanceSchedulerService {
       config.apis.courtAppearanceScheduler,
       logger,
       authenticationClient,
-      false,
+      true,
       (retry?: boolean) => (err: Error, res: SuperAgentResponse) => {
         if (!retry) return false
         if (err) return true
